@@ -170,14 +170,16 @@ block = {
   proposalExpireTime = 600000 # 10mins, default is 3 days
 }
 ``` 
-You could also enable the following committee-approved settings with `1`:
+You could also disable/enable the following committee-approved settings with `0` or `1`:
 ```
-allowCreationOfContracts
-allowMultiSign
-allowAdaptiveEnergy
-allowDelegateResource
-allowSameTokenName
-allowTvmTransferTrc10
+committee = {
+  allowCreationOfContracts = 1   
+  allowAdaptiveEnergy = 0
+  allowMultiSign = 1
+  allowDelegateResource = 1
+  allowSameTokenName = 0
+  allowTvmTransferTrc10 = 1
+}
 ```
 If you encounter any difficulties or need more customized operations, check the Troubleshooting section below.
 
