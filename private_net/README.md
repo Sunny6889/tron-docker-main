@@ -21,7 +21,7 @@ Please download and install the latest version of Docker from the official Docke
 Then check the Docker resource settings to ensure it has at least 12GB of memory per TRON node.
 
 ## Quick-Start using Docker
-Download the folder [private_net](../private_net) and [docker-compose.yml](./docker-compose.yml) from GitHub. Enter the directory and run the docker-composer.
+Download the folder [private_net](../private_net) from GitHub. Enter the directory and run the docker-composer.
 ```
 cd ./private_net
 docker-compose up -d
