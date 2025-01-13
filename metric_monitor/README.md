@@ -139,7 +139,7 @@ Metric for docker resources:
 * jvm_memory_pool_collection_used_bytes: Used bytes after last collection of a given JVM memory pool.
 
 
-### Block and Transaction Status
+### Block Status
 
 Check the usage from dashboard panel, or by searching in [grafana_dashboard_tron_server.json](metric_conf/grafana_dashboard_tron_server.json).
 
@@ -171,8 +171,25 @@ Used to check the block latency received from peer and not from sync request:
 - tron:block_receive_delay_seconds_created
 - tron:block_receive_delay_seconds_sum: (histogram) Total sum of all observed values for the histogram metric (receive block delay time, receiveTime - blockTime.)
 
+### Transaction Status
+
+The Manager Queue Size for pending/popped/queued/repush transaction types:
+- tron:manager_queue_size
+
+Average transaction processing time, check the usage in [grafana_dashboard_tron_server.json](metric_conf/grafana_dashboard_tron_server.json).
+- tron:process_transaction_latency_seconds_bucket: Cumulative counters for the observation buckets (process transaction latency.)
+- tron:process_transaction_latency_seconds_count: (histogram) Count of events that have been observed for the histogram metric (process transaction latency.)
+- tron:process_transaction_latency_seconds_created
+- tron:process_transaction_latency_seconds_sum: (histogram) Total sum of all observed values for the histogram metric (process transaction latency.)
 
 ### Network peer status
+The average time to process a message received from a peer, when the message processing time exceeds 50ms, will be logged by the below metric. Currently, the possible message types are: `P2P_PING`, `P2P_PONG`, `P2P_HELLO`, `P2P_DISCONNECT`, `SYNC_BLOCK_CHAIN`, `BLOCK_CHAIN_INVENTORY`, `INVENTORY`, `FETCH_INV_DATA`, `BLOCK`, `TRXS`, `PBFT_COMMIT_MSG`.
+
+- tron:message_process_latency_seconds_bucket: Cumulative counters for the observation buckets (process message latency.)
+- tron:message_process_latency_seconds_count: (histogram) Count of events that have been observed for the histogram metric (process message latency.)
+- tron:message_process_latency_seconds_created
+- tron:message_process_latency_seconds_sum: (histogram) Total sum of all observed values for the histogram metric (process message latency.)
+
 
 ### API Information
 
@@ -238,12 +255,6 @@ Beside above metrics, there are also metrics to measure the duration of a scrape
 
 
 
-tron:manager_queue_size	gauge	tron manager.queue.size .
-
-tron:message_process_latency_seconds_bucket	counter	Cumulative counters for the observation buckets (process message latency.)
-tron:message_process_latency_seconds_count	counter (histogram)	Count of events that have been observed for the histogram metric (process message latency.)
-tron:message_process_latency_seconds_created
-tron:message_process_latency_seconds_sum	counter (histogram)	Total sum of all observed values for the histogram metric (process message latency.)
 
 tron:miner_created			
 
@@ -267,13 +278,6 @@ tron:ping_pong_latency_seconds_created
 
 tron:ping_pong_latency_seconds_sum	counter (histogram)	Total sum of all observed values for the histogram metric (node ping pong latency.)
 
-tron:process_transaction_latency_seconds_bucket	counter	Cumulative counters for the observation buckets (process transaction latency.)
-
-tron:process_transaction_latency_seconds_count	counter (histogram)	Count of events that have been observed for the histogram metric (process transaction latency.)
-
-tron:process_transaction_latency_seconds_created			
-
-tron:process_transaction_latency_seconds_sum	counter (histogram)	Total sum of all observed values for the histogram metric (process transaction latency.)
 
 tron:tcp_bytes_bucket	counter	Cumulative counters for the observation buckets (tcp_bytes traffic.)
 

@@ -1321,7 +1321,7 @@
         "type": "prometheus",
         "uid": "ce9tsnprsu2gwc"
       },
-      "description": "Average of the number of transactions in a block within 1 minute.",
+      "description": "The Manager Queue Size for pending/popped/queued/repush",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1433,17 +1433,20 @@
             "type": "prometheus",
             "uid": "ce9tsnprsu2gwc"
           },
-          "exemplar": true,
-          "expr": "delta(tron:txs_total{group=`$group`,instance=`$instance`,type=\"success\"}[60s])/20",
-          "format": "time_series",
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "tron:manager_queue_size",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
           "instant": false,
-          "interval": "1m",
-          "intervalFactor": 1,
-          "legendFormat": "trxs/block",
-          "refId": "A"
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
         }
       ],
-      "title": " Transactions / Block",
+      "title": " Transactions Queue Size",
       "type": "timeseries"
     },
     {
@@ -1650,6 +1653,136 @@
         "type": "prometheus",
         "uid": "ce9tsnprsu2gwc"
       },
+      "description": "Average of the number of transactions in a block within 1 minute.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "success size",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "trxs/block"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 45
+      },
+      "id": 105,
+      "interval": "3s",
+      "maxDataPoints": 500,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "mean"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ce9tsnprsu2gwc"
+          },
+          "exemplar": true,
+          "expr": "delta(tron:txs_total{group=`$group`,instance=`$instance`,type=\"success\"}[60s])/20",
+          "format": "time_series",
+          "instant": false,
+          "interval": "1m",
+          "intervalFactor": 1,
+          "legendFormat": "trxs/block",
+          "refId": "A"
+        }
+      ],
+      "title": " Transactions / Block",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ce9tsnprsu2gwc"
+      },
       "description": "Average transaction processing time.",
       "fieldConfig": {
         "defaults": {
@@ -1791,8 +1924,8 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 12,
-        "y": 45
+        "x": 0,
+        "y": 53
       },
       "id": 23,
       "interval": "3s",
@@ -1851,7 +1984,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 53
+        "y": 61
       },
       "id": 38,
       "panels": [],
@@ -2005,7 +2138,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 54
+        "y": 62
       },
       "id": 84,
       "interval": "1m",
@@ -2245,7 +2378,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 54
+        "y": 62
       },
       "id": 101,
       "interval": "1m",
@@ -2487,7 +2620,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 62
+        "y": 70
       },
       "id": 102,
       "interval": "1m",
@@ -2609,7 +2742,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 62
+        "y": 70
       },
       "id": 7,
       "interval": "1m",
@@ -2846,7 +2979,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 70
+        "y": 78
       },
       "id": 103,
       "interval": "1m",
@@ -2915,7 +3048,7 @@
         "type": "prometheus",
         "uid": "ce9tsnprsu2gwc"
       },
-      "description": "lock_acquire_latency_seconds_bucket",
+      "description": "When handling the above block push logic, Tron's processing logic needs to acquire a synchronized lock. ",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3097,7 +3230,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 70
+        "y": 78
       },
       "id": 104,
       "interval": "1m",
@@ -3158,7 +3291,7 @@
           "useBackend": false
         }
       ],
-      "title": "Block Push Latency ",
+      "title": "Block Push Lock Acquire Latency",
       "type": "timeseries"
     },
     {
@@ -3167,7 +3300,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 78
+        "y": 86
       },
       "id": 46,
       "panels": [],
@@ -3203,7 +3336,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 79
+        "y": 87
       },
       "id": 20,
       "interval": "3s",
@@ -3310,7 +3443,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 79
+        "y": 87
       },
       "id": 25,
       "interval": "3s",
@@ -3360,6 +3493,271 @@
         }
       ],
       "title": "Ping Pong Latency",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ce9tsnprsu2gwc"
+      },
+      "description": "TCP network data traffic statistics.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "solidity005-fail-expired"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 95
+      },
+      "id": 16,
+      "interval": "10m",
+      "maxDataPoints": 500,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ce9tsnprsu2gwc"
+          },
+          "exemplar": true,
+          "expr": "increase(tron:tcp_bytes_sum{group=`$group`,instance=`$instance`}[$__interval])",
+          "format": "time_series",
+          "instant": false,
+          "interval": "10m",
+          "intervalFactor": 1,
+          "legendFormat": "{{type}}",
+          "refId": "A"
+        }
+      ],
+      "title": "TCP Traffic/10 Minutes ",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ce9tsnprsu2gwc"
+      },
+      "description": "When received a peer message, when the message process cost > 50ms, it will be logged. ",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "latency",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "{group=\"group-tron\", instance=\"fullnode-01\", job=\"java-tron\", type=\"BLOCK_CHAIN_INVENTORY\"}"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 95
+      },
+      "id": 106,
+      "interval": "3s",
+      "maxDataPoints": 500,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ce9tsnprsu2gwc"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "rate(tron:message_process_latency_seconds_sum{group=\"$group\"}[$__interval])/ rate(tron:message_process_latency_seconds_count{group=\"$group\", instance=\"$instance\"}[$__interval])",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ce9tsnprsu2gwc"
+          },
+          "editorMode": "code",
+          "expr": "histogram_quantile(0.99, sum by(le) (rate(tron:message_process_latency_seconds_bucket{group=\"$group\", instance=\"$instance\"}[$__interval])))",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Message Lantency > 50ms",
       "type": "timeseries"
     },
     {
@@ -3444,7 +3842,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 87
+        "y": 103
       },
       "id": 17,
       "interval": "10m",
@@ -3485,130 +3883,12 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
-      "description": "TCP network data traffic statistics.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "bytes"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "solidity005-fail-expired"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "semi-dark-yellow",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 87
-      },
-      "id": 16,
-      "interval": "10m",
-      "maxDataPoints": 500,
-      "options": {
-        "legend": {
-          "calcs": [
-            "mean",
-            "max"
-          ],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.4.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
-          "exemplar": true,
-          "expr": "increase(tron:tcp_bytes_sum{group=`$group`,instance=`$instance`}[$__interval])",
-          "format": "time_series",
-          "instant": false,
-          "interval": "10m",
-          "intervalFactor": 1,
-          "legendFormat": "{{type}}",
-          "refId": "A"
-        }
-      ],
-      "title": "TCP Traffic/10 Minutes ",
-      "type": "timeseries"
-    },
-    {
       "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 95
+        "y": 111
       },
       "id": 44,
       "panels": [
@@ -3818,7 +4098,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 96
+        "y": 112
       },
       "id": 48,
       "panels": [
@@ -4626,6 +4906,6 @@
   "timezone": "",
   "title": "java tron server",
   "uid": "WAY66gQ07k",
-  "version": 8,
+  "version": 14,
   "weekStart": ""
 }
