@@ -65,9 +65,12 @@ As you can see from above Grafana dashboard or http://localhost:9527/metrics, th
 - Database information
 
 ### Blockchain Status
+tron:header_time
+tron:header_height
+
 
 ### Node System Status
-
+Metric of specific container:
 - process_cpu_load: Process cpu load
 - process_cpu_seconds_total
 - process_max_fds: Maximum number of open file descriptors.
@@ -76,6 +79,7 @@ As you can see from above Grafana dashboard or http://localhost:9527/metrics, th
 - process_start_time_seconds: Start time of the process since unix epoch in seconds.
 - process_virtual_memory_bytes
 
+Metric for docker resources:
 - system_available_cpus: System available cpus
 - system_cpu_load: System cpu load
 - system_free_physical_memory_bytes: System free physical memory bytes
@@ -137,10 +141,163 @@ As you can see from above Grafana dashboard or http://localhost:9527/metrics, th
 
 ### Block and Transaction Status
 
+Check the usage from dashboard panel, or by searching in [grafana_dashboard_tron_server.json](metric_conf/grafana_dashboard_tron_server.json).
+
+Used to check the block process performance from TronNetDelegate:
+- tron:block_process_latency_seconds_bucket: Cumulative counters for the observation buckets (process block latency for TronNetDelegate.)
+- tron:block_process_latency_seconds_count: (histogram)	Count of events that have been observed for the histogram metric (process block latency for TronNetDelegate.)
+- tron:block_process_latency_seconds_created.
+- tron:block_process_latency_seconds_sum: (histogram) Total sum of all observed values for the histogram metric (process block latency for TronNetDelegate.)
+
+Used to check the block process latency from Manager, which is called from TronNetDelegate:
+tron:block_push_latency_seconds_bucket: Cumulative counters for the observation buckets (push block latency for Manager.)
+tron:block_push_latency_seconds_count: (histogram) Count of events that have been observed for the histogram metric (push block latency for Manager.)
+tron:block_push_latency_seconds_created
+tron:block_push_latency_seconds_sum: (histogram) Total sum of all observed values for the histogram metric (push block latency for Manager.)
+
+When handling the above block push logic, Tron's processing logic needs to acquire a synchronization lock. `lock_acquire_latency_seconds_x` metric is used to indicate the latency.
+- tron:lock_acquire_latency_seconds_bucket: Cumulative counters for the observation buckets (lock acquire latency.)
+- tron:lock_acquire_latency_seconds_count: (histogram) Count of events that have been observed for the histogram metric (lock acquire latency.)
+- tron:lock_acquire_latency_seconds_created
+- tron:lock_acquire_latency_seconds_sum: (histogram) Total sum of all observed values for the histogram metric (lock acquire latency.)
+
+Used to check the block latency received from peer and not from sync request:
+- tron:block_fetch_latency_seconds_bucket: Cumulative counters for the observation buckets (fetch block latency.)
+- tron:block_fetch_latency_seconds_count: Count of events that have been observed for the histogram metric (fetch block latency.)
+- tron:block_fetch_latency_seconds_created
+- tron:block_fetch_latency_seconds_sum: Total sum of all observed values for the histogram metric (fetch block latency.)
+- tron:block_receive_delay_seconds_bucket: Cumulative counters for the observation buckets (receive block delay time, receiveTime - blockTime.)
+- tron:block_receive_delay_seconds_count: (histogram) Count of events that have been observed for the histogram metric (receive block delay time, receiveTime - blockTime.)
+- tron:block_receive_delay_seconds_created
+- tron:block_receive_delay_seconds_sum: (histogram) Total sum of all observed values for the histogram metric (receive block delay time, receiveTime - blockTime.)
+
+
 ### Network peer status
 
 ### API Information
 
 ### Database Information
+
+TRON blockchain storage chooses to use LevelDB, which is developed by Google and proven successful with many companies and projects. These below db related metrics all have filters with `db` name and `level`.
+- tron:db_size_bytes
+- tron:guava_cache_hit_rate: Hit rate of a guava cache.
+- tron:guava_cache_request: Request of a guava cache.
+- tron:guava_cache_eviction_count: Eviction count of a guava cache.
+- tron:db_sst_level: For LevelDB SST file compaction.
+
+Currently, for `db` TRON has below possible objects:
+- accountid-index
+- abi
+- account
+- votes
+- proposal
+- witness
+- code
+- recent-transaction
+- exchange-v2
+- market_pair_to_price
+- trans
+- contract
+- storage-row
+- block 
+- exchange
+- DelegatedResource
+- tree-block-index
+- balance-trace
+- market_pair_price_to_order
+- asset-issue
+- transactionHistoryStore
+- IncrementalMerkleTree
+- delegation
+- transactionRetStore
+- account-index
+- market_order
+- witness_schedule
+- nullifier
+- DelegatedResourceAccountIndex
+- properties
+- common
+- block-index
+- accountTrie
+- contract-state
+- account-trace
+- market_account
+- recent-block
+- asset-issue-v2
+- section-bloom
+- tmp
+
+
+### Other Metrics
+Beside above metrics, there are also metrics to measure the duration of a scrape process, which is useful for monitoring and understanding the performance of your Prometheus server and the targets it scrapes. 
+- scrape_duration_seconds: It measures the time taken (in seconds) for Prometheus to scrape a target. This includes the entire process of making an HTTP request to the target, receiving the response, and processing the metrics.
+- scrape_samples_post_metric_relabeling
+- scrape_samples_scraped
+- scrape_series_added			
+
+
+
+
+tron:manager_queue_size	gauge	tron manager.queue.size .
+
+tron:message_process_latency_seconds_bucket	counter	Cumulative counters for the observation buckets (process message latency.)
+tron:message_process_latency_seconds_count	counter (histogram)	Count of events that have been observed for the histogram metric (process message latency.)
+tron:message_process_latency_seconds_created
+tron:message_process_latency_seconds_sum	counter (histogram)	Total sum of all observed values for the histogram metric (process message latency.)
+
+tron:miner_created			
+
+tron:miner_total			
+
+tron:p2p_disconnect_created			
+
+tron:p2p_disconnect_total			
+
+tron:p2p_error_created			
+
+tron:p2p_error_total			
+
+tron:peers	gauge	tron peers.size .
+
+tron:ping_pong_latency_seconds_bucket	counter	Cumulative counters for the observation buckets (node ping pong latency.)
+
+tron:ping_pong_latency_seconds_count	counter (histogram)	Count of events that have been observed for the histogram metric (node ping pong latency.)
+
+tron:ping_pong_latency_seconds_created			
+
+tron:ping_pong_latency_seconds_sum	counter (histogram)	Total sum of all observed values for the histogram metric (node ping pong latency.)
+
+tron:process_transaction_latency_seconds_bucket	counter	Cumulative counters for the observation buckets (process transaction latency.)
+
+tron:process_transaction_latency_seconds_count	counter (histogram)	Count of events that have been observed for the histogram metric (process transaction latency.)
+
+tron:process_transaction_latency_seconds_created			
+
+tron:process_transaction_latency_seconds_sum	counter (histogram)	Total sum of all observed values for the histogram metric (process transaction latency.)
+
+tron:tcp_bytes_bucket	counter	Cumulative counters for the observation buckets (tcp_bytes traffic.)
+
+tron:tcp_bytes_count
+tron:tcp_bytes_created			
+
+tron:tcp_bytes_sum	counter (histogram)	Total sum of all observed values for the histogram metric (tcp_bytes traffic.)
+
+tron:tx_cache	gauge	tron tx cache info.
+
+tron:udp_bytes_bucket	counter	Cumulative counters for the observation buckets (udp_bytes traffic.)
+
+tron:udp_bytes_count	counter (histogram)	Count of events that have been observed for the histogram metric (udp_bytes traffic.)
+
+tron:udp_bytes_created			
+
+tron:udp_bytes_sum	counter (histogram)	Total sum of all observed values for the histogram metric (udp_bytes traffic.)
+
+tron:verify_sign_latency_seconds_bucket	counter	Cumulative counters for the observation buckets (verify sign latency for trx , block.)
+
+tron:verify_sign_latency_seconds_count	counter (histogram)	Count of events that have been observed for the histogram metric (verify sign latency for trx , block.)
+
+tron:verify_sign_latency_seconds_created			
+
+tron:verify_sign_latency_seconds_sum	counter (histogram)	Total sum of all observed values for the histogram metric (verify sign latency for trx , block.)
 
 
