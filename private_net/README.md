@@ -58,7 +58,7 @@ Check the docker-compose.yml, the two container services use the same TRON image
 - `ports`: Used in the tron_witness1 service are exposed for API requests to interact with the TRON private network.
 
 - `command`: Used for java-tron image start-up arguments.
-    - `-jvm` is used for Java Virtual Machine parameters, which must be enclosed in double quotes and braces. `"{-Xmx16g -Xms12g}"` sets the maximum heap size to 10GB.
+    - `-jvm` is used for Java Virtual Machine parameters, which must be enclosed in double quotes and braces. `"{-Xmx16g -Xms12g}"` sets the maximum heap size to 16GB.
     - `-c` defines the configuration file to use.
     - `-d` defines the database file to use. By mounting a local data directory, it ensures that the block data is persistent.
     - `-w` means to start as a witness. You need to fill the `localwitness` field with private keys in the configuration file. Refer to [**Run as Witness**](https://tronprotocol.github.io/documentation-en/using_javatron/installing_javatron/#startup-a-fullnode-that-produces-blocks).
