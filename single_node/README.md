@@ -80,7 +80,7 @@ docker run -it --name tron -d -p 8090:8090 -p 8091:8091 -p 18888:18888 -p 18888:
            -v /host/path/java-tron/conf:/java-tron/conf \ 
            -v /host/path/java-tron/datadir:/java-tron/data \ 
            tronprotocol/java-tron \
-           -jvm "{-Xmx16g -Xms12g}" \
+           -jvm "{-Xmx16g -Xms12g -XX:+UseConcMarkSweepGC}" \
            -c /java-tron/conf/config-localtest.conf \
            -d /java-tron/data \
            -w
