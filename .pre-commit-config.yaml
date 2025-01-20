@@ -11,16 +11,6 @@ repos:
         - id: check-executables-have-shebangs
         - id: detect-private-key # Detects private keys in the repository to prevent accidental commits.
 #       - id: detect-aws-credentials
-  - repo: https://github.com/jumanjihouse/pre-commit-hooks
-    rev: 3.0.0
-    hooks:
-      - id: shellcheck
-      - id: script-must-have-extension
-      - id: git-dirty
-        args: ["--quiet"]
-      - id: git-check
-      - id: forbid-binary
-        exclude: '\.(jpg|jpeg|png|gif|bmp|svg|webp)$'
   - repo: local # used for java code if exist
     hooks:
       - id: checkstyle
@@ -28,3 +18,14 @@ repos:
         entry: ./run-checkstyle.sh # script to call java code formatter
         language: script
         files: \.java$
+  - repo: https://github.com/jumanjihouse/pre-commit-hooks
+    rev: 3.0.0
+    hooks:
+      - id: shellcheck
+      - id: script-must-have-extension
+      - id: git-dirty
+        args: [ "--quiet" ]
+      - id: git-check
+        exclude: '\.md$'  # Exclude Markdown files
+      - id: forbid-binary
+        exclude: '\.(jpg|jpeg|png)$' # except images
