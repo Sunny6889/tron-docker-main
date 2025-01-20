@@ -18,7 +18,7 @@ repos:
       - id: script-must-have-extension
       - id: git-dirty
         args: ["--quiet"]
-#      - id: git-check
+      - id: git-check
       - id: forbid-binary
         exclude: '\.(jpg|jpeg|png|gif|bmp|svg|webp)$'
   - repo: local # used for java code if exist

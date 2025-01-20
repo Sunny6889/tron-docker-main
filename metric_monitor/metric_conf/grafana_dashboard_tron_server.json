@@ -1,4 +1,52 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_PROMETHEUS",
+      "label": "Prometheus",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "gauge",
+      "name": "Gauge",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.2.0"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph (old)",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -42,10 +90,7 @@
       "type": "row"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "Start time of the  java-tron process since unix epoch in seconds.",
       "fieldConfig": {
         "defaults": {
@@ -108,10 +153,7 @@
       "type": "gauge"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "Up Time is a measure of system reliability, expressed as the percentage of time java-tron process, has been working and available",
       "fieldConfig": {
         "defaults": {
@@ -174,10 +216,7 @@
       "type": "gauge"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "The latest block height of java-tron on this node.",
       "fieldConfig": {
         "defaults": {
@@ -243,10 +282,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "The latest block time of java-tron on this node.",
       "fieldConfig": {
         "defaults": {
@@ -313,10 +349,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1356,10 +1389,7 @@
       "type": "row"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "Average block generate time .",
       "fieldConfig": {
         "defaults": {
@@ -1556,10 +1586,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "Average block processing time when is not catching up.",
       "fieldConfig": {
         "defaults": {
@@ -1798,10 +1825,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "Average block processing time when is not catching up.",
       "fieldConfig": {
         "defaults": {
@@ -2041,10 +2065,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "Average  parallel verification transactions signature processing time.",
       "fieldConfig": {
         "defaults": {
@@ -2157,10 +2178,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "Average block processing time.",
       "fieldConfig": {
         "defaults": {
@@ -2385,10 +2403,7 @@
           "useBackend": false
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+          "datasource": "${DS_PROMETHEUS}",
           "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": true,
@@ -2408,10 +2423,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "When handling the above block push logic, Tron's processing logic needs to acquire a synchronized lock. ",
       "fieldConfig": {
         "defaults": {
@@ -2618,10 +2630,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+          "datasource": "${DS_PROMETHEUS}",
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": true,
@@ -2636,10 +2645,7 @@
           "useBackend": false
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+          "datasource": "${DS_PROMETHEUS}",
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": true,
@@ -2672,10 +2678,7 @@
       "type": "row"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "Node peers Info.",
       "fieldConfig": {
         "defaults": {
@@ -2743,10 +2746,7 @@
       "type": "gauge"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "Http network data traffic statistics.",
       "fieldConfig": {
         "defaults": {
@@ -2871,10 +2871,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "Node abnormal peers statstics during past 1 minute",
       "fieldConfig": {
         "defaults": {
@@ -2968,10 +2965,7 @@
       "type": "gauge"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "UDP network data traffic statistics rate over the past 30 seconds.",
       "fieldConfig": {
         "defaults": {
@@ -3104,10 +3098,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "TCP network data traffic statistics, average TCP bytes per second over the past 30 seconds.",
       "fieldConfig": {
         "defaults": {
@@ -3228,10 +3219,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "The average time to process a message received from a peer, when the message processing time exceeds 50ms, will be logged by the below metric. \n",
       "fieldConfig": {
         "defaults": {
@@ -3347,10 +3335,7 @@
       "type": "row"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -3465,10 +3450,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -3569,10 +3551,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -3687,10 +3666,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -3805,10 +3781,7 @@
       "type": "row"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -3890,10 +3863,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -3976,10 +3946,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -4061,10 +4028,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -4146,10 +4110,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -4231,10 +4192,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -4316,10 +4274,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -4401,10 +4356,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -4486,10 +4438,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -4584,10 +4533,7 @@
       "type": "row"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -4669,10 +4615,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "JVM heap used /  JVM heap init.\nJVM heap used /  JVM heap max.",
       "fieldConfig": {
         "defaults": {
@@ -4789,10 +4732,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "JVM heap detail.",
       "fieldConfig": {
         "defaults": {
@@ -4933,10 +4873,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "GC time every minute.",
       "fieldConfig": {
         "defaults": {
@@ -5040,10 +4977,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ce9tsnprsu2gwc"
-      },
+      "datasource": "${DS_PROMETHEUS}",
       "description": "GC count every minute.",
       "fieldConfig": {
         "defaults": {
@@ -5159,7 +5093,7 @@
           "text": "fullnode-01",
           "value": "fullnode-01"
         },
-        "datasource": "ce9tsnprsu2gwc",
+        "datasource": "${DS_PROMETHEUS}",
         "definition": "label_values(instance)",
         "includeAll": false,
         "label": "instance",
@@ -5179,7 +5113,7 @@
           "text": "group-tron",
           "value": "group-tron"
         },
-        "datasource": "ce9tsnprsu2gwc",
+        "datasource": "${DS_PROMETHEUS}",
         "definition": "label_values(group)",
         "includeAll": false,
         "label": "group",
@@ -5216,7 +5150,7 @@
   },
   "timezone": "",
   "title": "java tron server",
-  "uid": "WAY66gQ07k",
+  "uid": "WAY66gQ07X",
   "version": 46,
   "weekStart": ""
 }
