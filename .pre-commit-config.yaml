@@ -6,10 +6,16 @@ repos:
         - id: end-of-file-fixer
         - id: check-json
         - id: check-yaml
+        - id: pretty-format-json
+          args: ['--autofix']
         - id: double-quote-string-fixer
         - id: check-shebang-scripts-are-executable # Ensures that scripts with a shebang (#!) are executable.
         - id: check-executables-have-shebangs
         - id: detect-private-key # Detects private keys in the repository to prevent accidental commits.
+  - repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
+    rev: 0.2.1  # or other specific tag
+    hooks:
+      - id: yamlfmt
   - repo: local # used for java code if exist
     hooks:
       - id: checkstyle
@@ -23,7 +29,6 @@ repos:
       - id: shellcheck
       - id: script-must-have-extension
       - id: git-dirty
-        args: [ "--quiet" ]
       - id: git-check
         exclude: '\.md$'  # Exclude Markdown files
       - id: forbid-binary

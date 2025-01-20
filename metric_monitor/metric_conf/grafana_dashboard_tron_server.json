@@ -1,49 +1,49 @@
 {
   "__inputs": [
     {
-      "name": "DS_PROMETHEUS",
-      "label": "Prometheus",
       "description": "",
-      "type": "datasource",
+      "label": "Prometheus",
+      "name": "DS_PROMETHEUS",
       "pluginId": "prometheus",
-      "pluginName": "Prometheus"
+      "pluginName": "Prometheus",
+      "type": "datasource"
     }
   ],
   "__requires": [
     {
-      "type": "panel",
       "id": "gauge",
       "name": "Gauge",
+      "type": "panel",
       "version": ""
     },
     {
-      "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
+      "type": "grafana",
       "version": "8.2.0"
     },
     {
-      "type": "panel",
       "id": "graph",
       "name": "Graph (old)",
+      "type": "panel",
       "version": ""
     },
     {
-      "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
+      "type": "datasource",
       "version": "1.0.0"
     },
     {
-      "type": "panel",
       "id": "stat",
       "name": "Stat",
+      "type": "panel",
       "version": ""
     },
     {
-      "type": "panel",
       "id": "timeseries",
       "name": "Time series",
+      "type": "panel",
       "version": ""
     }
   ],
@@ -858,7 +858,7 @@
           },
           "pluginVersion": "11.4.0",
           "targets": [
-             {
+            {
               "exemplar": true,
               "expr": "sum(tron:manager_queue_size{group=`$group`,instance=`$instance`,type !=`popped`,type !=`queued`})",
               "format": "time_series",
@@ -1077,7 +1077,7 @@
           },
           "pluginVersion": "11.4.0",
           "targets": [
-              {
+            {
               "disableTextWrap": false,
               "editorMode": "builder",
               "exemplar": false,
@@ -3661,7 +3661,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(tron:db_size_bytes{group=`$group`,instance=`$instance`,type = \"LEVELDB\"})",
           "format": "time_series",
@@ -3672,7 +3672,7 @@
           "refId": "A"
         },
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(delta(tron:db_size_bytes{group=`$group`,instance=`$instance`,type = \"LEVELDB\"}[24h]))",
           "hide": false,
@@ -3737,7 +3737,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(tron:db_size_bytes{group=`$group`,instance=`$instance`,type=\"LEVELDB\",db=\"block\"})",
           "format": "time_series",
@@ -3749,7 +3749,7 @@
           "refId": "A"
         },
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(delta(tron:db_size_bytes{group=`$group`,instance=`$instance`,type = \"LEVELDB\",db=\"block\"}[24h]))",
           "hide": false,
@@ -3814,7 +3814,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(tron:db_size_bytes{group=`$group`,instance=`$instance`,type=\"LEVELDB\",db=\"transactionRetStore\"})",
           "format": "time_series",
@@ -3825,7 +3825,7 @@
           "refId": "A"
         },
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(delta(tron:db_size_bytes{group=`$group`,instance=`$instance`,type = \"LEVELDB\",db=\"transactionRetStore\"}[24h]))",
           "hide": false,
@@ -3890,7 +3890,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(tron:db_size_bytes{group=`$group`,instance=`$instance`,type=\"LEVELDB\",db=\"trans\"})",
           "format": "time_series",
@@ -3901,7 +3901,7 @@
           "refId": "A"
         },
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(delta(tron:db_size_bytes{group=`$group`,instance=`$instance`,type = \"LEVELDB\",db=\"trans\"}[24h]))",
           "hide": false,
@@ -3966,7 +3966,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(tron:db_size_bytes{group=`$group`,instance=`$instance`,type=\"LEVELDB\",db=\"transactionHistoryStore\"})",
           "format": "time_series",
@@ -3977,7 +3977,7 @@
           "refId": "A"
         },
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(delta(tron:db_size_bytes{group=`$group`,instance=`$instance`,type = \"LEVELDB\",db=\"transactionHistoryStore\"}[24h]))",
           "hide": false,
@@ -4042,7 +4042,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(tron:db_size_bytes{group=`$group`,instance=`$instance`,type=\"LEVELDB\",db=\"storage-row\"})",
           "format": "time_series",
@@ -4053,7 +4053,7 @@
           "refId": "A"
         },
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(delta(tron:db_size_bytes{group=`$group`,instance=`$instance`,type = \"LEVELDB\",db=\"storage-row\"}[24h]))",
           "hide": false,
@@ -4118,7 +4118,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(tron:db_size_bytes{group=`$group`,instance=`$instance`,type=\"LEVELDB\",db=\"account\"})",
           "format": "time_series",
@@ -4129,7 +4129,7 @@
           "refId": "A"
         },
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(delta(tron:db_size_bytes{group=`$group`,instance=`$instance`,type = \"LEVELDB\",db=\"account\"}[24h]))",
           "hide": false,
@@ -4194,7 +4194,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(tron:db_size_bytes{group=`$group`,instance=`$instance`,type=\"LEVELDB\",db=\"delegation\"})",
           "format": "time_series",
@@ -4205,7 +4205,7 @@
           "refId": "A"
         },
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(delta(tron:db_size_bytes{group=`$group`,instance=`$instance`,type = \"LEVELDB\",db=\"delegation\"}[24h]))",
           "hide": false,
@@ -4270,7 +4270,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(tron:db_size_bytes{group=`$group`,instance=`$instance`,type=\"LEVELDB\",db=\"block-index\"})",
           "format": "time_series",
@@ -4281,7 +4281,7 @@
           "refId": "A"
         },
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(delta(tron:db_size_bytes{group=`$group`,instance=`$instance`,type = \"LEVELDB\",db=\"block-index\"}[24h]))",
           "hide": false,
@@ -4371,7 +4371,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "label_join(jvm_info{group=\"$group\",instance=\"$instance\"}, \"jdk\", \", \", \"vendor\", \"runtime\", \"version\")",
           "format": "table",
@@ -4472,7 +4472,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "editorMode": "code",
           "exemplar": true,
           "expr": "sum(jvm_memory_bytes_used{group=`$group`,instance=`$instance`})/sum(jvm_memory_bytes_init{group=`$group`,instance=`$instance`})",
@@ -4483,7 +4483,7 @@
           "refId": "B"
         },
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "editorMode": "code",
           "expr": "sum(jvm_memory_bytes_used{group=`$group`,instance=`$instance`})/sum(jvm_memory_bytes_max{group=`$group`,instance=`$instance`})",
           "hide": false,
@@ -4611,7 +4611,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "jvm_memory_bytes_used{group=`$group`,instance=`$instance`,area=\"heap\"}",
           "interval": "",
@@ -4619,7 +4619,7 @@
           "refId": "A"
         },
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "jvm_memory_pool_bytes_used{group=`$group`,instance=`$instance`}",
           "hide": false,
@@ -4717,7 +4717,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "increase(jvm_gc_collection_seconds_sum{group=\"$group\",instance=~\"$instance\"}[$__interval])",
           "format": "time_series",
@@ -4819,7 +4819,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
- "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "increase(jvm_gc_collection_seconds_count{group=\"$group\",instance=~\"$instance\"}[$__interval])",
           "format": "time_series",
