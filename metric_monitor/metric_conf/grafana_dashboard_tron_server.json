@@ -138,10 +138,6 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "exemplar": true,
           "expr": "process_start_time_seconds{group=`$group`,instance=`$instance`}* 1000",
           "interval": "",
@@ -201,10 +197,6 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "exemplar": true,
           "expr": "time() - process_start_time_seconds{group=`$group`,instance=`$instance`}",
           "interval": "",
@@ -267,10 +259,6 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "exemplar": true,
           "expr": "tron:header_height{group=`$group`,instance=`$instance`}",
           "interval": "",
@@ -334,10 +322,6 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "exemplar": true,
           "expr": "tron:header_time{group=`$group`,instance=`$instance`}",
           "interval": "",
@@ -466,7 +450,7 @@
           "useBackend": false
         }
       ],
-      "title": "Panel Title",
+      "title": "SR Total Blocks",
       "type": "timeseries"
     },
     {
@@ -480,10 +464,7 @@
       "id": 34,
       "panels": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+          "datasource": "${DS_PROMETHEUS}",
           "description": "The number of processors available to the java virtual machine.",
           "fieldConfig": {
             "defaults": {
@@ -534,10 +515,6 @@
           "pluginVersion": "11.4.0",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "ce9tsnprsu2gwc"
-              },
               "exemplar": true,
               "expr": "system_available_cpus{group=`$group`,instance=`$instance`}",
               "hide": false,
@@ -550,10 +527,7 @@
           "type": "stat"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+          "datasource": "${DS_PROMETHEUS}",
           "description": "Total: total physical memory.\n\nFree: free physical memory.",
           "fieldConfig": {
             "defaults": {
@@ -604,10 +578,6 @@
           "pluginVersion": "11.4.0",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "ce9tsnprsu2gwc"
-              },
               "exemplar": true,
               "expr": "system_total_physical_memory_bytes{group=`$group`,instance=`$instance`}",
               "hide": false,
@@ -616,10 +586,6 @@
               "refId": "B"
             },
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "ce9tsnprsu2gwc"
-              },
               "exemplar": true,
               "expr": "system_free_physical_memory_bytes{group=`$group`,instance=`$instance`}",
               "hide": false,
@@ -632,10 +598,7 @@
           "type": "stat"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+          "datasource": "${DS_PROMETHEUS}",
           "description": "The system load average for the last minute. The system load average is the sum of the number of runnable entities queued to the available processors and the number of runnable entities running on the available processors averaged over a period of time. The way in which the load average is calculated is operating system specific but is typically a damped time-dependent average.",
           "fieldConfig": {
             "defaults": {
@@ -716,10 +679,6 @@
           "pluginVersion": "11.4.0",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "ce9tsnprsu2gwc"
-              },
               "exemplar": true,
               "expr": "system_load_average{group=`$group`,instance=`$instance`}",
               "hide": false,
@@ -732,10 +691,7 @@
           "type": "timeseries"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+          "datasource": "${DS_PROMETHEUS}",
           "description": "Max: maximum number of open file descriptors. \n\nCurrent: number of open file descriptors.",
           "fieldConfig": {
             "defaults": {
@@ -786,10 +742,6 @@
           "pluginVersion": "11.4.0",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "ce9tsnprsu2gwc"
-              },
               "exemplar": true,
               "expr": "process_max_fds{group=`$group`,instance=`$instance`}",
               "hide": false,
@@ -798,10 +750,6 @@
               "refId": "B"
             },
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "ce9tsnprsu2gwc"
-              },
               "exemplar": true,
               "expr": "process_open_fds{group=`$group`,instance=`$instance`}",
               "hide": false,
@@ -828,10 +776,7 @@
       "id": 36,
       "panels": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+          "datasource": "${DS_PROMETHEUS}",
           "description": "Waiting for packed tansactions, including pending and repush.",
           "fieldConfig": {
             "defaults": {
@@ -913,11 +858,7 @@
           },
           "pluginVersion": "11.4.0",
           "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "ce9tsnprsu2gwc"
-              },
+             {
               "exemplar": true,
               "expr": "sum(tron:manager_queue_size{group=`$group`,instance=`$instance`,type !=`popped`,type !=`queued`})",
               "format": "time_series",
@@ -932,10 +873,7 @@
           "type": "timeseries"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+          "datasource": "${DS_PROMETHEUS}",
           "description": "Average transaction processing time.",
           "fieldConfig": {
             "defaults": {
@@ -1139,11 +1077,7 @@
           },
           "pluginVersion": "11.4.0",
           "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "ce9tsnprsu2gwc"
-              },
+              {
               "disableTextWrap": false,
               "editorMode": "builder",
               "exemplar": false,
@@ -1163,10 +1097,7 @@
           "type": "timeseries"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+          "datasource": "${DS_PROMETHEUS}",
           "description": "Average transaction TPS from broadcasted transactions,  not from blocks.",
           "fieldConfig": {
             "defaults": {
@@ -1331,10 +1262,6 @@
           "pluginVersion": "11.4.0",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "ce9tsnprsu2gwc"
-              },
               "disableTextWrap": false,
               "editorMode": "builder",
               "exemplar": true,
@@ -1349,10 +1276,6 @@
               "useBackend": false
             },
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "ce9tsnprsu2gwc"
-              },
               "disableTextWrap": false,
               "editorMode": "builder",
               "exemplar": true,
@@ -1556,10 +1479,6 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "exemplar": true,
           "expr": "  rate(tron:block_generate_latency_seconds_sum{group=`$group`,instance=`$instance`,sync =\"false\"}[$__interval])\n/\n  rate(tron:block_generate_latency_seconds_count{group=`$group`,instance=`$instance`,sync =\"false\"}[$__interval])",
           "hide": false,
@@ -1568,10 +1487,6 @@
           "refId": "B"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "exemplar": true,
           "expr": "histogram_quantile(0.99, sum(rate(tron:block_generate_latency_seconds_bucket{group=`$group`,instance=`$instance`,sync =\"false\"}[$__interval])) by (le))",
           "format": "time_series",
@@ -1793,10 +1708,6 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "editorMode": "code",
           "exemplar": true,
           "expr": "  rate(tron:block_process_latency_seconds_sum{group=`$group`,instance=`$instance`,sync =\"false\"}[$__interval])\n/\n  rate(tron:block_process_latency_seconds_count{group=`$group`,instance=`$instance`,sync =\"false\"}[$__interval])",
@@ -1807,10 +1718,6 @@
           "refId": "B"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "exemplar": true,
           "expr": "histogram_quantile(0.99, sum(rate(tron:block_process_latency_seconds_bucket{group=`$group`,instance=`$instance`,sync =\"false\"}[$__interval])) by (le))",
           "format": "time_series",
@@ -2032,10 +1939,6 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "editorMode": "code",
           "exemplar": true,
           "expr": "  rate(tron:block_process_latency_seconds_sum{group=`$group`,instance=`$instance`,sync =\"true\"}[$__interval])\n/\n  rate(tron:block_process_latency_seconds_count{group=`$group`,instance=`$instance`,sync =\"true\"}[$__interval])",
@@ -2046,10 +1949,6 @@
           "refId": "B"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "editorMode": "code",
           "exemplar": true,
           "expr": "histogram_quantile(0.99, sum(rate(tron:block_process_latency_seconds_bucket{group=`$group`,instance=`$instance`,sync =\"true\"}[$__interval])) by (le))",
@@ -2149,10 +2048,6 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "exemplar": true,
           "expr": "  rate(tron:verify_sign_latency_seconds_sum{group=`$group`,instance=`$instance`}[$__interval])\n/\n  rate(tron:verify_sign_latency_seconds_count{group=`$group`,instance=`$instance`}[$__interval])",
           "format": "time_series",
@@ -2162,10 +2057,6 @@
           "refId": "D"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "exemplar": true,
           "expr": "histogram_quantile(0.99, sum(rate(tron:verify_sign_latency_seconds_bucket{group=`$group`,instance=`$instance`}[$__interval])) by (le))",
           "hide": false,
@@ -2385,10 +2276,6 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": true,
@@ -2403,7 +2290,6 @@
           "useBackend": false
         },
         {
-          "datasource": "${DS_PROMETHEUS}",
           "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": true,
@@ -2630,7 +2516,6 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": true,
@@ -2645,7 +2530,6 @@
           "useBackend": false
         },
         {
-          "datasource": "${DS_PROMETHEUS}",
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": true,
@@ -2727,10 +2611,6 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "editorMode": "builder",
           "exemplar": true,
           "expr": "tron:peers{group=`$group`,instance=`$instance`}",
@@ -2847,10 +2727,6 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": false,
@@ -2920,10 +2796,6 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": true,
@@ -2940,10 +2812,6 @@
           "useBackend": false
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": false,
@@ -3062,10 +2930,6 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
@@ -3083,10 +2947,6 @@
           "useBackend": false
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "expr": "",
           "hide": false,
           "instant": false,
@@ -3195,10 +3055,6 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": true,
@@ -3305,10 +3161,6 @@
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "editorMode": "code",
           "expr": "histogram_quantile(0.99, sum by(le) (rate(tron:message_process_latency_seconds_bucket{group=\"$group\", instance=\"$instance\"}[$__interval])))\n",
           "hide": false,
@@ -3417,10 +3269,6 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "editorMode": "code",
           "exemplar": true,
           "expr": "sum(rate(tron:http_service_latency_seconds_count{group=`$group`,instance=`$instance`}[$__interval]))",
@@ -3431,10 +3279,6 @@
           "refId": "B"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "editorMode": "code",
           "exemplar": true,
           "expr": "rate(tron:http_service_latency_seconds_count{group=`$group`,instance=`$instance`}[$__interval])",
@@ -3533,10 +3377,6 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "exemplar": true,
           "expr": "rate(tron:http_service_latency_seconds_sum{group=`$group`,instance=`$instance`}[$__interval])/rate(tron:http_service_latency_seconds_count{group=`$group`,instance=`$instance`}[$__interval])",
           "format": "time_series",
@@ -3633,10 +3473,6 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "editorMode": "code",
           "exemplar": true,
           "expr": "sum(rate(tron:grpc_service_latency_seconds_sum{group=`$group`,instance=`$instance`}[$__interval]))",
@@ -3647,10 +3483,6 @@
           "refId": "B"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "editorMode": "code",
           "exemplar": true,
           "expr": "rate(tron:grpc_service_latency_seconds_count{group=`$group`,instance=`$instance`}[$__interval])",
@@ -3749,10 +3581,6 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
           "editorMode": "code",
           "exemplar": true,
           "expr": "rate(tron:grpc_service_latency_seconds_sum{group=`$group`,instance=`$instance`}[$__interval])/rate(tron:grpc_service_latency_seconds_count{group=`$group`,instance=`$instance`}[$__interval])",
@@ -3833,10 +3661,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(tron:db_size_bytes{group=`$group`,instance=`$instance`,type = \"LEVELDB\"})",
           "format": "time_series",
@@ -3847,10 +3672,7 @@
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(delta(tron:db_size_bytes{group=`$group`,instance=`$instance`,type = \"LEVELDB\"}[24h]))",
           "hide": false,
@@ -3915,10 +3737,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(tron:db_size_bytes{group=`$group`,instance=`$instance`,type=\"LEVELDB\",db=\"block\"})",
           "format": "time_series",
@@ -3930,10 +3749,7 @@
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(delta(tron:db_size_bytes{group=`$group`,instance=`$instance`,type = \"LEVELDB\",db=\"block\"}[24h]))",
           "hide": false,
@@ -3998,10 +3814,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(tron:db_size_bytes{group=`$group`,instance=`$instance`,type=\"LEVELDB\",db=\"transactionRetStore\"})",
           "format": "time_series",
@@ -4012,10 +3825,7 @@
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(delta(tron:db_size_bytes{group=`$group`,instance=`$instance`,type = \"LEVELDB\",db=\"transactionRetStore\"}[24h]))",
           "hide": false,
@@ -4080,10 +3890,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(tron:db_size_bytes{group=`$group`,instance=`$instance`,type=\"LEVELDB\",db=\"trans\"})",
           "format": "time_series",
@@ -4094,10 +3901,7 @@
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(delta(tron:db_size_bytes{group=`$group`,instance=`$instance`,type = \"LEVELDB\",db=\"trans\"}[24h]))",
           "hide": false,
@@ -4162,10 +3966,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(tron:db_size_bytes{group=`$group`,instance=`$instance`,type=\"LEVELDB\",db=\"transactionHistoryStore\"})",
           "format": "time_series",
@@ -4176,10 +3977,7 @@
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(delta(tron:db_size_bytes{group=`$group`,instance=`$instance`,type = \"LEVELDB\",db=\"transactionHistoryStore\"}[24h]))",
           "hide": false,
@@ -4244,10 +4042,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(tron:db_size_bytes{group=`$group`,instance=`$instance`,type=\"LEVELDB\",db=\"storage-row\"})",
           "format": "time_series",
@@ -4258,10 +4053,7 @@
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(delta(tron:db_size_bytes{group=`$group`,instance=`$instance`,type = \"LEVELDB\",db=\"storage-row\"}[24h]))",
           "hide": false,
@@ -4326,10 +4118,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(tron:db_size_bytes{group=`$group`,instance=`$instance`,type=\"LEVELDB\",db=\"account\"})",
           "format": "time_series",
@@ -4340,10 +4129,7 @@
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(delta(tron:db_size_bytes{group=`$group`,instance=`$instance`,type = \"LEVELDB\",db=\"account\"}[24h]))",
           "hide": false,
@@ -4408,10 +4194,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(tron:db_size_bytes{group=`$group`,instance=`$instance`,type=\"LEVELDB\",db=\"delegation\"})",
           "format": "time_series",
@@ -4422,10 +4205,7 @@
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(delta(tron:db_size_bytes{group=`$group`,instance=`$instance`,type = \"LEVELDB\",db=\"delegation\"}[24h]))",
           "hide": false,
@@ -4490,10 +4270,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(tron:db_size_bytes{group=`$group`,instance=`$instance`,type=\"LEVELDB\",db=\"block-index\"})",
           "format": "time_series",
@@ -4504,10 +4281,7 @@
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "sum(delta(tron:db_size_bytes{group=`$group`,instance=`$instance`,type = \"LEVELDB\",db=\"block-index\"}[24h]))",
           "hide": false,
@@ -4597,10 +4371,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "label_join(jvm_info{group=\"$group\",instance=\"$instance\"}, \"jdk\", \", \", \"vendor\", \"runtime\", \"version\")",
           "format": "table",
@@ -4701,10 +4472,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "editorMode": "code",
           "exemplar": true,
           "expr": "sum(jvm_memory_bytes_used{group=`$group`,instance=`$instance`})/sum(jvm_memory_bytes_init{group=`$group`,instance=`$instance`})",
@@ -4715,10 +4483,7 @@
           "refId": "B"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "editorMode": "code",
           "expr": "sum(jvm_memory_bytes_used{group=`$group`,instance=`$instance`})/sum(jvm_memory_bytes_max{group=`$group`,instance=`$instance`})",
           "hide": false,
@@ -4846,10 +4611,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "jvm_memory_bytes_used{group=`$group`,instance=`$instance`,area=\"heap\"}",
           "interval": "",
@@ -4857,10 +4619,7 @@
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "jvm_memory_pool_bytes_used{group=`$group`,instance=`$instance`}",
           "hide": false,
@@ -4958,10 +4717,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "increase(jvm_gc_collection_seconds_sum{group=\"$group\",instance=~\"$instance\"}[$__interval])",
           "format": "time_series",
@@ -5063,10 +4819,7 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ce9tsnprsu2gwc"
-          },
+ "datasource": "${DS_PROMETHEUS}",
           "exemplar": true,
           "expr": "increase(jvm_gc_collection_seconds_count{group=\"$group\",instance=~\"$instance\"}[$__interval])",
           "format": "time_series",

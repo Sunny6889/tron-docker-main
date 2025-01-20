@@ -10,7 +10,6 @@ repos:
         - id: check-shebang-scripts-are-executable # Ensures that scripts with a shebang (#!) are executable.
         - id: check-executables-have-shebangs
         - id: detect-private-key # Detects private keys in the repository to prevent accidental commits.
-#       - id: detect-aws-credentials
   - repo: local # used for java code if exist
     hooks:
       - id: checkstyle
