@@ -40,6 +40,10 @@ Monitoring the health and performance of your Tron nodes is made easy with integ
 ## Troubleshooting
 If you encounter any difficulties, please refer to the [Issue Work Flow](https://tronprotocol.github.io/documentation-en/developers/issue-workflow/#issue-work-flow), then raise an issue on [GitHub](https://github.com/tronprotocol/tron-docker/issues). For general questions, please use [Discord](https://discord.gg/cGKSsRVCGm) or [Telegram](https://t.me/TronOfficialDevelopersGroupEn).
 
+# Contributing
+
+Contributions are welcome. All contributed code will be covered by the Apache License v2 of this project. Check [contribution](CONTRIBUTING.md) for more details.
+
 # License
 
 This repository is released under the [LGPLv3 license](https://github.com/tronprotocol/tron-docker/blob/main/LICENSE).
