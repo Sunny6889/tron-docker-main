@@ -1,35 +1,40 @@
 repos:
-  -   repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v5.0.0
-      hooks:
-        - id: trailing-whitespace
-        - id: end-of-file-fixer
-        - id: check-json
-        - id: check-yaml
-        - id: pretty-format-json
-          args: ['--autofix']
-        - id: double-quote-string-fixer
-        - id: check-shebang-scripts-are-executable # Ensures that scripts with a shebang (#!) are executable.
-        - id: check-executables-have-shebangs
-        - id: detect-private-key # Detects private keys in the repository to prevent accidental commits.
-  - repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
-    rev: 0.2.1  # or other specific tag
+  - repo: 'https://github.com/pre-commit/pre-commit-hooks'
+    rev: v5.0.0
     hooks:
-      - id: yamlfmt
-  - repo: local # used for java code if exist
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-json
+      - id: check-yaml
+      - id: pretty-format-json
+        args:
+          - '--autofix'
+      - id: double-quote-string-fixer
+      - id: check-shebang-scripts-are-executable
+      - id: check-executables-have-shebangs
+      - id: detect-private-key
+#  - repo: 'https://github.com/prettier/prettier'
+#    rev: 3.3.0
+#    hooks:
+#      - id: prettier
+#        args:
+#          - '--in-place'
+#        types:
+#          - yaml
+  - repo: local
     hooks:
       - id: checkstyle
         name: Checkstyle
-        entry: ./run-checkstyle.sh # script to call java code formatter
+        entry: ./run-checkstyle.sh
         language: script
         files: \.java$
-  - repo: https://github.com/jumanjihouse/pre-commit-hooks
+  - repo: 'https://github.com/jumanjihouse/pre-commit-hooks'
     rev: 3.0.0
     hooks:
       - id: shellcheck
       - id: script-must-have-extension
       - id: git-dirty
       - id: git-check
-        exclude: '\.md$'  # Exclude Markdown files
+        exclude: \.md$
       - id: forbid-binary
-        exclude: '\.(jpg|jpeg|png)$' # except images
+        exclude: \.(jpg|jpeg|png)$
