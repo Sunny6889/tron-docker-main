@@ -16,10 +16,10 @@ services:
     volumes:
       - ../conf:/java-tron/conf
       - ./datadir:/java-tron/data # mount a local directory to make the blocks data persistent.
-    command: > 
+    command: >
         -jvm "{-Xmx16g -Xms12g -XX:+UseConcMarkSweepGC}"
         -c /java-tron/conf/private_net_config_witness1.conf
-        -d /java-tron/data 
+        -d /java-tron/data
         -w
 
 #  tron_witness2:

@@ -1,11 +1,43 @@
 repos:
   -   repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v2.3.0
+      rev: v4.4.0
       hooks:
-        -   id: check-yaml
-        -   id: end-of-file-fixer
-        -   id: trailing-whitespace
-  -   repo: https://github.com/psf/black
-      rev: 22.10.0
-      hooks:
-        -   id: black
+        - id: trailing-whitespace-fixer
+          args: ["--quiet"]
+        - id: end-of-file-fixer
+          args: ["--quiet"]
+        - id: check-json
+          args: ["--quiet"]
+        - id: check-yaml
+          args: ["--quiet"]
+        - id: double-quote-string-fixer
+          args: ["--quiet"]
+        - id: check-shebang-scripts-are-executable # Ensures that scripts with a shebang (#!) are executable.
+          args: ["--quiet"]
+        - id: check-executables-have-shebangs
+          args: ["--quiet"]
+        - id: detect-private-key # Detects private keys in the repository to prevent accidental commits.
+          args: ["--quiet"]
+        - id: detect-aws-credentials
+          args: ["--quiet"]
+repos:
+  - repo: https://github.com/jumanjihouse/pre-commit-hooks
+    rev: 3.0.0
+    hooks:
+      - id: shellcheck
+        args: ["--format=gcc"]
+      - id: script-must-have-extension
+        args: ["--quiet"]
+      - id: git-dirty
+        args: ["--quiet"]
+      - id: git-check
+        args: ["--quiet"]
+      - id: forbid-binary
+        exclude: '\.(jpg|jpeg|png|gif|bmp|svg|webp)$'
+  - repo: local # used for java code if exist
+    hooks:
+      - id: checkstyle
+        name: Checkstyle
+        entry: ./run-checkstyle.sh # script to call java code formatter
+        language: script
+        files: \.java$
