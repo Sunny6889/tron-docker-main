@@ -80,7 +80,7 @@ docker run -it --name tron -d -p 8090:8090 -p 8091:8091 -p 18888:18888 -p 18888:
            -v /host/path/java-tron/conf:/java-tron/conf \ 
            -v /host/path/java-tron/datadir:/java-tron/data \ 
            tronprotocol/java-tron \
-           -jvm "{-Xmx10g -Xms10g}" \
+           -jvm "{-Xmx16g -Xms12g -XX:+UseConcMarkSweepGC}" \
            -c /java-tron/conf/config-localtest.conf \
            -d /java-tron/data \
            -w
@@ -89,7 +89,7 @@ The `-v` flag specifies the directory that the container needs to map to the hos
 In the example above, the host file `/host/path/java-tron/conf/config-localtest.conf` will be used. For example, you can refer to the java-tron [config-localtest](https://github.com/tronprotocol/java-tron/blob/develop/framework/src/main/resources/config-localtest.conf).
 
 Flags after `tronprotocol/java-tron` are used for java-tron start-up arguments:
-- `-jvm` used for java virtual machine, the parameters must be enclosed in double quotes and braces. `"{-Xmx10g -Xms10g}"` sets the maximum and initial heap size to 10GB.
+- `-jvm` used for java virtual machine, the parameters must be enclosed in double quotes and braces. `"{-Xmx16g -Xms12g}"` sets the maximum heap size to 16GB. If you want to set up a long run FullNode, please use the best practice jvm flags with `"{-Xmx16g -Xms12g XX:ReservedCodeCacheSize=256m -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m -XX:MaxDirectMemorySize=1G -XX:+PrintGCDetails -XX:+PrintGCDateStamps  -Xloggc:gc.log -XX:+UseConcMarkSweepGC -XX:NewRatio=2 -XX:+CMSScavengeBeforeRemark -XX:+ParallelRefProcEnabled -XX:+HeapDumpOnOutOfMemoryError -XX:+UseCMSInitiatingOccupancyOnly  -XX:CMSInitiatingOccupancyFraction=70}"`.
 - `-c` defines the configuration file to use.
 - `-d` defines the database file to use. You can mount a directory for `datadir` with snapshots. Please refer to [**Lite-FullNode**](https://tronprotocol.github.io/documentation-en/using_javatron/backup_restore/#_5). This can save time by syncing from a near-latest block number.
 - `-w` means to start as a witness. You need to fill the `localwitness` field with private keys in configure file. Refer to the [**Run as Witness**](https://tronprotocol.github.io/documentation-en/using_javatron/installing_javatron/#startup-a-fullnode-that-produces-blocks). If you want to use keystore + password method, make sure the keystore is inside the mounted directory and remove `-d` to interact with console for password input.
