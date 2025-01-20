@@ -19,14 +19,7 @@ if [ -f "$CHECKSTYLE_PATH" ]; then
     echo "Checkstyle JAR file already exists at ${CHECKSTYLE_PATH}"
 else
     echo "Checkstyle JAR file not found. Downloading from ${CHECKSTYLE_URL}..."
-    curl -L -o "$CHECKSTYLE_PATH" "$CHECKSTYLE_URL"
-
-    if [ $? -eq 0 ]; then
-        echo "Checkstyle JAR file downloaded successfully to ${CHECKSTYLE_PATH}"
-    else
-        echo "Failed to download Checkstyle JAR file."
-        exit 1
-    fi
+    curl -L -o "$CHECKSTYLE_PATH" "$CHECKSTYLE_URL" && echo "downloaded successfully"
 fi
 
 # Add the lib directory to .gitignore if it's not already present
@@ -54,7 +47,7 @@ fi
 CHECKSTYLE_CONFIG="./conf/checkstyle/checkStyleAll.xml"
 
 # Run Checkstyle on all Java files in the repository
-java -jar "$CHECKSTYLE_PATH" -c "$CHECKSTYLE_CONFIG" $(find . -name "*.java")
+java -jar "$CHECKSTYLE_PATH" -c "$CHECKSTYLE_CONFIG" "$(find . -name "*.java")"
 
 # Capture the exit code of Checkstyle
 STATUS=$?

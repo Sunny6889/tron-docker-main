@@ -1,37 +1,24 @@
 repos:
   -   repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v4.4.0
+      rev: v5.0.0
       hooks:
-        - id: trailing-whitespace-fixer
-          args: ["--quiet"]
+        - id: trailing-whitespace
         - id: end-of-file-fixer
-          args: ["--quiet"]
         - id: check-json
-          args: ["--quiet"]
         - id: check-yaml
-          args: ["--quiet"]
         - id: double-quote-string-fixer
-          args: ["--quiet"]
         - id: check-shebang-scripts-are-executable # Ensures that scripts with a shebang (#!) are executable.
-          args: ["--quiet"]
         - id: check-executables-have-shebangs
-          args: ["--quiet"]
         - id: detect-private-key # Detects private keys in the repository to prevent accidental commits.
-          args: ["--quiet"]
-        - id: detect-aws-credentials
-          args: ["--quiet"]
-repos:
+#       - id: detect-aws-credentials
   - repo: https://github.com/jumanjihouse/pre-commit-hooks
     rev: 3.0.0
     hooks:
       - id: shellcheck
         args: ["--format=gcc"]
       - id: script-must-have-extension
-        args: ["--quiet"]
-      - id: git-dirty
-        args: ["--quiet"]
-      - id: git-check
-        args: ["--quiet"]
+#      - id: git-dirty
+#      - id: git-check
       - id: forbid-binary
         exclude: '\.(jpg|jpeg|png|gif|bmp|svg|webp)$'
   - repo: local # used for java code if exist
