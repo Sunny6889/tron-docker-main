@@ -3,8 +3,8 @@
 tron-docker is an open-source project designed to facilitate the usage of the TRON network. We understand that there is much left to be desired, and if you see any room for improvement, please let us know. Thank you. All contributed code will be covered by the [LGPLv3 license](https://github.com/tronprotocol/tron-docker/blob/main/LICENSE) of this project.
 
 Here are some guidelines to get started quickly and easily:
-- [Reporting An Issue](#Reporting-An-Issue)
-- [Working on tron-docker](#Working-on-tron-docker)
+- [Before contribution](#Before-contribution)
+- [Contribute to tron-docker](#Contribute-to-tron-docker)
     - [Key Branches](#Key-Branches)
     - [Submitting Code Steps](#Submitting-Code-Steps)
     - [Commit Messages](#Commit-Messages)
