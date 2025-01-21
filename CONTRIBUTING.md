@@ -92,6 +92,7 @@ If you want to contribute codes to tron-docker, please follow the following step
      git push origin feature/branch_name
      ```
 * Linting
+
   tron-docker CI uses [pre-commit](https://pre-commit.com/) to lint all code within the repo. Add it to your local following the [installation](https://pre-commit.com/#installation). Check [.pre-commit-config.yaml](.pre-commit-config.yaml) for existing validators.
 
 * Push code
