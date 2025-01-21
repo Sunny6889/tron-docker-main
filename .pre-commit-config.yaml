@@ -4,8 +4,6 @@ repos:
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
-      - id: check-json
-      - id: check-yaml
       - id: pretty-format-json
         args:
           - '--autofix'
@@ -13,21 +11,10 @@ repos:
       - id: check-shebang-scripts-are-executable
       - id: check-executables-have-shebangs
       - id: detect-private-key
-#  - repo: 'https://github.com/prettier/prettier'
-#    rev: 3.3.0
-#    hooks:
-#      - id: prettier
-#        args:
-#          - '--in-place'
-#        types:
-#          - yaml
-  - repo: local
+  - repo: https://github.com/google/yamlfmt
+    rev: v0.14.0
     hooks:
-      - id: checkstyle
-        name: Checkstyle
-        entry: ./run-checkstyle.sh
-        language: script
-        files: \.java$
+      - id: yamlfmt
   - repo: 'https://github.com/jumanjihouse/pre-commit-hooks'
     rev: 3.0.0
     hooks:
@@ -38,3 +25,10 @@ repos:
         exclude: \.md$
       - id: forbid-binary
         exclude: \.(jpg|jpeg|png)$
+  - repo: local # check java files format use a customized script
+    hooks:
+      - id: checkstyle
+        name: Checkstyle
+        entry: ./run-checkstyle.sh
+        language: script
+        files: \.java$

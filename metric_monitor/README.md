@@ -34,10 +34,10 @@ metrics{
 The Prometheus service will use the configuration file [prometheus.yml](metric_conf/prometheus.yml). It uses the configuration below to add targets for monitoring.
 ```
 - targets:
-     - tron_node1:9527 # use container name or local IP address
+    - tron_node1:9527 # use container name
   labels:
-     group: group-tron
-     instance: fullnode-01
+    group: group-tron
+    instance: fullnode-01
 ```
 
 You can view the running status of the Prometheus service at `http://localhost:9090/`. Click on "Status" -> "Configuration" to check whether the configuration file used by the container is correct.
