@@ -1,7 +1,7 @@
-# Tron Node Metrics Monitoring
+# TRON Node Metrics Monitoring
 Starting from the GreatVoyage-4.5.1 (Tertullian) version, the node provides a series of interfaces compatible with the Prometheus protocol, allowing the node deployer to monitor the health status of the node more conveniently.
 
-Below, we provide a guide on using metrics to monitor the Tron node status. Then, we list all available metrics.
+Below, we provide a guide on using metrics to monitor the TRON node status. Then, we list all available metrics.
 
 ## Prerequisites
 ### Docker
@@ -13,14 +13,14 @@ Please download and install the latest version of Docker from the official Docke
 
 Then check the Docker resource settings to ensure it has at least 16GB of memory.
 
-## Quick Start
+## Quick start
 Download the `tron-docker` repository, enter the `metric` directory, and start the services defined in [docker-compose.yml](./docker-compose.yml) using the following command:
 
 ```sh
 docker-compose up -d
 ```
 Then check the Docker resource settings to ensure it has at least 16GB of memory.
-It will start a Tron FullNode that connects to the Mainnet, along with Prometheus and Grafana services. Note that in [main_net_config.conf](../conf/main_net_config.conf), it contains the configuration below to enable metrics.
+It will start a TRON FullNode that connects to the Mainnet, along with Prometheus and Grafana services. Note that in [main_net_config.conf](../conf/main_net_config.conf), it contains the configuration below to enable metrics.
 ```
 metrics{
   prometheus{
@@ -30,11 +30,11 @@ metrics{
 }
 ```
 
-### Check Prometheus Service
-The Prometheus service will use the configuration file [prometheus.yml](metric_conf/prometheus.yml).It uses the configuration below to add targets for monitoring.
+### Prometheus service
+The Prometheus service will use the configuration file [prometheus.yml](metric_conf/prometheus.yml). It uses the configuration below to add targets for monitoring.
 ```
 - targets:
-    - tron_node1:9527 # use container name or local IP address
+     - tron_node1:9527 # use container name or local IP address
   labels:
      group: group-tron
      instance: fullnode-01
@@ -47,13 +47,13 @@ If you want to monitor more nodes, simply add more targets following the same fo
 ![image](../images/prometheus_targets.png)
 **Notice**: If you want to check metrics, please use `http://localhost:9527/metrics` on host machine instead of `http://tron_node1:9527/metrics`, as the latter is used for container access inside Docker.
 
-### Check Grafana Service
+### Grafana service
 After startup, you can log in to the Grafana web UI through [http://localhost:3000/](http://localhost:3000/). The initial username and password are both `admin`. After logging in, change the password according to the prompts, and then you can enter the main interface.
 
-Click the settings icon on the left side of the main page and select "Data Sources" to configure Grafana data sources. Enter the ip and port of the prometheus service in URL with `http://prometheus:9090`.
+Click the **Connections** on the left side of the main page and select "Data Sources" to configure Grafana data sources. Enter the ip and port of the prometheus service in URL with `http://prometheus:9090`.
 ![image](../images/grafana_data_source.png)
 
-#### Import Dashboard
+#### Import dashboard
 For the convenience of java-tron node deployers, the TRON community provides a comprehensive dashboard configuration file [grafana_dashboard_tron_server.json](metric_conf/grafana_dashboard_tron_server.json).
 Click the Grafana dashboards icon on the left, then select "New" and "Import", then click "Upload JSON file" to import the downloaded dashboard configuration file:
 ![image](../images/grafana_dashboard.png)
@@ -63,7 +63,7 @@ Then you can see the following monitors displaying the running status of the nod
 
 Below, we will introduce all supported metrics to facilitate customizing your dashboard.
 
-## All Metrics
+## All metrics
 As you can see from above Grafana dashboard or http://localhost:9527/metrics, the available metrics are categorized into the following:
 
 - Blockchain status
@@ -74,13 +74,13 @@ As you can see from above Grafana dashboard or http://localhost:9527/metrics, th
 - Database information
 - JVM status
 
-### Blockchain Status
+### Blockchain status
 
 - `tron:header_time`: The latest block time of java-tron on this node
 - `tron:header_height`: The latest block height of java-tron on this node
 - `tron:miner_total`: Used to display the blocks produced by a certain SR
 
-### Node System Status
+### Node system status
 Metric of specific container:
 - `process_cpu_load`: Process CPU load
 - `process_cpu_seconds_total`
@@ -102,7 +102,7 @@ Metric for docker resources:
 Follow the example dashboard to add more panels.
 ![image](../images/metric_system.png)
 
-### Block Status
+### Block status
 
 Used to check the block process performance from TronNetDelegate:
 - `tron:block_process_latency_seconds_bucket`: Cumulative counters
@@ -133,7 +133,7 @@ Verify the latency of all transactions' signatures when processing a block:
 Check the usage from dashboard panel (enter edit mode), or by searching in [grafana_dashboard_tron_server.json](metric_conf/grafana_dashboard_tron_server.json).
 ![image](../images/metric_block_latency.png)
 
-### Transaction Status
+### Transaction status
 - `tron:manager_queue_size`: The Manager Queue Size for pending/popped/queued/repush transaction types.
 - `tron:tx_cache`: TRON tx cache put action event.
 
@@ -167,7 +167,7 @@ TCP/UDP network data traffic statistics:
 ![image](../images/metric_network_tcp_udp.png)
 
 
-### API Information
+### API information
 
 Http request data traffic statistics:
 - `tron:http_bytes_bucket`: Cumulative counters
@@ -184,7 +184,7 @@ Http/GRPC request latency metrics:
 Example:
 ![image](../images/metric_API.png)
 
-### Database Information
+### Database information
 
 TRON blockchain storage chooses to use LevelDB, which is developed by Google and proven successful with many companies and projects. These below db related metrics all have filters with `db` name and `level`.
 - `tron:db_size_bytes`
@@ -235,16 +235,16 @@ Currently, for `db` values of above metrics TRON has below possible objects:
 - section-bloom
 - tmp
 
-### JVM Status
+### JVM status
 
-**JVM Basic Info**
+**JVM basic info**
 
 - `jvm_info`: Basic JVM info with version
 - `jvm_classes_currently_loaded`: The number of classes that are currently loaded in the JVM
 - `jvm_classes_loaded_total`
 - `jvm_classes_unloaded_total`
 
-**JVM Thread Related**
+**JVM thread related**
 
 * `jvm_threads_current`
 * `jvm_threads_daemon`
@@ -254,12 +254,12 @@ Currently, for `db` values of above metrics TRON has below possible objects:
 * `jvm_threads_deadlocked_monitor`
 * `jvm_threads_state`{state="RUNNABLE"/"TERMINATED"/"TIMED_WAITING"/"NEW"/"WAITING"/"BLOCKED"}
 
-**JVM Garbage Collection**
+**JVM garbage collection**
 
 * `jvm_gc_collection_seconds_count`: Count of JVM garbage collector event
 * `jvm_gc_collection_seconds_sum`: Total sum of observed values
 
-**JVM Memory Related**
+**JVM memory related**
 
 * `jvm_buffer_pool_capacity_bytes`: Bytes capacity of a given JVM buffer pool
 * `jvm_buffer_pool_used_buffers`: Used buffers of a given JVM buffer pool
@@ -279,7 +279,7 @@ Currently, for `db` values of above metrics TRON has below possible objects:
 * `jvm_memory_pool_collection_max_bytes`: Max bytes after last collection of a given JVM memory pool
 * `jvm_memory_pool_collection_used_bytes`: Used bytes after last collection of a given JVM memory pool
 
-### Other Metrics
+### Other metrics
 Beside above metrics, there are also metrics to measure the duration of a scrape process, which is useful for monitoring and understanding the performance of your Prometheus server and the targets it scrapes.
 - `scrape_duration_seconds`: It measures the time taken (in seconds) for Prometheus to scrape a target. This includes the entire process of making an HTTP request to the target, receiving the response, and processing the metrics.
 - `scrape_samples_post_metric_relabeling`

@@ -14,7 +14,7 @@ You can also use this repository to set up a private TRON blockchain network. Th
 
 ### Node monitoring with Prometheus and Grafana
 
-Monitoring the health and performance of your Tron nodes is made easy with integrated Prometheus and Grafana services. The repository includes configurations to set up these monitoring tools, allowing you to visualize and track various metrics in real time.
+Monitoring the health and performance of your TRON nodes is made easy with integrated Prometheus and Grafana services. The repository includes configurations to set up these monitoring tools, allowing you to visualize and track various metrics in real time.
 
 ## Getting Started
 
