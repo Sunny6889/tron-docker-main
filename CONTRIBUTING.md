@@ -44,19 +44,19 @@ If you’d like to contribute to tron-docker, we recommend that you send a pull 
 tron-docker only has `main`, `develop`, `release-*`, `feature-*`, and `hotfix-*` branches, which are described below:
 
 - ``develop`` branch
-  The `develop` branch only accept merge request from other forked branches or`release_*` branches. It is not allowed to directly push changes to the `develop` branch. A `release_*` branch has to be pulled from the develop branch when a new build is to be released.
+  - The `develop` branch only accept merge request from other forked branches or`release_*` branches. It is not allowed to directly push changes to the `develop` branch. A `release_*` branch has to be pulled from the develop branch when a new build is to be released.
 
-- ``main`` branch
-  `release_*` branches and `hotfix/*` branches should only be merged into the `main` branch when a new build is released.
+- ``main`` branch:
+  - `release_*` branches and `hotfix/*` branches should only be merged into the `main` branch when a new build is released.
 
 - ``release`` branch
-  `release_*` is a branch pulled from the `develop` branch for release. It should be merged into `main` after a regression test and will be permanently kept in the repository. If a bug is identified in a `release_*` branch, its fixes should be directly merged into the branch. After passing the regression test, the `release_*` branch should be merged back into the `develop` branch. Essentially, a `release_*` branch serves as a snapshot for each release.
+  - `release_*` is a branch pulled from the `develop` branch for release. It should be merged into `main` after a regression test and will be permanently kept in the repository. If a bug is identified in a `release_*` branch, its fixes should be directly merged into the branch. After passing the regression test, the `release_*` branch should be merged back into the `develop` branch. Essentially, a `release_*` branch serves as a snapshot for each release.
 
-- ``feature`` branch
-  `feature/*` is an important feature branch pulled from the `develop` branch. After the `feature/*` branch is code-complete, it should be merged back to the `develop` branch. The `feature/*` branch is maintainable.
+- ``feature`` branch:
+  - `feature/*` is an important feature branch pulled from the `develop` branch. After the `feature/*` branch is code-complete, it should be merged back to the `develop` branch. The `feature/*` branch is maintainable.
 
 - ``hotfix`` branch
-  It is pulled from the `main` branch and should be merged back into the main branch and the `develop` branch. Only pull requests of the fork repository (pull requests for bug fixes) should be merged into the `hotfix/` branch. `hotfix/` branches are used only for fixing bugs found after release.
+  - It is pulled from the `main` branch and should be merged back into the main branch and the `develop` branch. Only pull requests of the fork repository (pull requests for bug fixes) should be merged into the `hotfix/` branch. `hotfix/` branches are used only for fixing bugs found after release.
 
 
 ### Submitting code steps
