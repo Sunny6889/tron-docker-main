@@ -92,9 +92,7 @@ If you want to contribute codes to tron-docker, please follow the following step
      git push origin feature/branch_name
      ```
 * Linting
-
-tron-docker CI uses [pre-commit](https://pre-commit.com/) to lint all code within the repo. Add it to your local following the [installation](https://pre-commit.com/#installation).
-Check [.pre-commit-config.yaml](.pre-commit-config.yaml) for existing validators.
+  tron-docker CI uses [pre-commit](https://pre-commit.com/) to lint all code within the repo. Add it to your local following the [installation](https://pre-commit.com/#installation). Check [.pre-commit-config.yaml](.pre-commit-config.yaml) for existing validators.
 
 * Push code
 
@@ -130,13 +128,12 @@ The message header is a single line that contains succinct description of the ch
 * feat     (new feature)
 * fix      (bug fix)
 * docs     (changes to documentation)
-* style    (formatting, missing semi colons, etc. no code change)
+* style    (formatting, missing semicolons, etc. no code change)
 * refactor (refactoring production code)
 * test     (adding or refactoring tests. no production code change)
 * chore    (updating grunt tasks etc. no production code change)
 
 The `scope` can be anything specifying place of the commit change. For example: `private_net`,`metric_monitor`,`conf`.You can use * if there isn't a more fitting scope.
-
 
 The subject contains a succinct description of the change:
 1. Limit the subject line, which briefly describes the purpose of the commit, to 50 characters.
