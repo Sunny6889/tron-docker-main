@@ -77,17 +77,17 @@ Before developing new features, please synchronize your fork repository with the
   git merge upstream/develop --no-ff (Add --no-ff to turn off the default fast merge mode)
 ```
 
-Pull a new branch from the **develop** branch of your repository for local development. Please refer to [Branch Naming Conventions](#Branch-Naming-Conventions),
+Pull a new branch from the **develop** branch of your repository for local development. Please refer to [Branch Naming Conventions](#Branch-Naming-Conventions).
 ```
   git checkout -b feature/branch_name develop
 ```
 
-Write and commit the new code when it is completed. Please refer to [Commit Messages](#Commit-Messages)
+Write and commit the new code when it is completed. Please refer to [Commit Messages](#Commit-Messages).
 ```
   git add .
   git commit -m 'commit message'
 ```
-Commit the new branch to your personal remote repository
+Commit the new branch to your personal remote repository.
 ```
   git push origin feature/branch_name
 ```
