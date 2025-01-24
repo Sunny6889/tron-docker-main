@@ -8,12 +8,14 @@ repos:
       - id: check-yaml
       - id: double-quote-string-fixer
       - id: check-shebang-scripts-are-executable
+        exclude: tools/docker/docker.sh
       - id: check-executables-have-shebangs
       - id: detect-private-key
   - repo: 'https://github.com/jumanjihouse/pre-commit-hooks'
     rev: 3.0.0
     hooks:
       - id: shellcheck
+        exclude: tools/docker/docker.sh
       - id: script-must-have-extension
       - id: git-dirty
       - id: git-check

@@ -32,8 +32,10 @@ setup_container(){
     [[ -e "${GOSS_FILES_PATH}/goss.yaml" ]] && cp "${GOSS_FILES_PATH}/goss.yaml" "$tmp_dir"
     [[ -e "${GOSS_FILES_PATH}/goss_wait.yaml" ]] && cp "${GOSS_FILES_PATH}/goss_wait.yaml" "$tmp_dir"
     [[ -e "${GOSS_FILES_PATH}/testSync.sh" ]] && cp "${GOSS_FILES_PATH}/testSync.sh" "$tmp_dir"
+    # shellcheck disable=SC2236
     [[ ! -z "${GOSS_VARS}" ]] && [[ -e "${GOSS_FILES_PATH}/${GOSS_VARS}" ]] && cp "${GOSS_FILES_PATH}/${GOSS_VARS}" "$tmp_dir"
     # copy the Dockerfile if path has been provided
+    # shellcheck disable=SC2236
     [[ ! -z "${3}" ]] && [[ "${3}" == *"Dockerfile"* ]] && cp "${3}" "$tmp_dir"
     info "Setup complete"
 
@@ -47,11 +49,12 @@ setup_container(){
         ;;
       cp)
         info "Creating docker container"
+        # shellcheck disable=SC2068
         id=$(docker create ${@:2})
         info "Copy goss files into container"
-        docker cp $tmp_dir/. $id:/goss
+        docker cp "$tmp_dir"/. "$id":/goss
         info "Starting docker container"
-        docker start $id > /dev/null
+        docker start "$id" > /dev/null
         ;;
       *) error "Wrong goss files strategy used! Correct options are \"mount\" or \"cp\"."
     esac
@@ -71,6 +74,7 @@ get_file_from_docker() {
 # Main
 tmp_dir=$(mktemp -d /tmp/tmp.XXXXXXXXXX)
 chmod 777 "$tmp_dir"
+# shellcheck disable=SC2154
 trap 'ret=$?;cleanup;exit $ret' EXIT
 
 GOSS_PATH="${GOSS_PATH:-$(which goss 2> /dev/null || true)}"
@@ -119,6 +123,7 @@ case "$1" in
         docker exec -it "$id" sh -c 'cd /goss; PATH="/goss:$PATH" exec sh'
         get_file_from_docker "/goss/goss.yaml"
         get_file_from_docker "/goss/goss_wait.yaml"
+        # shellcheck disable=SC2236
         [[ ! -z "${GOSS_VARS}" ]] && get_file_from_docker "/goss/${GOSS_VARS}"
         ;;
     *)
