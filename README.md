@@ -1,6 +1,6 @@
 # TRON Docker
 
-This repository provides a quick and easy way to set up a single node, private chain, and monitor the status of nodes for the TRON Network using Docker.
+This repository provides guidance and tools for the community to quickly get started with TRON network and development.
 
 ## Features
 
@@ -15,6 +15,12 @@ You can also use this repository to set up a private TRON blockchain network. Th
 ### Node monitoring with Prometheus and Grafana
 
 Monitoring the health and performance of your TRON nodes is made easy with integrated Prometheus and Grafana services. The repository includes configurations to set up these monitoring tools, allowing you to visualize and track various metrics in real time.
+
+### Tools
+
+We also provide tools to facilitate the CI and testing process:
+- Gradle Docker: Using Gradle to automate the build and test processes for java-tron image.
+- DB Fork: This tool helps launch a private Java-Tron network based on the state of the Mainnet database to support shadow fork testing.
 
 ## Getting Started
 
@@ -36,6 +42,8 @@ Monitoring the health and performance of your TRON nodes is made easy with integ
    - To start a single FullNode, use the folder [single_node](./single_node).
    - To set up a private TRON network, use the folder [private_net](./private_net).
    - To monitor the TRON node, use the folder [metric_monitor](./metric_monitor).
+   - To use Gradle with Docker, check [gradle docker](./tools/docker/README.md). 
+   - To do shadow fork testing, check [db fork guidance](./tools/dbfork/README.md).
 
 ## Troubleshooting
 If you encounter any difficulties, please refer to the [Issue Work Flow](https://tronprotocol.github.io/documentation-en/developers/issue-workflow/#issue-work-flow), then raise an issue on [GitHub](https://github.com/tronprotocol/tron-docker/issues). For general questions, please use [Discord](https://discord.gg/cGKSsRVCGm) or [Telegram](https://t.me/TronOfficialDevelopersGroupEn).

@@ -30,7 +30,7 @@ There are two ways to obtain the TRON image:
 - Pull it from the TRON Docker Hub.
 - Build it from the java-tron source code.
 
-### Using the official Docker images
+### Pull from TRON docker hub
 
 The quick start way is to use the official images. Download the official Docker image from [Docker Hub](https://hub.docker.com/r/tronprotocol/java-tron/tags) using the following command:
 

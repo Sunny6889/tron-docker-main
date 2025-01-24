@@ -18,11 +18,11 @@ export TEST_PATH=./tests
 #export GOSS_PATH=$TEST_PATH/goss-linux-${architecture} # TODO. fixed by https://github.com/goss-org/goss/tree/master/extras/dgoss#mac-osx
 export GOSS_PATH=$TEST_PATH/goss-linux-amd64
 export GOSS_OPTS="$GOSS_OPTS --format junit"
-export GOSS_FILES_STRATEGY=cp
-DOCKER_IMAGE=$1
-DOCKER_FILE="${2:-$PWD/Dockerfile}"
+export GOSS_FILES_STRATEGY=cp # The cp strategy means that test files will be copied to the container.
+DOCKER_IMAGE=$1 # The first param passed
+DOCKER_FILE="${2:-$PWD/Dockerfile}" # If no second argument is provided, it defaults to the Dockerfile located in the current working directory ($PWD).
 
-i=0
+i=0 # This initializes a counter variable i that will be used to track the number of failed tests.
 
 # Test for normal startup with ports opened
 # we test that things listen on the right interface/port, not what interface the advertise
