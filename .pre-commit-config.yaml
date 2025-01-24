@@ -17,8 +17,6 @@ repos:
       - id: script-must-have-extension
       - id: git-dirty
       - id: git-check
-      - id: forbid-binary
-        exclude: \.(jpg|jpeg|png)$
   - repo: local # check java files format use a customized script
     hooks:
       - id: checkstyle

@@ -5,7 +5,7 @@ java-tron support containerized processes, we maintain a Docker image with lates
 
 ## Prerequisites
 
-Requires a docker to be installed on the system. Docker version >=20.10.12. 
+Requires a docker to be installed on the system. Docker version >=20.10.12.
 
 
 ## Quick Start
@@ -35,7 +35,7 @@ $ sh docker.sh --run --net main
 or you can use `-p` to customize the port mapping, more custom parameters, please refer to [Options](#Options)
 
 ```shell
-$ sh docker.sh --run --net main -p 8080:8090 -p 40051:50051 
+$ sh docker.sh --run --net main -p 8080:8090 -p 40051:50051
 ```
 
 #### Full node on the nile test network
@@ -106,5 +106,3 @@ Parameters for all functions：
 * **`-v`** bind mount a volume for the container,format: `-v host-src:container-dest`, the `host-src` is an absolute path
 * **`--net`** select the network, you can join the main-net, test-net
 * **`--update-config`** update configuration file, default true
-
-
