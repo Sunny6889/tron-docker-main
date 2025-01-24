@@ -46,10 +46,18 @@ fi
 # Path to your Checkstyle configuration file
 CHECKSTYLE_CONFIG="./conf/checkstyle/checkStyleAll.xml"
 
+# shellcheck disable=SC2027
+# shellcheck disable=SC2046
+
+All_Java_Files=$(find . -name "*.java")
+
 # Run Checkstyle on all Java files in the repository
-java -jar "$CHECKSTYLE_PATH" -c "$CHECKSTYLE_CONFIG" "$(find . -name "*.java")"
+java -jar "$CHECKSTYLE_PATH" -c "$CHECKSTYLE_CONFIG" "$All_Java_Files"
+
+echo "finish ...."
 
 # Capture the exit code of Checkstyle
+# shellcheck disable=SC2320
 STATUS=$?
 
 # Exit with the same status code as Checkstyle
