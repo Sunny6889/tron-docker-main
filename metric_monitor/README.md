@@ -24,7 +24,7 @@ It will start a TRON FullNode that connects to the Mainnet, along with Prometheu
 ```
 metrics{
   prometheus{
-    enable=true 
+    enable=true
     port="9527"
   }
 }
@@ -34,10 +34,10 @@ metrics{
 The Prometheus service will use the configuration file [prometheus.yml](metric_conf/prometheus.yml). It uses the configuration below to add targets for monitoring.
 ```
 - targets:
-     - tron_node1:9527 # use container name or local IP address
+    - tron_node1:9527 # use container name
   labels:
-     group: group-tron
-     instance: fullnode-01
+    group: group-tron
+    instance: fullnode-01
 ```
 
 You can view the running status of the Prometheus service at `http://localhost:9090/`. Click on "Status" -> "Configuration" to check whether the configuration file used by the container is correct.
@@ -54,7 +54,7 @@ Click the **Connections** on the left side of the main page and select "Data Sou
 ![image](../images/grafana_data_source.png)
 
 #### Import dashboard
-For the convenience of java-tron node deployers, the TRON community provides a comprehensive dashboard configuration file [grafana_dashboard_tron_server.json](metric_conf/grafana_dashboard_tron_server.json). 
+For the convenience of java-tron node deployers, the TRON community provides a comprehensive dashboard configuration file [grafana_dashboard_tron_server.json](metric_conf/grafana_dashboard_tron_server.json).
 Click the Grafana dashboards icon on the left, then select "New" and "Import", then click "Upload JSON file" to import the downloaded dashboard configuration file:
 ![image](../images/grafana_dashboard.png)
 
@@ -105,30 +105,30 @@ Follow the example dashboard to add more panels.
 ### Block status
 
 Used to check the block process performance from TronNetDelegate:
-- `tron:block_process_latency_seconds_bucket`: Cumulative counters 
-- `tron:block_process_latency_seconds_count`: Count of events 
+- `tron:block_process_latency_seconds_bucket`: Cumulative counters
+- `tron:block_process_latency_seconds_count`: Count of events
 - `tron:block_process_latency_seconds_sum`: Total sum of all observed values
 
 Used to check the block processing latency from the Manager, which is invoked by TronNetDelegate:
-- `tron:block_push_latency_seconds_bucket`: Cumulative counters 
-- `tron:block_push_latency_seconds_count`: Count of events 
-- `tron:block_push_latency_seconds_sum`: Total sum of all observed values 
+- `tron:block_push_latency_seconds_bucket`: Cumulative counters
+- `tron:block_push_latency_seconds_count`: Count of events
+- `tron:block_push_latency_seconds_sum`: Total sum of all observed values
 
 When handling the above block push logic, TRON's processing logic needs to acquire a synchronization lock. The `lock_acquire_latency_seconds_x` metric is used to indicate the latency.
-- `tron:lock_acquire_latency_seconds_bucket`: Cumulative counters  
-- `tron:lock_acquire_latency_seconds_count`: Count of events 
+- `tron:lock_acquire_latency_seconds_bucket`: Cumulative counters
+- `tron:lock_acquire_latency_seconds_count`: Count of events
 - `tron:lock_acquire_latency_seconds_sum`: Total sum of all observed values
 
 Used to check the block latency received from peers and not from sync requests:
-- `tron:block_fetch_latency_seconds_bucket`: Cumulative counters 
-- `tron:block_fetch_latency_seconds_count`: Count of events 
+- `tron:block_fetch_latency_seconds_bucket`: Cumulative counters
+- `tron:block_fetch_latency_seconds_count`: Count of events
 - `tron:block_fetch_latency_seconds_sum`: Total sum of all observed values
 - `tron:block_receive_delay_seconds_bucket/count/sum`
 
 Verify the latency of all transactions' signatures when processing a block:
-- `tron:verify_sign_latency_seconds_bucket`: Cumulative counters for 
-- `tron:verify_sign_latency_seconds_count`: Count of events 
-- `tron:verify_sign_latency_seconds_sum`: Total sum of all observed values 
+- `tron:verify_sign_latency_seconds_bucket`: Cumulative counters for
+- `tron:verify_sign_latency_seconds_count`: Count of events
+- `tron:verify_sign_latency_seconds_sum`: Total sum of all observed values
 
 Check the usage from dashboard panel (enter edit mode), or by searching in [grafana_dashboard_tron_server.json](metric_conf/grafana_dashboard_tron_server.json).
 ![image](../images/metric_block_latency.png)
@@ -140,7 +140,7 @@ Check the usage from dashboard panel (enter edit mode), or by searching in [graf
 Average transaction processing time:
 - `tron:process_transaction_latency_seconds_bucket`: Cumulative counters
 - `tron:process_transaction_latency_seconds_count`: Count of event
-- `tron:process_transaction_latency_seconds_sum`: Total sum of all observed values 
+- `tron:process_transaction_latency_seconds_sum`: Total sum of all observed values
 
 ### Network peer status
 
@@ -149,7 +149,7 @@ TRON peers info and abnormal statistic metrics:
 - `tron:p2p_disconnect_total`
 - `tron:p2p_error_total`
 
-The latency exceeds 50ms to process a message from a peer will be logged by the below metrics: 
+The latency exceeds 50ms to process a message from a peer will be logged by the below metrics:
 - `tron:message_process_latency_seconds_bucket`: Cumulative counters for
 - `tron:message_process_latency_seconds_count`: Count of events
 - `tron:message_process_latency_seconds_sum`: Total sum of all observed values
@@ -174,9 +174,9 @@ Http request data traffic statistics:
 - `tron:http_bytes_count`:Count of events
 - `tron:http_bytes_sum`: Total sum of all observed values
 
-Http/GRPC request latency metrics: 
-- `tron:http_service_latency_seconds_bucket`: Cumulative counters 
-- `tron:http_service_latency_seconds_count`: Count of events  
+Http/GRPC request latency metrics:
+- `tron:http_service_latency_seconds_bucket`: Cumulative counters
+- `tron:http_service_latency_seconds_count`: Count of events
 - `tron:http_service_latency_seconds_sum`: Total sum of all observed values
 - `tron:grpc_service_latency_seconds_bucket/count/sum`
 - `tron:internal_service_latency_seconds_bucket/count/sum`
@@ -207,7 +207,7 @@ Currently, for `db` values of above metrics TRON has below possible objects:
 - trans
 - contract
 - storage-row
-- block 
+- block
 - exchange
 - DelegatedResource
 - tree-block-index
@@ -280,11 +280,8 @@ Currently, for `db` values of above metrics TRON has below possible objects:
 * `jvm_memory_pool_collection_used_bytes`: Used bytes after last collection of a given JVM memory pool
 
 ### Other metrics
-Beside above metrics, there are also metrics to measure the duration of a scrape process, which is useful for monitoring and understanding the performance of your Prometheus server and the targets it scrapes. 
+Beside above metrics, there are also metrics to measure the duration of a scrape process, which is useful for monitoring and understanding the performance of your Prometheus server and the targets it scrapes.
 - `scrape_duration_seconds`: It measures the time taken (in seconds) for Prometheus to scrape a target. This includes the entire process of making an HTTP request to the target, receiving the response, and processing the metrics.
 - `scrape_samples_post_metric_relabeling`
 - `scrape_samples_scraped`
-- `scrape_series_added`		
-
-
-
+- `scrape_series_added`

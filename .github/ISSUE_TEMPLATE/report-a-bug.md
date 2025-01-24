@@ -14,7 +14,7 @@ assignees: ''
 #### Software Versions
 <!-- `java -jar FullNode.jar -v` -->
 
-<!-- 
+<!--
 ```
 OS : Linux
 JVM : Oracle Corporation 1.8.0_161 amd64

@@ -77,7 +77,7 @@ For all configurations, you need to set `node.p2p.version` to the same value and
 ```
 node {
  p2p {
-    version = 1 # 11111: mainnet; 20180622: nilenet; others for private networks. 
+    version = 1 # 11111: mainnet; 20180622: nilenet; others for private networks.
   }
   ...
 }
@@ -112,7 +112,7 @@ localwitness = [
 genesis.block {
    assets = [ # set account initial balance
    ...
-      { 
+      {
           accountName = "TestE"
           accountType = "AssetIssue"
           address = "TCjptjyjenNKB2Y6EwyVT43DQyUUorxKWi"
@@ -127,17 +127,17 @@ genesis.block {
       voteCount = 5000
     }
   ]
-    
+
 ```
 
 **P2P node discovery setting**
 
 In witness configure file, make sure `node.listen.port` is set for p2p peer discovery.
 ```
-node { 
+node {
   listen.port = 18888
-  ... 
-} 
+  ...
+}
 ```
 
 Then, in other configuration files, add witness `container_name:port` to connect to the newly added witness fullnodes.
@@ -147,7 +147,7 @@ seed.node = {
     # used for docker deployment, to connect containers in tron_witness defined in docker-compose.yml
     "tron_witness1:18888",
     "tron_witness2:18888",
-    ... 
+    ...
   ]
 }
 ```
@@ -169,11 +169,11 @@ block = {
   maintenanceTimeInterval = 300000 # 5mins, default is 6 hours
   proposalExpireTime = 600000 # 10mins, default is 3 days
 }
-``` 
+```
 You could also disable/enable the following committee-approved settings with `0` or `1`:
 ```
 committee = {
-  allowCreationOfContracts = 1   
+  allowCreationOfContracts = 1
   allowAdaptiveEnergy = 0
   allowMultiSign = 1
   allowDelegateResource = 1
