@@ -14,11 +14,14 @@ repos:
   - repo: 'https://github.com/jumanjihouse/pre-commit-hooks'
     rev: 3.0.0
     hooks:
-      - id: shellcheck
-        exclude: tools/docker/docker.sh
       - id: script-must-have-extension
       - id: git-dirty
       - id: git-check
+  - repo: 'https://github.com/koalaman/shellcheck-precommit'
+    rev: v0.7.2
+    hooks:
+      - id: shellcheck
+        exclude: tools/docker/docker.sh
   - repo: local # check java files format use a customized script
     hooks:
       - id: checkstyle
