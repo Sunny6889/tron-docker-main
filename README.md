@@ -50,7 +50,7 @@ If you encounter any difficulties, please refer to the [Issue Work Flow](https:/
 
 # Contributing
 
-Contributions are welcome. All contributed code will be covered by the Apache License v2 of this project. Check [contribution](CONTRIBUTING.md) for more details.
+All contributions are welcome. Check [contribution](CONTRIBUTING.md) for more details.
 
 # License
 
