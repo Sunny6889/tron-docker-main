@@ -1,4 +1,4 @@
-# Gradle Docker 
+# Gradle Docker
 This document provides guidance on using Gradle to automate the build and test processes for java-tron docker image. You can customize the corresponding scripts to perform specific actions or integrate them with your existing Continuous Integration (CI) setup.
 
 If you encounter any problems during the build or testing process, please refer to the troubleshooting section.
@@ -43,7 +43,7 @@ This will trigger the execution of `task testDocker` in [build.gradle](build.gra
 
 The test.sh script sets up the Goss environment and then invokes the [dgoss shell](tests/dgoss), which will copy the test cases from [tests/01](tests/01) folder to the Docker container and execute the test validations.
 
-Currently, there are three test files: 
+Currently, there are three test files:
 
 - The `goss.yaml` and `goss_wait.yaml` files are used to perform port checks.
 
@@ -140,8 +140,3 @@ git config --global http.postBuffer 5242880000  # Sets it to 5GB
 ```
 
 For other issues, they may be caused by poor network conditions. You could try switching to a different network or VPN. If the issue still cannot be resolved, please refer to [Issue Work Flow](https://tronprotocol.github.io/documentation-en/developers/issue-workflow/#issue-work-flow), then raise issue in [Github](https://github.com/tronprotocol/tron-docker/issues).
-
-
-
-
-

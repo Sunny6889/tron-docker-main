@@ -8,6 +8,7 @@ response=$(curl -X GET http://127.0.0.1:8090/wallet/getnodeinfo)
 result=$(echo "$response" | jq -r '.beginSyncNum')
 echo "result 1: $result, response 1: $response"
 
+# shellcheck disable=SC2236
 if [ ! -z "$result" ]; then
       last_sync=$(printf "%d" "$result")
       last_syncNum=$last_sync
@@ -15,7 +16,7 @@ if [ ! -z "$result" ]; then
 
 else
       alert="TRON node first sync error: : $response"
-      echo $alert
+      echo "$alert"
       exit 1
 fi
 
@@ -32,22 +33,24 @@ check_sync_process() {
   result=$(echo "$response" | jq -r '.beginSyncNum')
   echo "result 2: $result, response 2: $response"
 
+  # shellcheck disable=SC2236
   if [ ! -z "$result" ]; then
         last_sync=$(printf "%d" "$result")
         second_syncNum=$last_sync
         echo "TRON node second sync: $last_sync"
   else
         alert="TRON node second sync error: : $response"
-        echo $alert
+        echo "$alert"
         exit 1
   fi
 }
 
+# shellcheck disable=SC2004
 for((i=1;i<=$count;i++)); do
   echo "try i: $i"
   sleep $monitor_interval
   check_sync_process
-  if [ $second_syncNum -gt $last_syncNum ]; then
+  if [ "$second_syncNum" -gt "$last_syncNum" ]; then
       echo "sync increased"
       exit 0
   fi

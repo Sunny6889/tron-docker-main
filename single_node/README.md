@@ -61,10 +61,10 @@ You can run the following command to start java-tron:
 ```
 docker run -it --name tron -d --memory="16g" \
 -p 8090:8090 -p 8091:8091 -p 18888:18888 -p 18888:18888/udp -p 50051:50051 \
-tronprotocol/java-tron 
+tronprotocol/java-tron
 ```
 The `-p` flag specifies the ports that the container needs to map to the host machine.
-`--memory="16g"` sets the memory limit to 16GB, ensuring that the TRON container gets enough memory. 
+`--memory="16g"` sets the memory limit to 16GB, ensuring that the TRON container gets enough memory.
 
 By default, it will use the [configuration](https://github.com/tronprotocol/java-tron/blob/develop/framework/src/main/resources/config.conf),
 which sets the fullNode to connect to the mainnet with genesis block settings in `genesis.block`.
@@ -77,8 +77,8 @@ For abnormal cases, please check the troubleshooting section below.
 This image also supports customizing some startup parameters. Here is an example for running a FullNode as a witness with a customized configuration file:
 ```
 docker run -it --name tron -d -p 8090:8090 -p 8091:8091 -p 18888:18888 -p 18888:18888/udp -p 50051:50051 --memory="16g" \
-           -v /host/path/java-tron/conf:/java-tron/conf \ 
-           -v /host/path/java-tron/datadir:/java-tron/data \ 
+           -v /host/path/java-tron/conf:/java-tron/conf \
+           -v /host/path/java-tron/datadir:/java-tron/data \
            tronprotocol/java-tron \
            -jvm "{-Xmx16g -Xms12g -XX:+UseConcMarkSweepGC}" \
            -c /java-tron/conf/config-localtest.conf \

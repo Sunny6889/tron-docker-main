@@ -1,0 +1,28 @@
+repos:
+  - repo: 'https://github.com/pre-commit/pre-commit-hooks'
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-json
+      - id: check-yaml
+      - id: double-quote-string-fixer
+      - id: check-shebang-scripts-are-executable
+        exclude: tools/docker/docker.sh
+      - id: check-executables-have-shebangs
+      - id: detect-private-key
+  - repo: 'https://github.com/jumanjihouse/pre-commit-hooks'
+    rev: 3.0.0
+    hooks:
+      - id: shellcheck
+        exclude: tools/docker/docker.sh
+      - id: script-must-have-extension
+      - id: git-dirty
+      - id: git-check
+  - repo: local # check java files format use a customized script
+    hooks:
+      - id: checkstyle
+        name: Checkstyle
+        entry: ./run-checkstyle.sh
+        language: script
+        files: \.java$

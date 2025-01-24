@@ -9,3 +9,7 @@ build/
 tmp/
 target/
 tools/dbfork/logs/
+libs/
+metric_monitor/datadir
+private_net/datadir
+tron-docker.iml

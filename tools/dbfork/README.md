@@ -1,5 +1,5 @@
 ## Database Fork Tool
-Database fork tool can help launch a private java-tron FullNode or network based on the state of public chain database to support shadow fork testing. 
+Database fork tool can help launch a private java-tron FullNode or network based on the state of public chain database to support shadow fork testing.
 The public chain database can come from the Mainnet, Nile Testnet, or Shasta Testnet.
 
 Database fork tool provides the ability to modify the witnesses and other related data in the database to
@@ -7,7 +7,7 @@ implement shadow fork testing, which includes:
 - Erase the historical witnesses and active witnesses
 - Write new witnesses to the state and update new active witnesses
 - Write new balance for new addresses
-- Modify the owner permission of existing account to simulate the account operation   
+- Modify the owner permission of existing account to simulate the account operation
 - Set the new `latesteBlockHeaderTimestamp` to avoid the delay in producing blocks
 - Set the new `maintenanceTimeInterval` and `nextMaintenanceTime` optionally to facilitate testing
 
@@ -37,7 +37,7 @@ node.shutdown = {
 }
 ```
 
-Please refer [Startup a fullnode](https://tronprotocol.github.io/documentation-en/using_javatron/installing_javatron/#startup-a-fullnode) to launch the FullNode and sync to the specified block number. The FullNode will halt when it syncs to the target block height. 
+Please refer [Startup a fullnode](https://tronprotocol.github.io/documentation-en/using_javatron/installing_javatron/#startup-a-fullnode) to launch the FullNode and sync to the specified block number. The FullNode will halt when it syncs to the target block height.
 
 **Note**: `node.shutdown.BlockHeight` is the solidified block height. You can use the `/wallet/getnowblock` api to check the latest block height, which should be `node.shutdown.BlockHeight + 20` when the FullNode halts.
 
@@ -103,10 +103,10 @@ For the `accounts`, we can configure the following properties:
 - `address`:  add or modify the account address
 - `accountName`: set the name of the account
 - `accountType`: set the account type, namely `Normal`, `AssetIssue` and `Contract`
-- `balance`: set the balance of the account 
+- `balance`: set the balance of the account
 - `owner`: set the owner permission of the account
 
-*Note*: If you need to add new address, you can use the [tronlink](https://www.tronlink.org/) or [wallet-cli](https://github.com/tronprotocol/wallet-cli?tab=readme-ov-file#account-related-commands) to 
+*Note*: If you need to add new address, you can use the [tronlink](https://www.tronlink.org/) or [wallet-cli](https://github.com/tronprotocol/wallet-cli?tab=readme-ov-file#account-related-commands) to
 genrate the private key and address.
 
 set `latestBlockHeaderTimestamp` as current millisecond time to avoid the delay in producing blocks.
@@ -121,7 +121,7 @@ git clone https://github.com/tronprotocol/tron-docker.git
 # enter the directory
 cd tron-docker/tools/gradlew
 # compile the database fork tool
-./gradlew :dbfork:build 
+./gradlew :dbfork:build
 # execute full command
 java -jar ../dbfork/build/libs/dbfork.jar -c /path/to/fork.conf -d /path/to/output-directory
 ```

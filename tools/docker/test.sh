@@ -18,9 +18,10 @@ export TEST_PATH=./tests
 #export GOSS_PATH=$TEST_PATH/goss-linux-${architecture} # TODO. fixed by https://github.com/goss-org/goss/tree/master/extras/dgoss#mac-osx
 export GOSS_PATH=$TEST_PATH/goss-linux-amd64
 export GOSS_OPTS="$GOSS_OPTS --format junit"
-export GOSS_FILES_STRATEGY=cp # The cp strategy means that test files will be copied to the container.
-DOCKER_IMAGE=$1 # The first param passed
-DOCKER_FILE="${2:-$PWD/Dockerfile}" # If no second argument is provided, it defaults to the Dockerfile located in the current working directory ($PWD).
+export GOSS_FILES_STRATEGY=cp
+DOCKER_IMAGE=$1
+# shellcheck disable=SC2034
+DOCKER_FILE="${2:-$PWD/Dockerfile}"
 
 i=0 # This initializes a counter variable i that will be used to track the number of failed tests.
 
@@ -28,8 +29,11 @@ i=0 # This initializes a counter variable i that will be used to track the numbe
 # we test that things listen on the right interface/port, not what interface the advertise
 # hence we dont set p2p-host=0.0.0.0 because this sets what its advertising to devp2p; the important piece is that it defaults to listening on all interfaces
 GOSS_FILES_PATH=$TEST_PATH/01 \
-bash $TEST_PATH/dgoss run --sysctl net.ipv6.conf.all.disable_ipv6=1 $DOCKER_IMAGE \
-#-p 8090:8090 -p 8091:8091 -p 18888:18888 -p 18888:18888/udp -p 50051:50051 \
+bash $TEST_PATH/dgoss run --sysctl net.ipv6.conf.all.disable_ipv6=1 "$DOCKER_IMAGE" \
+#-p 8090:8090 -p 8091:8091 -p 18888:18888 -p 18888:18888/udp -p 50051:50051
+# shellcheck disable=SC2006
+# shellcheck disable=SC2003
+# shellcheck disable=SC2188
 > ./reports/01.xml || i=`expr $i + 1`
 
-exit $i
+exit "$i"

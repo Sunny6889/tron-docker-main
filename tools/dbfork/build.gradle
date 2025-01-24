@@ -81,5 +81,3 @@ task checkstyleDBForkTest(type: Checkstyle) {
 }
 
 check.dependsOn checkstyleDBForkMain, checkstyleDBForkTest
-
-
