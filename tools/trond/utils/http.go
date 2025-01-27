@@ -1,0 +1,275 @@
+package utils
+
+import (
+	"crypto/md5"
+	"encoding/hex"
+	"fmt"
+	"io"
+	"net/http"
+	"net/url"
+	"os"
+	"path"
+	"strings"
+	"time"
+
+	"github.com/schollz/progressbar/v3"
+	"golang.org/x/net/html"
+)
+
+// Function to fetch and parse HTML, extracting absolute links
+func fetchAndExtractLinks(webURL string) ([]string, error) {
+	resp, err := http.Get(webURL)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch URL: %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("HTTP error: %s", resp.Status)
+	}
+
+	parsedBaseURL, err := url.Parse(webURL)
+	if err != nil {
+		return nil, fmt.Errorf("invalid base URL: %v", err)
+	}
+
+	doc, err := html.Parse(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error parsing HTML: %v", err)
+	}
+
+	var links []string
+	var extractLinks func(*html.Node)
+	extractLinks = func(n *html.Node) {
+		if n.Type == html.ElementNode && n.Data == "a" {
+			for _, attr := range n.Attr {
+				if attr.Key == "href" {
+					// Resolve relative URLs to absolute URLs
+					resolvedURL := parsedBaseURL.ResolveReference(&url.URL{Path: attr.Val}).String()
+					links = append(links, resolvedURL)
+				}
+			}
+		}
+		for c := n.FirstChild; c != nil; c = c.NextSibling {
+			extractLinks(c)
+		}
+	}
+
+	extractLinks(doc)
+	return links, nil
+}
+
+// extractBackupPart extracts the last part of the path from a given URL.
+func extractBackupPart(rawURL string) (string, error) {
+	// Parse the input URL
+	parsedURL, err := url.Parse(rawURL)
+	if err != nil {
+		return "", fmt.Errorf("invalid URL: %v", err)
+	}
+
+	// Extract the last part of the path
+	backupPart := path.Base(parsedURL.Path)
+
+	// Remove trailing slash if present
+	backupPart = strings.TrimSuffix(backupPart, "/")
+
+	return backupPart, nil
+}
+
+func ShowSnapshotList(domain string) error {
+	webURL := "http://" + domain
+
+	links, err := fetchAndExtractLinks(webURL)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("\nAvailable backup:")
+	for _, link := range links {
+		basePath, err := extractBackupPart(link)
+		if err != nil {
+			return err
+		}
+		if len(basePath) == 0 {
+			continue
+		}
+
+		fmt.Println("  " + basePath)
+	}
+
+	return nil
+}
+
+// getFileNameFromURL extracts the file name from the URL path
+func getFileNameFromURL(fileURL string) (string, error) {
+	parsedURL, err := url.Parse(fileURL)
+	if err != nil {
+		return "", fmt.Errorf("invalid URL: %v", err)
+	}
+	return path.Base(parsedURL.Path), nil
+}
+
+// calculateMD5 computes the MD5 checksum of a file
+func calculateMD5(filePath string) (string, error) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return "", fmt.Errorf("failed to open file: %v", err)
+	}
+	defer file.Close()
+
+	hash := md5.New()
+	if _, err := io.Copy(hash, file); err != nil {
+		return "", fmt.Errorf("failed to calculate MD5: %v", err)
+	}
+	return hex.EncodeToString(hash.Sum(nil)), nil
+}
+
+// readMD5FromFile parses the expected MD5 checksum from the file formatted as "md5sum  filename"
+func readMD5FromFile(md5FilePath string) (string, string, error) {
+	file, err := os.Open(md5FilePath)
+	if err != nil {
+		return "", "", fmt.Errorf("failed to open checksum file: %v", err)
+	}
+	defer file.Close()
+
+	var md5Hash, filename string
+	_, err = fmt.Fscanf(file, "%s %s", &md5Hash, &filename)
+	if err != nil {
+		return "", "", fmt.Errorf("failed to parse MD5 from file: %v", err)
+	}
+
+	md5Hash = strings.TrimSpace(md5Hash)
+	filename = strings.TrimSpace(filename)
+	return md5Hash, filename, nil
+}
+
+// downloadFileWithProgress downloads a file from the given URL and shows progress with estimated time
+func DownloadFileWithProgress(fileURL, md5FilePath string) (string, error) {
+	expectedMD5 := ""
+	expectedFilename := ""
+
+	// If md5FilePath is provided, read the expected MD5 and filename
+	if md5FilePath != "" {
+		var err error
+		expectedMD5, expectedFilename, err = readMD5FromFile(md5FilePath)
+		if err != nil {
+			return "", fmt.Errorf("error reading MD5 file: %v", err)
+		}
+	}
+
+	// Extract the original file name from the URL
+	filename, err := getFileNameFromURL(fileURL)
+	if err != nil {
+		return "", fmt.Errorf("failed to get file name: %v", err)
+	}
+
+	// If an MD5 file was provided, check if filenames match
+	if md5FilePath != "" && filename != expectedFilename {
+		return "", fmt.Errorf("filename mismatch: expected %s, got %s", expectedFilename, filename)
+	}
+
+	fmt.Println("Downloading file:", fileURL)
+
+	// Create the file to save the content
+	outFile, err := os.Create(filename)
+	if err != nil {
+		return "", fmt.Errorf("failed to create file: %v", err)
+	}
+	defer outFile.Close()
+
+	// Send HTTP GET request
+	resp, err := http.Get(fileURL)
+	if err != nil {
+		return "", fmt.Errorf("failed to download file: %v", err)
+	}
+	defer resp.Body.Close()
+
+	// Check HTTP status
+	if resp.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("bad status: %s", resp.Status)
+	}
+
+	// Get the content length for progress tracking
+	contentLength := resp.ContentLength
+	if contentLength <= 0 {
+		return "", fmt.Errorf("unable to determine file size")
+	}
+
+	// Initialize progress bar with estimated time
+	bar := progressbar.NewOptions64(
+		contentLength,
+		progressbar.OptionSetDescription("Downloading..."),
+		progressbar.OptionSetWidth(50),
+		progressbar.OptionShowBytes(true),
+		progressbar.OptionSetPredictTime(true),
+		progressbar.OptionThrottle(10*time.Millisecond), // More frequent updates
+		progressbar.OptionClearOnFinish(),
+		progressbar.OptionSpinnerType(14),
+		progressbar.OptionSetElapsedTime(true),
+		progressbar.OptionSetRenderBlankState(true),
+		progressbar.OptionShowIts(),
+		progressbar.OptionOnCompletion(func() {
+			fmt.Println("\nDownload complete:", filename)
+		}),
+	)
+
+	// Read the response body in smaller chunks for frequent updates
+	buffer := make([]byte, 32*1024) // 32KB buffer for finer updates
+	for {
+		n, err := resp.Body.Read(buffer)
+		if n > 0 {
+			_, writeErr := outFile.Write(buffer[:n])
+			if writeErr != nil {
+				return "", fmt.Errorf("failed to write to file: %v", writeErr)
+			}
+
+			_ = bar.Add(n) // Update progress bar with exact number of bytes written
+		}
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return "", fmt.Errorf("error reading data: %v", err)
+		}
+	}
+
+	/// If an MD5 file was provided, perform checksum verification
+	if md5FilePath != "" {
+		// Calculate MD5 checksum of the downloaded file
+		fmt.Println("Verifying MD5 checksum...")
+		calculatedMD5, err := calculateMD5(filename)
+		if err != nil {
+			return "", fmt.Errorf("error calculating MD5: %v", err)
+		}
+
+		fmt.Println("Expected MD5:", expectedMD5)
+		fmt.Println("Calculated MD5:", calculatedMD5)
+
+		if calculatedMD5 == expectedMD5 {
+			fmt.Println("MD5 verification successful!")
+		} else {
+			fmt.Println("MD5 verification failed!")
+			return "", fmt.Errorf("checksum mismatch")
+		}
+	}
+
+	return filename, nil
+}
+
+func GenerateSnapshotDownloadURL(domain, backup, nType string) string {
+	if nType == "full" {
+		return "http://" + domain + "/" + backup + "/FullNode_output-directory.tgz"
+	} else if nType == "lite" {
+		return "http://" + domain + "/" + backup + "/LiteFullNode_output-directory.tgz"
+	}
+	return ""
+}
+
+func GenerateSnapshotMD5DownloadURL(domain, backup, nType string) string {
+	if nType == "full" {
+		return "http://" + domain + "/" + backup + "/FullNode_output-directory.tgz.md5sum"
+	} else if nType == "lite" {
+		return "http://" + domain + "/" + backup + "/LiteFullNode_output-directory.tgz.md5sum"
+	}
+	return ""
+}
