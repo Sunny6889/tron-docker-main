@@ -1,11 +1,6 @@
-/*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-*/
 package snapshot
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
@@ -20,9 +15,6 @@ var SnapshotCmd = &cobra.Command{
   3. download target snapshot
 
 Please refer to the available commands below.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("snapshot called")
-	},
 }
 
 func init() {

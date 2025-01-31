@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  tron:
+    container_name: tron
+    image: tronprotocol/java-tron:latest  # Add specific tag if needed
+    ports:
+      - "8090:8090"
+      - "8091:8091"
+      - "18888:18888"
+      - "18888:18888/udp"
+      - "50051:50051"
+    volumes:
+      - ../../conf:/java-tron/conf
+      - ./logs:/java-tron/logs
+      - ./output-directory:/java-tron/output-directory
+    environment:
+      - JVM_OPTS=-Xmx12g -Xms12g -XX:+UseConcMarkSweepGC
+    command:
+      - -jvm
+      - "$$JVM_OPTS"  # Using environment variable for JVM arguments
+      - -c
+      - /java-tron/conf/main_net_config.conf

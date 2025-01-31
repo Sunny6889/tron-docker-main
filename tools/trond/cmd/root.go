@@ -1,12 +1,10 @@
-/*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/tronprotocol/tron-docker/cmd/node"
 	"github.com/tronprotocol/tron-docker/cmd/snapshot"
 )
 
@@ -31,6 +29,7 @@ func Execute() {
 
 func init() {
 	rootCmd.AddCommand(snapshot.SnapshotCmd)
+	rootCmd.AddCommand(node.NodeCmd)
 
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,

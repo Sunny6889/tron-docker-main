@@ -143,6 +143,27 @@ func readMD5FromFile(md5FilePath string) (string, string, error) {
 	return md5Hash, filename, nil
 }
 
+// formatSize converts bytes to a human-readable string with appropriate units.
+func formatSize(size int64) string {
+	const (
+		_          = iota
+		KB float64 = 1 << (10 * iota)
+		MB
+		GB
+	)
+
+	switch {
+	case size >= int64(GB):
+		return fmt.Sprintf("%.2f GB", float64(size)/GB)
+	case size >= int64(MB):
+		return fmt.Sprintf("%.2f MB", float64(size)/MB)
+	case size >= int64(KB):
+		return fmt.Sprintf("%.2f KB", float64(size)/KB)
+	default:
+		return fmt.Sprintf("%d Bytes", size)
+	}
+}
+
 // downloadFileWithProgress downloads a file from the given URL and shows progress with estimated time
 func DownloadFileWithProgress(fileURL, md5FilePath string) (string, error) {
 	expectedMD5 := ""
@@ -198,7 +219,7 @@ func DownloadFileWithProgress(fileURL, md5FilePath string) (string, error) {
 	// Initialize progress bar with estimated time
 	bar := progressbar.NewOptions64(
 		contentLength,
-		progressbar.OptionSetDescription("Downloading..."),
+		progressbar.OptionSetDescription(fmt.Sprintf("Downloading... (Total: %s)", formatSize(contentLength))),
 		progressbar.OptionSetWidth(50),
 		progressbar.OptionShowBytes(true),
 		progressbar.OptionSetPredictTime(true),

@@ -1,6 +1,3 @@
-/*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-*/
 package snapshot
 
 import (
@@ -22,29 +19,11 @@ Note: the snapshot is large, it maybe need a long time to finish the download, d
 		// Get the flag value
 		domain, _ := cmd.Flags().GetString("domain")
 
-		// Validate flag values
-		if domain == "" {
-			fmt.Println("Error: --domain flag cannot be empty")
-			return
-		}
-
 		// Get the flag value
 		backup, _ := cmd.Flags().GetString("backup")
 
-		// Validate flag values
-		if backup == "" {
-			fmt.Println("Error: --backup flag cannot be empty")
-			return
-		}
-
 		// Get the flag value
 		nType, _ := cmd.Flags().GetString("type")
-
-		// Validate flag values
-		if nType == "" {
-			fmt.Println("Error: --type flag cannot be empty")
-			return
-		}
 
 		if !utils.CheckDomain(domain) {
 			fmt.Println("Error: domain value not supported\nRun \"snapshot dataSource\" to check available items")

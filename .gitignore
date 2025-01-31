@@ -8,9 +8,10 @@ tools/docker/reports/
 build/
 tmp/
 target/
-tools/dbfork/logs/
+logs/
 libs/
-metric_monitor/datadir
-private_net/datadir
+datadir/
+logs/
+output-directory/
 tron-docker.iml
 bin/
