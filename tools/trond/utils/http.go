@@ -59,6 +59,31 @@ func fetchAndExtractLinks(webURL string) ([]string, error) {
 	return links, nil
 }
 
+func generateDateList() []string {
+	var dateList []string
+	curTime := time.Now()
+
+	// Loop for 180 days (from 1 to 179, inclusive)
+	for i := 1; i < 180; i++ {
+		// Calculate the date by subtracting i days from the current time
+		startDate := curTime.Add(-time.Duration(i) * 24 * time.Hour)
+		// Format the date as "yyyyMMdd"
+		dateStr := startDate.Format("20060102")
+
+		// If it's the first 30 days, add all dates
+		if i < 30 {
+			dateList = append(dateList, dateStr)
+		} else {
+			// Otherwise, check if the day is 10, 20, or 30 and add it
+			if startDate.Day() == 10 || startDate.Day() == 20 || startDate.Day() == 30 {
+				dateList = append(dateList, dateStr)
+			}
+		}
+	}
+
+	return dateList
+}
+
 // extractBackupPart extracts the last part of the path from a given URL.
 func extractBackupPart(rawURL string) (string, error) {
 	// Parse the input URL
@@ -76,16 +101,20 @@ func extractBackupPart(rawURL string) (string, error) {
 	return backupPart, nil
 }
 
-func ShowSnapshotList(domain string) error {
+func ShowSnapshotList(domain string, https bool) error {
 	webURL := "http://" + domain
+	if https {
+		webURL = "https://" + domain
+	}
 
-	links, err := fetchAndExtractLinks(webURL)
+	links, err := extractLinks(webURL)
 	if err != nil {
 		return err
 	}
-
-	fmt.Println("\nAvailable backup:")
+	fmt.Println(webURL)
+	fmt.Println("Available backup:")
 	for _, link := range links {
+		fmt.Println(link)
 		basePath, err := extractBackupPart(link)
 		if err != nil {
 			return err

@@ -10,7 +10,7 @@ import (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "tron-docker",
+	Use:   "trond",
 	Short: "Docker automation for TRON nodes",
 	Long:  `This tool bundles multiple commands into one, enabling the community to quickly get started with TRON network interaction and development.`,
 	// Uncomment the following line if your bare application
@@ -39,5 +39,5 @@ func init() {
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

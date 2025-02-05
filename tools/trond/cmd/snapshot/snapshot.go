@@ -7,14 +7,12 @@ import (
 // SnapshotCmd represents the snapshot command
 var SnapshotCmd = &cobra.Command{
 	Use:   "snapshot",
-	Short: "Command sets for managing Java-Tron node snapshots.",
+	Short: "Commands for getting java-tron node snapshots.",
 	Long: `Commands used for downloading node's snapshot, such as:
 
-  1. show data source
-  2. list available snapshots of target data source
-  3. download target snapshot
-
-Please refer to the available commands below.`,
+  1. show available snapshot source
+  2. list available snapshots in target source
+  3. download target snapshot`,
 }
 
 func init() {

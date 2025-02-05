@@ -1,7 +1,10 @@
 package utils
 
 import (
+	"context"
+	"fmt"
 	"os"
+	"os/exec"
 	"strings"
 )
 
@@ -33,4 +36,78 @@ func CreateDir(path string, recursive bool) error {
 	}
 
 	return err
+}
+
+// -----------------------------------------------------------------------------
+// docker-compose
+// -----------------------------------------------------------------------------
+// IsComposeRunning checks if specific services from a compose file are running
+func IsComposeRunning(composePath string, serviceNames ...string) (bool, error) {
+	args := []string{"-f", composePath, "ps", "-q"}
+	args = append(args, serviceNames...)
+
+	cmd := exec.CommandContext(context.Background(), "docker-compose", args...)
+	output, err := cmd.CombinedOutput()
+
+	if err != nil {
+		return false, fmt.Errorf("error checking running state: %v\nOutput: %s", err, output)
+	}
+
+	return len(strings.TrimSpace(string(output))) > 0, nil
+}
+
+func RunServiceOnce(composePath, service string) error {
+	running, err := IsComposeRunning(composePath, service)
+	if err != nil {
+		return err
+	}
+
+	if running {
+		return fmt.Errorf("service %s is already running", service)
+	}
+
+	cmd := exec.CommandContext(
+		context.Background(),
+		"docker-compose",
+		"-f", composePath,
+		"up", "-d",
+	)
+
+	if output, err := cmd.CombinedOutput(); err != nil {
+		return fmt.Errorf("failed to start: %v\nOutput: %s", err, output)
+	}
+
+	return nil
+}
+
+// StartDockerCompose starts Docker Compose services
+func StartDockerCompose(composePath string) (string, error) {
+	cmd := exec.CommandContext(context.Background(),
+		"docker-compose",
+		"-f", composePath,
+		"up", "-d",
+	)
+
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return "", fmt.Errorf("error starting services: %v\nOutput: %s", err, output)
+	}
+
+	return string(output), nil
+}
+
+// StopDockerCompose stops Docker Compose services
+func StopDockerCompose(composePath string) (string, error) {
+	cmd := exec.CommandContext(context.Background(),
+		"docker-compose",
+		"-f", composePath,
+		"down",
+	)
+
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return "", fmt.Errorf("error stopping services: %v\nOutput: %s", err, output)
+	}
+
+	return string(output), nil
 }

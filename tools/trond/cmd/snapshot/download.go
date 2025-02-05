@@ -11,10 +11,12 @@ import (
 // listCmd represents the listFull command
 var downloadCmd = &cobra.Command{
 	Use:   "download",
-	Short: "Download target backup snapshot to  current local directory",
-	Long: `Refer to the data source domain and backup name you input, the available backup snapshot will be downloaded to the local directory.
+	Short: "Download target backup snapshot to local current directory",
+	Long: `Refer to the snapshot source domain and backup name you input, the available backup snapshot will be downloaded to the local directory.
 
-Note: the snapshot is large, it maybe need a long time to finish the download, depends on your network performance.`,
+Note:
+ - because some snapshot sources have multiple snapshot types, you need to specify the type(full, lite) of snapshot you want to download.
+ - the snapshot is large, it may need a long time to finish the download, depends on your network performance.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Get the flag value
 		domain, _ := cmd.Flags().GetString("domain")
@@ -26,7 +28,7 @@ Note: the snapshot is large, it maybe need a long time to finish the download, d
 		nType, _ := cmd.Flags().GetString("type")
 
 		if !utils.CheckDomain(domain) {
-			fmt.Println("Error: domain value not supported\nRun \"snapshot dataSource\" to check available items")
+			fmt.Println("Error: domain value not supported\nRun \"./trond snapshot source\" to check available items")
 			return
 		}
 
@@ -57,13 +59,13 @@ func init() {
 
 	downloadCmd.Flags().StringP(
 		"domain", "d", "",
-		"Domain for target data source (required)\nPlease run command \"trond snapshot dataSource\" to get the available data source domains") // -d or --domain
+		"Domain for target snapshot source(required).\nPlease run command \"./trond snapshot source\" to get the available snapshot source domains.") // -d or --domain
 	downloadCmd.Flags().StringP(
 		"backup", "b", "",
-		"Backup name (required)\nPlease run command \"trond snapshot list\" to get the available backup name under target source domains") // -b or --backup
+		"Backup name(required).\nPlease run command \"./trond snapshot list\" to get the available backup name under target source domains.") // -b or --backup
 	downloadCmd.Flags().StringP(
 		"type", "t", "",
-		"Node type of the snapshot (required, available: full, lite)") // -d or --domain
+		"Node type of the snapshot(required, available: full, lite).")
 
 	// Mark source and destination as required flags
 	if err := downloadCmd.MarkFlagRequired("domain"); err != nil {

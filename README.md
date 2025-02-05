@@ -20,7 +20,7 @@ Monitoring the health and performance of your TRON nodes is made easy with integ
 
 We also provide tools to facilitate the CI and testing process:
 - Gradle Docker: Using Gradle to automate the build and test processes for java-tron image.
-- DB Fork: This tool helps launch a private Java-Tron network based on the state of the Mainnet database to support shadow fork testing.
+- DB Fork: This tool helps launch a private java-tron network based on the state of the Mainnet database to support shadow fork testing.
 
 ## Getting Started
 
