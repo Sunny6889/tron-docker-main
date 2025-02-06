@@ -30,7 +30,14 @@ Note: different domain may have different snapshots that can be downloaded.`,
 			return
 		}
 
-		if err := utils.ShowSnapshotList(domain, utils.IsHttps(domain)); err != nil {
+		if utils.IsNile(domain) {
+			if err := utils.ShowSnapshotListForNile(); err != nil {
+				fmt.Println("Error:", err)
+			}
+			return
+		}
+
+		if err := utils.ShowSnapshotList(domain, false); err != nil {
 			fmt.Println("Error:", err)
 		}
 	},

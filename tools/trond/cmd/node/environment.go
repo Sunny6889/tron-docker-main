@@ -22,11 +22,12 @@ The following files are required:
       nile network: ../../conf/nile_net_config.conf
       private network: ../../conf/private_net_config_*.conf
   - Docker compose file(by default, these exist in the current repository directory)
-      single Fullnode
+      single node
         main network: ../../single_node/docker-compose.fullnode.main.yaml
         nile network: ../../single_node/docker-compose.fullnode.nile.yaml
         private network: ../../single_node/docker-compose.witness.private.yaml
-      multiple nodes: ../../private_net/docker-compose.private.yaml
+      multiple nodes
+	    private network: ../../private_net/docker-compose.private.yaml
   - Log directory: ./logs (if not exists, will create it)`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if yes, err := utils.PwdEndsWith("tron-docker/tools/trond"); err != nil || !yes {

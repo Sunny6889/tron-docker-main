@@ -20,14 +20,13 @@ type SnapshotDataSourceItem struct {
 	DBType      string
 	Region      string
 	Domain      string
+	DownloadURL string
 	Description string
 }
 
-// https://nile-snapshots.s3-accelerate.amazonaws.com/backup20250204/FullNode_output-directory.tgz
-// http://34.143.247.77/backup20250205/FullNode_output-directory.tgz
-var SnapshotDataSource = map[SnapshotType]map[int]SnapshotDataSourceItem{
+var SnapshotDataSource = map[SnapshotType]map[string]SnapshotDataSourceItem{
 	STFullLevelNA: {
-		1: {
+		"34.86.86.229": {
 			DataType:    "Fullnode Data Source",
 			DBType:      "LevelDB",
 			Region:      "America",
@@ -36,14 +35,14 @@ var SnapshotDataSource = map[SnapshotType]map[int]SnapshotDataSourceItem{
 		},
 	},
 	STFullLevelSG: {
-		1: {
+		"34.143.247.77": {
 			DataType:    "Fullnode Data Source",
 			DBType:      "LevelDB",
 			Region:      "Singapore",
 			Domain:      "34.143.247.77",
 			Description: "Exclude internal transactions (About 2093G on 24-Jan-2025)",
 		},
-		2: {
+		"35.247.128.170": {
 			DataType:    "Fullnode Data Source",
 			DBType:      "LevelDB",
 			Region:      "Singapore",
@@ -52,7 +51,7 @@ var SnapshotDataSource = map[SnapshotType]map[int]SnapshotDataSourceItem{
 		},
 	},
 	STFullLevelNAWithAccountHistory: {
-		1: {
+		"34.48.6.163": {
 			DataType:    "Fullnode Data Source",
 			DBType:      "LevelDB",
 			Region:      "America",
@@ -61,7 +60,7 @@ var SnapshotDataSource = map[SnapshotType]map[int]SnapshotDataSourceItem{
 		},
 	},
 	STFullRocksSG: {
-		1: {
+		"35.197.17.205": {
 			DataType:    "Fullnode Data Source",
 			DBType:      "RocksDB",
 			Region:      "America",
@@ -70,7 +69,7 @@ var SnapshotDataSource = map[SnapshotType]map[int]SnapshotDataSourceItem{
 		},
 	},
 	STLiteLevelSG: {
-		1: {
+		"34.143.247.77": {
 			DataType:    "Lite Fullnode Data Source",
 			DBType:      "LevelDB",
 			Region:      "Singapore",
@@ -79,12 +78,13 @@ var SnapshotDataSource = map[SnapshotType]map[int]SnapshotDataSourceItem{
 		},
 	},
 	STNileLevel: {
-		1: {
+		"database.nileex.io": {
 			DataType:    "Data Source for Nile",
 			DBType:      "LevelDB",
 			Region:      "Singapore",
 			Domain:      "database.nileex.io",
-			Description: "Fullnode/Lite Fullnode",
+			DownloadURL: "https://nile-snapshots.s3-accelerate.amazonaws.com",
+			Description: "Fullnode/Lite Fullnode (About 30G on 24-Jan-2025)",
 		},
 	},
 }

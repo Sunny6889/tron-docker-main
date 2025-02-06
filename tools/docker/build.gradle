@@ -96,7 +96,7 @@ task sourceDocker {
 def isInterimBuild(dockerBuildVersion) {
     return (dockerBuildVersion ==~ /.*-SNAPSHOT/) || (dockerBuildVersion ==~ /.*-alpha/)
             || (dockerBuildVersion ==~ /.*-beta/) || (dockerBuildVersion ==~ /.*-RC.*/)
-            || (dockerBuildVersion ==~ /.*develop.*/)
+            || (dockerBuildVersion ==~ /.*develop.*/) || (dockerBuildVersion ==~ /.*latest/)
 }
 
 
@@ -127,14 +127,6 @@ task dockerUpload {
     }
     def image = "${dockerImageName}:${dockerBuildVersion}"
     def additionalTags = []
-
-    if (project.hasProperty('branch') && project.property('branch') == 'main') {
-        additionalTags.add('develop')
-    }
-
-    if (!isInterimBuild(dockerBuildVersion)) {
-        additionalTags.add(dockerBuildVersion.split(/\./)[0..1].join('.'))
-    }
 
     doLast {
         exec {

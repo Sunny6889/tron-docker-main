@@ -64,7 +64,7 @@ func CheckDomain(domain string) bool {
 	return has
 }
 
-func IsHttps(domain string) bool {
+func IsNile(domain string) bool {
 	has := false
 
 	for mtype, items := range config.SnapshotDataSource {

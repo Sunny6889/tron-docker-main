@@ -50,7 +50,6 @@ Note:
 		if _, err := utils.DownloadFileWithProgress(downloadURL, downloadMD5File); err != nil {
 			fmt.Println("Error:", err)
 		}
-
 	},
 }
 

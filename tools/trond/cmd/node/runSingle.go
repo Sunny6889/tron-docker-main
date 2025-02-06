@@ -22,11 +22,9 @@ The following files are required:
       nile network: ../../conf/nile_net_config.conf
       private network: ../../conf/private_net_config_*.conf
   - Docker compose file(by default, these exist in the current repository directory)
-      single Fullnode
         main network: ../../single_node/docker-compose.fullnode.main.yaml
         nile network: ../../single_node/docker-compose.fullnode.nile.yaml
         private network: ../../single_node/docker-compose.witness.private.yaml
-      multiple nodes: ../../private_net/docker-compose.private.yaml
   - Log directory: ./logs`,
 	Run: func(cmd *cobra.Command, args []string) {
 		service, _ := cmd.Flags().GetString("service")
@@ -50,7 +48,7 @@ The following files are required:
 		if yes, isDir := utils.PathExists(dockerComposeFile); !yes || isDir {
 			fmt.Println("Error: file not exists or not a file:", dockerComposeFile)
 		}
-		if err := utils.RunServiceOnce(dockerComposeFile, service); err != nil {
+		if err := utils.RunComposeServiceOnce(dockerComposeFile, service); err != nil {
 			fmt.Println("Error: ", err)
 		}
 	},

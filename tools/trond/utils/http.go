@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/schollz/progressbar/v3"
+	"github.com/tronprotocol/tron-docker/config"
 	"golang.org/x/net/html"
 )
 
@@ -101,17 +102,27 @@ func extractBackupPart(rawURL string) (string, error) {
 	return backupPart, nil
 }
 
+func ShowSnapshotListForNile() error {
+	lists := generateDateList()
+
+	fmt.Println("Available backup:")
+	for _, v := range lists {
+		fmt.Println("  backup" + v)
+	}
+	return nil
+}
+
 func ShowSnapshotList(domain string, https bool) error {
 	webURL := "http://" + domain
 	if https {
 		webURL = "https://" + domain
 	}
 
-	links, err := extractLinks(webURL)
+	links, err := fetchAndExtractLinks(webURL)
 	if err != nil {
 		return err
 	}
-	fmt.Println(webURL)
+
 	fmt.Println("Available backup:")
 	for _, link := range links {
 		fmt.Println(link)
@@ -308,8 +319,14 @@ func DownloadFileWithProgress(fileURL, md5FilePath string) (string, error) {
 
 func GenerateSnapshotDownloadURL(domain, backup, nType string) string {
 	if nType == "full" {
+		if IsNile(domain) {
+			return config.SnapshotDataSource[config.STNileLevel][domain].DownloadURL + backup + "/FullNode_output-directory.tgz"
+		}
 		return "http://" + domain + "/" + backup + "/FullNode_output-directory.tgz"
 	} else if nType == "lite" {
+		if IsNile(domain) {
+			return config.SnapshotDataSource[config.STNileLevel][domain].DownloadURL + backup + "/LiteFullNode_output-directory.tgz"
+		}
 		return "http://" + domain + "/" + backup + "/LiteFullNode_output-directory.tgz"
 	}
 	return ""
@@ -317,8 +334,14 @@ func GenerateSnapshotDownloadURL(domain, backup, nType string) string {
 
 func GenerateSnapshotMD5DownloadURL(domain, backup, nType string) string {
 	if nType == "full" {
+		if IsNile(domain) {
+			return config.SnapshotDataSource[config.STNileLevel][domain].DownloadURL + backup + "/FullNode_output-directory.tgz.md5sum"
+		}
 		return "http://" + domain + "/" + backup + "/FullNode_output-directory.tgz.md5sum"
 	} else if nType == "lite" {
+		if IsNile(domain) {
+			return config.SnapshotDataSource[config.STNileLevel][domain].DownloadURL + backup + "/LiteFullNode_output-directory.tgz.md5sum"
+		}
 		return "http://" + domain + "/" + backup + "/LiteFullNode_output-directory.tgz.md5sum"
 	}
 	return ""
