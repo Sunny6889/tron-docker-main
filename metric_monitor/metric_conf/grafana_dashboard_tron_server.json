@@ -1479,17 +1479,22 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "exemplar": true,
-          "expr": "  rate(tron:block_generate_latency_seconds_sum{group=`$group`,instance=`$instance`,sync =\"false\"}[$__interval])\n/\n  rate(tron:block_generate_latency_seconds_count{group=`$group`,instance=`$instance`,sync =\"false\"}[$__interval])",
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "  rate(tron:block_generate_latency_seconds_sum{group=`$group`,instance=`$instance`}[$__interval])\n/\n  rate(tron:block_generate_latency_seconds_count{group=`$group`,instance=`$instance`}[$__interval])",
+          "format": "time_series",
           "hide": false,
-          "interval": "1m",
-          "legendFormat": "avg",
+          "interval": "12s",
+          "legendFormat": "__auto",
+          "range": true,
           "refId": "B"
         },
         {
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "histogram_quantile(0.99, sum(rate(tron:block_generate_latency_seconds_bucket{group=`$group`,instance=`$instance`,sync =\"false\"}[$__interval])) by (le))",
+          "expr": "histogram_quantile(0.99, sum(rate(tron:block_generate_latency_seconds_bucket{group=`$group`,instance=`$instance`}[$__interval])) by (le))",
           "format": "time_series",
+          "hide": false,
           "instant": false,
           "interval": "1m",
           "intervalFactor": 1,

@@ -155,7 +155,7 @@ Here is an example:
 ```
 fix(private_net): update docker-compose
 
-1. fix docker-compose container tron_node1 command paramters, add more JVM GC flags
+1. fix docker-compose container tron-node1 command paramters, add more JVM GC flags
 2. update the corresponding JVM flags explanation in README.md
 
 Closes #1234

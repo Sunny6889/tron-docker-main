@@ -12,12 +12,12 @@ scrape_configs:
     follow_redirects: true
     static_configs:
       - targets:
-          - tron_node1:9527 # use container name
+          - tron-node1:9527 # use container name
         labels:
           group: group-tron
           instance: fullnode-01
 #      - targets: # to add more fullnodes
-#          - tron_node2:9527
+#          - tron-node2:9527
 #        labels:
 #          group: group-tron
 #          instance: fullnode-01

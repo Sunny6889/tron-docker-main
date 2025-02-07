@@ -1,6 +1,6 @@
 ## Database Fork Tool
 Database fork tool can help launch a private java-tron FullNode or network based on the state of public chain database to support shadow fork testing.
-The public chain database can come from the Mainnet, Nile Testnet, or Shasta Testnet.
+The public chain database can come from the Mainnet, Nile or Shasta testnet.
 
 Database fork tool provides the ability to modify the witnesses and other related data in the database to
 implement shadow fork testing, which includes:
@@ -132,11 +132,11 @@ Launch the FullNode against the modified state. To launch the node smoothly, we 
 needSyncCheck = false
 minParticipationRate = 0
 minEffectiveConnection = 0
-node.p2p.version = 202501 // arbitrary number except for 11111(mainnet) and 20180622(testnet)
+node.p2p.version = 202501 // arbitrary number except for 11111(Mainnet) and 20180622(Nile testnet)
 ```
 *Note*: please remember to comment `node.shutdown.BlockHeight` in the config if you have modified it previously.
 
-To isolate from the mainnet and other testnets, The `node.p2p.version` can be arbitrary number different from the mainnet and testnets.
+To isolate from the Mainnet and other testnets, The `node.p2p.version` can be arbitrary number different from the Mainnet and other testnets.
 
 To produce the blocks, we also need to configure the private keys of the witness addresses in the config and run the FullNode with the `--witness` parameter, please refer [startup a fullnode that produces blocks](https://tronprotocol.github.io/documentation-en/using_javatron/installing_javatron/#startup-a-fullnode-that-produces-blocks).
 ```config
