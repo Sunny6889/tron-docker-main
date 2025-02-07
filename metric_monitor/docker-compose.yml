@@ -1,8 +1,8 @@
 version: '3.8'
 services:
-  tron_node1:
+  tron-node1:
     image: tronprotocol/java-tron:latest
-    container_name: tron_node1
+    container_name: tron-node1
     networks:
       - tron_network
     deploy:
