@@ -96,7 +96,7 @@ node.discovery = {
 Make sure only one SR witness sets `needSyncCheck = false`, while the rest of the witnesses and other fullnodes set it to `true`. This ensures that there is only one source of truth for block data.
 ```
 block = {
-  needSyncCheck = true # only one SR witness set false, the rest all false
+  needSyncCheck = true # only one SR witness set false, the rest all true
   ...
 }
 ```
