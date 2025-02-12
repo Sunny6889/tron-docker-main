@@ -20,7 +20,7 @@ Please download and install the latest version of Docker from the official Docke
 
 Then check the Docker resource settings to ensure it has at least 3GB of memory per TRON node.
 
-**Notice:** The actual memory consumption for a FullNode depends heavily on your configurations and use case. Factors such as block generation frequency, transactions per second (TPS), and external API request QPS can significantly impact memory usage. To help you get started quickly, the memory consumption under the following guidance should remain below **3GB**. However, for a TRON Mainnet Super Representative (SR) FullNode capable of supporting **2000 TPS**, the maximum memory consumption can reach up to **12GB**.
+**Notice:** The actual memory consumption for a FullNode depends heavily on your configurations and use case. Factors such as block generation frequency, transactions per second (TPS), and external API request QPS can significantly impact memory usage. To help you get started quickly, the memory consumption under the following guidance is within **3GB**. However, for a TRON Mainnet Super Representative (SR) FullNode capable of supporting **2000 TPS**, the memory resource per FullNode container should set above **16GB**.
 
 
 ## Quick-Start using Docker
