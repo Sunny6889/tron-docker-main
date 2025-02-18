@@ -146,7 +146,7 @@ func download(domain string, backup string, nType string) {
 	fmt.Println(fmt.Sprintf("Finally move the database to the corresponding network folder %s", databaseDst))
 	srcDatabase := "./output-directory/database"
 
-	// Check whether dst directory already exist, if yes, return warning let user
+	// Check whether dst directory already exist, if yes, return warning let user decide whether to continue downloading.
 	// if not exist, create directory
 	err = os.Rename(srcDatabase, databaseDst)
 	if err != nil {

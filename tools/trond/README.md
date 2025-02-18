@@ -5,7 +5,7 @@
 
 ## Prerequisites
 - Shell Environment: Required for running shell scripts.
-- Golang Build Environment: The [./build_trond.sh](../../build_trond.sh) script will attempt to install the necessary Golang environment.
+- Golang Build Environment: The [build_trond.sh](../../build_trond.sh) script will attempt to install the necessary Golang environment.
 
 ## Installation
 
@@ -48,17 +48,20 @@ It is recommended to run these commands in `tron-docker` root directory.
 First, download the latest mainnet lite fullnode snapshot from the default source (`34.143.247.77`) to the current directory:
 
 ```
-nohup ./trond snapshot download default-main &
+./trond snapshot download default-main
 ```
 
 After the download completes, the database will be extracted to `./output-directory/mainnet/database` of current directory.
+
+Notice: The snapshot is large(46G on 24-Jan-2025). It may take above 1 hour to finish. You could add `nohup` to make it continue running even after you log out of your terminal session.
+The full command will be `nohup ./trond snapshot download default-main &`
 
 #### 2. Deploy a java-tron node on Mainnet
 
 Next, start a node connecting to the Mainnet:
 
 ```
-./trond node run-single -t full-main &
+./trond node run-single -t full-main
 ```
 
 This command will trigger execution of the [docker-compose](../../single_node/docker-compose.fullnode.main.yml). It will use the database at `./output-directory/mainnet/database`.
@@ -66,11 +69,8 @@ If the directory is empty, the node will sync transaction data from the genesis 
 
 To view the node logs, you can access them at `./logs/mainnet`, or you can use the command `docker exec tron-node tail -f ./logs/tron.log`.
 
----
-
 For more detailed usage instructions, refer to the help command or the [command documentation](./docs/trond.md).
 
----
 
 ## Note
 

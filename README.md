@@ -23,15 +23,17 @@ Please ensure you have the latest versions of Docker and Docker Compose installe
 
 - **For Mac:**
   Download Docker from [Docker Desktop for Mac](https://docs.docker.com/docker-for-mac/install/).
+
   *Note: Docker Compose is included in the Docker installation package for Mac.*
 
-- **For Linux:**
-  Download and install both Docker and Docker Compose from the official websites:
-  - Docker: [Install Docker on Linux](https://docs.docker.com/desktop/setup/install/linux/)
-  - Docker Compose: [Install Docker Compose on Linux](https://docs.docker.com/compose/install/linux/)
 
-## Quick start
-To quickly start a fullnode that connect to the Mainnet, simply run:
+- **For Linux:**
+  Download and install both Docker and Docker Compose plugin from the official websites:
+  - Docker: [Install Docker on Linux](https://docs.docker.com/desktop/setup/install/linux/)
+  - Docker Compose plugin: [Install Docker Compose on Linux](https://docs.docker.com/compose/install/linux/)
+
+## Quick Start
+To quickly start a fullnode that connect to the Mainnet, simply download and run the [docker-compose](single_node/docker-compose-quick-start.yml) file, or use the following Docker command:
 ```sh
 docker run -it --name tron-node -d --memory="16g" -p 8090:8090 -p 50051:50051 tronprotocol/java-tron
 ```

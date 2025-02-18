@@ -10,6 +10,8 @@ tmp/
 target/
 logs/
 libs/
+metric_monitor/datadir
+private_net/datadir
 datadir/
 logs/
 output-directory/

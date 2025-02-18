@@ -27,7 +27,7 @@ var rootCmd = &cobra.Command{
 			# Help information for database snapshot download related command
 			$ ./trond snapshot
 
-			# Help information for Tron single FullNode deployment command
+			# Help information for TRON node deployment command
 			$ ./trond node
 		`),
 	// Uncomment the following line if your bare application
