@@ -30,7 +30,7 @@ Please ensure you have the latest versions of Docker and Docker Compose installe
 - **For Linux:**
   Download and install both Docker and Docker Compose plugin from the official websites:
   - Docker: [Install Docker on Linux](https://docs.docker.com/desktop/setup/install/linux/)
-  - Docker Compose plugin: [Install Docker Compose on Linux](https://docs.docker.com/compose/install/linux/)
+  - Docker Compose standalone: [Install Docker Compose on Linux](https://docs.docker.com/compose/install/standalone/)
 
 ## Quick Start
 To quickly start a fullnode that connect to the Mainnet, simply download and run the [docker-compose](single_node/docker-compose-quick-start.yml) file, or use the following Docker command:
