@@ -33,10 +33,18 @@ Please ensure you have the latest versions of Docker and Docker Compose installe
   - Docker Compose standalone: [Install Docker Compose on Linux](https://docs.docker.com/compose/install/standalone/)
 
 ## Quick Start
-To quickly start a fullnode that connect to the Mainnet, simply download and run the [docker-compose](single_node/docker-compose-quick-start.yml) file, or use the following Docker command:
+To quickly start a java-tron node that connects to the Mainnet, simply use the following Docker command:
+
 ```sh
 docker run -it --name tron-node -d --memory="16g" -p 8090:8090 -p 50051:50051 tronprotocol/java-tron
 ```
+
+Alternatively, you can download and run the [docker-compose](single_node/docker-compose-quick-start.yml) file using the command:
+
+```sh
+docker-compose -f docker-compose-quick-start.yml up
+```
+
 Once the FullNode starts, it will begin to sync blocks with Mainnet from the genesis block. You can use the following API request to check the current synced blocks:
 ```
 Request:
