@@ -14,7 +14,8 @@ trond docker build [flags]
 ### Examples
 
 ```
-# Build java-tron docker image, defualt: tronprotocol/java-tron:latest
+# Please ensure that JDK 8 is installed, as it is required to execute the commands below.
+# Build java-tron docker image, default: tronprotocol/java-tron:latest.
 $ ./trond docker build
 
 # Build java-tron docker image with specified org, artifact and version
