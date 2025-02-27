@@ -27,15 +27,25 @@ This section introduce the steps of setting up Prometheus remote write with Than
 git clone https://github.com/tronprotocol/tron-docker.git
 cd tron-docker/metric_monitor/push_mode
 ```
+### Main Components
+Before we start, let's introduce the main components of the monitoring system:
+- **java-tron**: TRON node service
+- **Prometheus**: Monitoring service that collects metrics from java-tron node
+- **Thanos Receive**: A component of Thanos that receives data from Prometheus’s remote write write-ahead log, exposes it, and/or uploads it to cloud storage.
+- **Thanos Query**: A component of Thanos that implements Prometheus’s v1 API to aggregate data from the underlying components.
+- **Grafana**: Visualization service that retrieves metrics from **Thanos Query** to provide visualized insights and alerts.
 
-### Step 1: Set up TRON and Prometheus services
+### Step 1: Set up Thanos Receive
+
+
+### Step 2: Set up TRON and Prometheus services
 Run below command to start java-tron and Prometheus services:
 ```sh
 docker-compose -f docker-compose-tron-prometheus.yml up -d
 ```
 Review the [docker-compose-tron-prometheus.yml](docker-compose-tron-prometheus.yml) file, the command explanation of java-tron service can be found in the [README](../single_node/README.md#run-the-container).
 
-Below are the key configuration for the Prometheus service that we should pay attention to:
+Below are the key configurations for the Prometheus service that we should pay attention to:
 ```
   prometheus:
     ...
@@ -55,14 +65,15 @@ Below are the key configuration for the Prometheus service that we should pay at
 #### Prometheus remote-write configuration
 
 Prometheus configuration file is set to use the local [prometheus-remote-write.yml](conf/prometheus-remote-write.yml) by volume mapping `./conf/prometheus-remote-write.yml:...` and command `--config.file=...`. It contains configuration of `scrape_configs` and `remote_write`.
+We need to fill the `url` with the IP address of the Thanos receive service. Check the official documentation for [remote_write](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) other default configurations.
 
-
+```yaml
+remote_write:
+  - url: http://172.17.0.1:10908/api/v1/receive # change to the actual IP address of the Thanos receive service
+```
 **Prometheus other configurations**
 The second volume mounts a local directory (./prometheus_data) into the container at /prometheus. This directory is used by Prometheus to store its time-series database (TSDB) and other data.
 
-
-### Step 2: Set up Thanos Receive
-Receiver: receives data from Prometheus’s remote write write-ahead log, exposes it, and/or uploads it to cloud storage.
 
 ### step 3: Set up Thanos Query, Grafana
 Querier/Query: implements Prometheus’s v1 API to aggregate data from the underlying components.
