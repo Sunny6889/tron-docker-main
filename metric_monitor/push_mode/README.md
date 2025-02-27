@@ -34,30 +34,32 @@ Run below command to start java-tron and Prometheus services:
 docker-compose -f docker-compose-tron-prometheus.yml up -d
 ```
 Review the [docker-compose-tron-prometheus.yml](docker-compose-tron-prometheus.yml) file, the command explanation of java-tron service can be found in the [README](../single_node/README.md#run-the-container).
-Below is the Prometheus service command:
+
+Below are the key configuration for the Prometheus service that we should pay attention to:
 ```
   prometheus:
-    image: quay.io/prometheus/prometheus:v2.38.0
-    container_name: prometheus
-    networks:
-      - tron_network
-    deploy:
-      resources:
-        limits:
-          memory: 1g
+    ...
     volumes:
       - ./conf/prometheus-remote-write.yml:/etc/prometheus/prometheus.yml
       - ./prometheus_data:/prometheus
     command:
-      - --config.file=/etc/prometheus/prometheus.yml
+      - --config.file=/etc/prometheus/prometheus.yml # the default path to the configuration file
       - --storage.tsdb.path=/prometheus # the path where Prometheus stores its metric database
       - --storage.tsdb.retention.time=30d # takes about 1GB of disk space per month
       - --storage.tsdb.max-block-duration=30m #the maximum duration for a block of time series data that can be stored in the time series database (TSDB)
       - --storage.tsdb.min-block-duration=30m
       - --web.enable-lifecycle # tell Prometheus to expose the /-/reload HTTP endpoints
       - --web.enable-admin-api
-    restart: unless-stopped
+    ...
 ```
+#### Prometheus remote-write configuration
+
+Prometheus configuration file is set to use the local [prometheus-remote-write.yml](conf/prometheus-remote-write.yml) by volume mapping `./conf/prometheus-remote-write.yml:...` and command `--config.file=...`. It contains configuration of `scrape_configs` and `remote_write`.
+
+
+**Prometheus other configurations**
+The second volume mounts a local directory (./prometheus_data) into the container at /prometheus. This directory is used by Prometheus to store its time-series database (TSDB) and other data.
+
 
 ### Step 2: Set up Thanos Receive
 Receiver: receives data from Prometheus’s remote write write-ahead log, exposes it, and/or uploads it to cloud storage.
