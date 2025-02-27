@@ -1,0 +1,7 @@
+type: S3
+config:
+  bucket: "test-thanos-sunny-001"
+  endpoint: "minio:9000"
+  insecure: true
+  access_key: "minio"
+  secret_key: "melovethanos"

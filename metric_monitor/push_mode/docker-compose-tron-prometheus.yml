@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  tron-node1:
+    image: tronprotocol/java-tron:latest
+    container_name: tron-node1
+    networks:
+      - tron_network
+    deploy:
+      resources:
+        limits:
+          memory: 16g
+    ports:
+      - "8090:8090" # for external http API request
+      - "9527:9527" # used for metric API
+    volumes:
+      - ../../conf:/java-tron/conf # ensure the config path is correct, make sure the config file metric is enabled
+      - ../../datadir:/java-tron/data # mount a local directory to make the blocks data persistent.
+      - ./logs:/java-tron/logs
+    command: >
+      -jvm "{-Xmx12g -Xmn2g -XX:+UseConcMarkSweepGC -XX:+PrintGC -Xloggc:./logs/gc.log }" -c ./conf/main_net_config.conf
+
+  prometheus:
+    image: quay.io/prometheus/prometheus:v2.38.0
+    container_name: prometheus
+    networks:
+      - tron_network
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+    volumes:
+      - ./conf/prometheus-remote-write.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus_data:/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus # the path where Prometheus stores its metric database
+      - --storage.tsdb.retention.time=30d # takes about 1GB of disk space per month
+      - --storage.tsdb.max-block-duration=30m #the maximum duration for a block of time series data that can be stored in the time series database (TSDB)
+      - --storage.tsdb.min-block-duration=30m
+      - --web.enable-lifecycle # tell Prometheus to expose the /-/reload HTTP endpoints
+      - --web.enable-admin-api
+    restart: unless-stopped
+
+networks:
+  tron_network:
+    driver: bridge
