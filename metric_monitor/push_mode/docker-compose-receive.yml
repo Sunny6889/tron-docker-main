@@ -16,6 +16,7 @@ services:
     command:
       - "receive"
       - "--tsdb.path=/receive/data"
+      - "--tsdb.retention=15d" # How long to retain raw samples on local storage.
       - "--grpc-address=0.0.0.0:10907"
       - "--http-address=0.0.0.0:10909"
       - "--label=receive_replica=\"0\""
