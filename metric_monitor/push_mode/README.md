@@ -28,8 +28,8 @@ git clone https://github.com/tronprotocol/tron-docker.git
 cd tron-docker/metric_monitor/push_mode
 ```
 ### Main Components
-Before we start, let's introduce the main components of the monitoring system:
-- **TRON FullNode**: java-tron service
+Before we start, let's list the main components of the monitoring system:
+- **TRON FullNode**: TRON FullNode service with metrics enabled
 - **Prometheus**: Monitoring service that collects metrics from java-tron node
 - **Thanos Receive**: A component of Thanos that receives data from Prometheus’s remote write write-ahead log, exposes it, and/or uploads it to cloud storage.
 - **Thanos Query**: A component of Thanos that implements Prometheus’s v1 API to aggregate data from the underlying components.
