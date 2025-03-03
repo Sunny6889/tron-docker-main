@@ -11,7 +11,7 @@ There are some limitations to this approach. From a security perspective, it is 
 To address these concerns, we need to change the pull mode either from java-tron or Prometheus service to push mode. Refer to Prometheus official documentation of ["Why do you pull rather than push"](https://prometheus.io/docs/introduction/faq/#why-do-you-pull-rather-than-push) and ["When to use the Pushgateway"](https://prometheus.io/docs/practices/pushing/#when-to-use-the-pushgateway), the best practise for long-live observation target is to use Prometheus pull mode, and put java-tron and Prometheus service in the same failure domain.
 
 ### New Architecture
-Given these considerations, we will implement a push mode for the data flow from Prometheus to Grafana. Prometheus offers a remote-write feature that supports push mode, facilitating this transition. We have selected [Thanos](https://github.com/thanos-io/thanos) as an intermediate component. Thanos not only supports remote write but also provides additional features such as long-term storage, high availability, and global querying, thereby improving the overall architecture and functionality of our monitoring system.
+Given these considerations, we will implement a push mode for the data flow from Prometheus to Grafana. Prometheus offers a **remote-write** feature that supports push mode, facilitating this transition. We have selected [Thanos](https://github.com/thanos-io/thanos) as an intermediate component. Thanos not only supports remote write but also provides additional features such as long-term storage, high availability, and global querying, thereby improving the overall architecture and functionality of our monitoring system.
 
 Below is the new architecture of the monitoring system. We will introduce how to set up the Prometheus remote-write feature and Thanos in the following sections.
 ![image](../../images/metric_push_with_thanos.png)
@@ -36,7 +36,45 @@ Before we start, let's list the main components of the monitoring system:
 - **Grafana**: Visualization service that retrieves metrics from **Thanos Query** to provide visualized insights and alerts.
 
 ### Step 1: Set up Thanos Receive
+As we can see from the above architecture, Thanos Receive is the intermediate component we need to set up first. The [Thanos Receive](https://thanos.io/tip/components/receive.md/#receiver) command implements the Prometheus Remote Write API. It builds on top of existing Prometheus TSDB and retains its usefulness while extending its functionality with long-term-storage, horizontal scalability, and downsampling.
+Run below command to start Thanos Receive service and a minio service for long-term metric storage:
+```sh
+docker-compose -f docker-compose-receive.yml up -d
+```
 
+Check the [docker-compose-receive.yml](docker-compose-receive.yml) file:
+```aiignore
+services:
+  thanos-receive:
+    image: quay.io/thanos/thanos:v0.33.0
+    user: root
+    container_name: thanos-receive
+    networks:
+      - tron_network
+    volumes:
+      - ./receive-data:/receive/data
+      - ./conf:/receive
+    ports:
+      - "10907:10907"
+      - "10908:10908"
+    command:
+      - "receive"
+      - "--tsdb.path=/receive/data"
+      - "--tsdb.retention=15d" # How long to retain raw samples on local storage.
+      - "--grpc-address=0.0.0.0:10907"
+      - "--http-address=0.0.0.0:10909"
+      - "--label=receive_replica=\"0\""
+      - "--label=receive_cluster=\"java-tron-mainnet\""
+      - "--remote-write.address=0.0.0.0:10908"
+      - "--objstore.config-file=/receive/bucket_storage_minio.yml"
+```
+- The `volumes: - ./receive-data:/receive/data:` set the path where Thanos Receive stores its metric database.
+- The `volumes: - ./conf:/receive` combine with `command: - "--objstore.config-file=/receive/bucket_storage_minio.yml"` specifies the configuration file for long-term storage or bucket. You can see [bucket_storage_minio.yml](conf/bucket_storage_minio.yml) contains the configuration to connect a minio bucket, similar with a S3 bucket.
+  - Notice if you don't set `--objstore.config-file`, the metric data will be stored locally. And the flag `--tsdb.retention=15d` will determine how long to retain raw samples on local storage. As observed, it takes about 0.5GB of disk space per month for one java-tron(v4.7.6) FullNode connecting Mainnet.
+- The `ports` combined with flags `--grpc-address, --http-address` expose the ports for Thanos Query service to access.
+
+
+For more flags explanation and default value can be found in official [Thanos documentation](https://thanos.io/tip/components/receive.md/#flags).
 
 ### Step 2: Set up TRON and Prometheus services
 Run below command to start java-tron and Prometheus services:
@@ -70,6 +108,11 @@ We need to fill the `url` with the IP address of the Thanos receive service. Che
 ```yaml
 remote_write:
   - url: http://172.17.0.1:10908/api/v1/receive # change to the actual IP address of the Thanos receive service
+    # other configurations
+    metadata_config:
+      send: true # Whether to send metadata information about the metric to the remote storage.
+      send_interval: 3s # How frequently metric metadata is sent to remote storage.
+      max_samples_per_send: 500
 ```
 **Prometheus other configurations**
 The second volume mounts a local directory (./prometheus_data) into the container at /prometheus. This directory is used by Prometheus to store its time-series database (TSDB) and other data.
