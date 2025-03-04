@@ -27,7 +27,7 @@ This section introduces the steps of setting up Prometheus remote write with Tha
 git clone https://github.com/tronprotocol/tron-docker.git
 cd tron-docker/metric_monitor/push_mode
 ```
-### Main Components
+### Main components
 Before we start, let's list the main components of the monitoring system:
 - **TRON FullNode**: TRON FullNode service with metrics enabled
 - **Prometheus**: Monitoring service that collects metrics from java-tron node
@@ -66,8 +66,8 @@ Core configuration in [docker-compose.yml](tmp/docker-compose.yml):
       - "--label=receive_cluster=\"java-tron-mainnet\""
       - "--objstore.config-file=/receive/bucket_storage_minio.yml"
 ```
-#### Key Configuration Elements:
-##### 1. Storage Configuration
+#### Key configuration elements:
+##### 1. Storage configuration
 - Local Storage:
 `./receive-data:/receive/data` maps host directory for metric TSDB storage.
   - Retention Policy: `--tsdb.retention=15d` auto-purges data older than 15 days. As observed, it takes about 0.5GB of Receive disk space per month for one java-tron(v4.7.6) FullNode connecting Mainnet.
@@ -77,13 +77,13 @@ Core configuration in [docker-compose.yml](tmp/docker-compose.yml):
   - Thanos Receive uploads TSDB blocks to an object storage bucket every 2 hours by default.
   - Fallback Behavior: Omitting this flag keeps data local-only.
 
-##### 2. Network Configuration
+##### 2. Network configuration
 - Remote Write `--remote-write.address=0.0.0.0:10908`: Receives Prometheus metrics. Prometheus instances are configured to continuously write metrics to it.
 - Thanos Receive exposes the StoreAPI so that Thanos Query can query received metrics in **real-time**.
   - The `ports` combined with flags `--grpc-address, --http-address` expose the ports for Thanos Query service.
 - Security Note: `0.0.0.0` means it accepts all incoming connections from any IP address. For production, consider restricting access to specific IP addresses.
 
-##### 3. Operational Parameters
+##### 3. Operational parameters
 
 - `--label=receive_replica=.` and `--label=receive_cluster=.`: Cluster labels ensure unique identification in Thanos ecosystem. You could find these labels in Grafana dashboards. You could add any key value pairs as labels.
 
@@ -115,7 +115,7 @@ Below are the core configurations for Prometheus service:
     - "--web.enable-lifecycle" # tell Prometheus to expose the /-/reload HTTP endpoints
     - "--web.enable-admin-api"
 ```
-#### Key Configuration Elements:
+#### Key configuration elements:
 ##### 1. Storage configurations
 - The volumes command `- ./prometheus_data:/prometheus` mounts a local directory used by Prometheus to store metrics data.
   - Although in this case, we use Prometheus with remote-write, it also stores metrics data locally. Through http://localhost:9090/, you can check the running status of the Prometheus service and observe targets.
@@ -161,7 +161,7 @@ You can use it in Grafana dashboards using label-based filtering (e.g., `{monito
 
 Notice: You could add multiple Prometheus services with remote-write to the same Receive service, just make sure the `external_labels` are unique.
 
-### step 3: Set up Thanos Query
+### Step 3: Set up Thanos Query
 So far, we have Thanos Receive、Prometheus and java-tron services running. java-tron as the origin produces metrics, then pulled by Prometheus service, which then keeping push metrics to Thanos Receive.
 As Grafana cannot directly query Thanos Receive, we need Thanos Query that implements Prometheus’s v1 API to aggregate data from the underlying components.
 
@@ -201,7 +201,15 @@ Follow the same instruction as [Import Dashboard](../README.md#import-dashboard)
 Then you can play with it with different Thanos Receive/Query, Prometheus configurations.
 
 
-## Questions & Troubleshooting
-This guidance consists of tested solutions that fulfill specific security requirements.
-If these configurations don't address your customized monitoring needs, please refer to the [official Thanos documentation](https://thanos.io/tip/thanos/quick-tutorial.md/) for more detailed configuration options.
-Should you encounter any challenges during implementation, please raise issue in [GitHub](https://github.com/tronprotocol/tron-docker/issues) following the template guidance.
+## Troubleshooting
+
+The commands provided above only tested on Linux and macOS. If you encounter a `KeyError: 'ContainerConfig'` while running on Linux, it may be due to an existing image with the same container name. To resolve this, remove the previously created image and try again. You can list all existing Docker containers by running:
+```bash
+docker ps -a
+```
+
+For other challenges during implementation, please raise an issue on [GitHub](https://github.com/tronprotocol/tron-docker/issues) following the provided template guidance.
+
+## At the end
+
+This guide includes tested solutions that meet specific security requirements. If these configurations do not address your customized monitoring needs, please refer to the [official Thanos documentation](https://thanos.io/tip/thanos/quick-tutorial.md/) for more detailed configuration options.
