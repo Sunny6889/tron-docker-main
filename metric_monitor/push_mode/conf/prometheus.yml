@@ -15,7 +15,7 @@ scrape_configs:
     follow_redirects: true
     static_configs:
       - targets:
-          - tron-node1:9527
+          - tron-node:9527
         labels:
           group: group-tron
           instance: fullnode-01

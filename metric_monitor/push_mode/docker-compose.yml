@@ -1,0 +1,120 @@
+version: '3.8'
+services:
+  tron-node:
+    image: tronprotocol/java-tron:latest
+    container_name: tron-node
+    user: root
+    networks:
+      - tron_network
+    deploy:
+      resources:
+        limits:
+          memory: 16g
+    ports:
+      - "8090:8090" # for external http API request
+      - "9527:9527" # used for metric API
+    volumes:
+      - ../../conf:/java-tron/conf # ensure the config path is correct, make sure the config file metric is enabled
+      - ../../datadir:/java-tron/data # mount a local directory to make the block data persistent.
+      - ./logs:/java-tron/logs
+    command: >
+      -jvm "{-Xmx12g -Xmn2g -XX:+UseConcMarkSweepGC -XX:+PrintGC -Xloggc:./logs/gc.log }" -c ./conf/main_net_config.conf
+
+  prometheus:
+    image: quay.io/prometheus/prometheus:v2.38.0
+    container_name: prometheus
+    user: root
+    networks:
+      - tron_network
+    ports:
+      - "9090:9090" # used for local query metrics
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+    volumes:
+      - ./conf/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus_data:/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml # the default path to the configuration file
+      - --storage.tsdb.path=/prometheus # the path where Prometheus stores its metric database
+      - --storage.tsdb.retention.time=30d # takes about 1GB of disk space per month
+      - --storage.tsdb.max-block-duration=30m #the maximum duration for a block of time series data that can be stored in the time series database (TSDB)
+      - --storage.tsdb.min-block-duration=30m
+      - --web.enable-lifecycle # tell Prometheus to expose the /-/reload HTTP endpoints
+      - --web.enable-admin-api
+    restart: unless-stopped
+
+  thanos-receive:
+    image: quay.io/thanos/thanos:v0.33.0
+    user: root
+    container_name: thanos-receive
+    networks:
+      - tron_network
+    volumes:
+      - ./receive-data:/receive/data
+      - ./conf:/receive
+    ports:
+      - "10907:10907"
+      - "10908:10908"
+      - "10909:10909"
+    command:
+      - "receive"
+      - "--tsdb.path=/receive/data"
+      - "--tsdb.retention=15d" # How long to retain raw samples on local storage.
+      - "--grpc-address=0.0.0.0:10907"
+      - "--http-address=0.0.0.0:10909"
+      - "--remote-write.address=0.0.0.0:10908"
+      - "--label=receive_replica=\"0\""
+      - "--label=receive_cluster=\"java-tron-mainnet\""
+      - "--objstore.config-file=/receive/bucket_storage_minio.yml"
+    restart: unless-stopped
+
+  minio: # about 5G of disk space for 1 year java-tron metrics, java-tron version xxx
+    image: minio/minio:RELEASE.2019-01-31T00-31-19Z
+    container_name: minio
+    user: root
+    networks:
+      - tron_network
+    restart: always  # Optional: Restart policy
+    ports:
+      - "9000:9000"  # Map port 9000 on the host to port 9000 in the container
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: melovethanos
+    volumes:
+      - ./minio:/data  # Bind mount the host directory to the container
+    command: server /data  # Command to run MinIO server
+
+  querier:
+    image: quay.io/thanos/thanos:v0.33.0
+    container_name: querier
+    user: root
+    networks:
+      - tron_network
+    ports:
+      - "9091:9091"
+    command:
+      - query
+      - --endpoint.info-timeout=30s
+      - --http-address=0.0.0.0:9091
+      - --store=thanos-receive:10907 # --store: The grpc-address of the Thanos Receive service，if Receive run remotely replace container name "thanos-receive" with the real ip
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana-oss
+    container_name: grafana
+    user: root
+    networks:
+      - tron_network
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+networks:
+  tron_network:
+    driver: bridge

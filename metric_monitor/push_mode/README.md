@@ -21,7 +21,7 @@ This section introduces the steps of setting up Prometheus remote write with Tha
 
 ### Prerequisites
 
-- Docker and Docker Compose: Installation refer [prerequisites](../../README.md#prerequisites).
+- Docker and Docker Compose: Installation refers [prerequisites](../../README.md#prerequisites).
 - Clone the tron-docker repository, then navigate to the `push_mode` directory.
 ```sh
 git clone https://github.com/tronprotocol/tron-docker.git
@@ -40,10 +40,10 @@ As we can see from the above architecture, Thanos Receive is the intermediate co
 
 Run below command to start Thanos Receive service and a minio service for long-term metric storage:
 ```sh
-docker-compose -f docker-compose-receive.yml up -d
+docker-compose up -d thanos-receive
 ```
 
-Core configuration in [docker-compose-receive.yml](docker-compose-receive.yml):
+Core configuration in [docker-compose-receive.yml](tmp/docker-compose-receive.yml):
 ```
   thanos-receive:
     ...
@@ -94,6 +94,8 @@ For more flags explanation and default value can be found in official [Thanos do
 ### Step 2: Set up TRON and Prometheus services
 Run below command to start java-tron and Prometheus services:
 ```sh
+docker-compose up -d tron-node prometheus
+```
 docker-compose -f docker-compose-tron-prometheus.yml up -d
 ```
 Review the [docker-compose-tron-prometheus.yml](docker-compose-tron-prometheus.yml) file, the command explanation of java-tron service can be found in the [README](../single_node/README.md#run-the-container).
@@ -103,7 +105,7 @@ Below are the core configurations for Prometheus service:
   ports:
     - "9090:9090"  # Used for local Prometheus status check
   volumes:
-    - ./conf/prometheus-remote-write.yml:/etc/prometheus/prometheus.yml  # Main config
+    - ./conf/prometheus.yml:/etc/prometheus/prometheus.yml  # Main config
     - ./prometheus_data:/prometheus  # Persistent metric local storage
   command:
     - --config.file=/etc/prometheus/prometheus.yml
@@ -123,8 +125,7 @@ Below are the core configurations for Prometheus service:
 
 ##### 2. Prometheus remote-write configuration
 
-Prometheus configuration file is set
-to use the [prometheus-remote-write.yml](conf/prometheus-remote-write.yml) by volume mapping `./conf/prometheus-remote-write.yml:...` and flag `--config.file=...`.
+Prometheus configuration file is set to use the [prometheus.yml](conf/prometheus.yml) by volume mapping `./conf/prometheus.yml:...` and flag `--config.file=...`.
 It contains configuration of `scrape_configs` and `remote_write`.
 You need to fill the `url` with the IP address of the Thanos Receive service started at the first step.
 Check the official documentation [remote_write](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) for all configurations'
@@ -155,15 +156,53 @@ remote_write:
 The `external_labels` defined in Prometheus configuration file are propagated with all metric data to Thanos Receive.
 It uniquely identifies the Prometheus instance,
 acting as critical tracing metadata that ultimately correlates metrics to their originating java-tron node.
-You can use it in Grafana dashboards using label-based filtering (e.g., {monitor="java-tron-node1-remote-write"}).
+You can use it in Grafana dashboards using label-based filtering (e.g., `{monitor="java-tron-node1-remote-write"}`).
 
 <img src="../../images/metric_push_external_label.png" alt="Alt Text" width="680" >
 
-### step 3: Set up Thanos Query, Grafana
-So far, we have Thanos Receive、Prometheus and java-tron services running.
-java-tron as the origin produces metrics, then pulled by Prometheus service, which then keeping push metrics to Thanos Receive.
+Notice: You could add multiple Prometheus services with remote-write to the same Receive service, just make sure the `external_labels` are unique.
+
+### step 3: Set up Thanos Query
+So far, we have Thanos Receive、Prometheus and java-tron services running. java-tron as the origin produces metrics, then pulled by Prometheus service, which then keeping push metrics to Thanos Receive.
 As Grafana cannot directly query Thanos Receive, we need Thanos Query that implements Prometheus’s v1 API to aggregate data from the underlying components.
 
+Run below command to start Thanos Query service:
 ```sh
-docker-compose -f docker-compose-querier-grafana.yml up -d
+docker-compose up -d querier
 ```
+
+Below are the core configurations for Thanos Query service:
+``` yaml
+  querier:
+    ...
+    container_name: querier
+    ports:
+      - "9091:9091"
+    command:
+      - query
+      - --endpoint.info-timeout=30s
+      - --http-address=0.0.0.0:9091
+      - --store=[Thanos Receive IP]:10907 # --store: The grpc-address of the Thanos Receive service，if Receive run remotely replace container name "thanos-receive" with the real ip
+```
+It will set up Thanos Query service
+that listens to port 9091 and queries metrics from Thanos Receive service from `--store=[Thanos Receive IP]:10907`.
+Make sure the IP address is correct.
+For more complex usage, please refer to the [official Query document](https://thanos.io/tip/components/query.md/).
+
+### Step 4: Monitor through Grafana
+Run below command to start Grafana services:
+```sh
+docker-compose up -d querier
+```
+Then log in to the Grafana web UI through http://localhost:3000/. The initial username and password are both `admin`.
+Click the **Connections** on the left side of the main page and select "Data Sources" to configure Grafana data sources. Enter the ip and port of the Query service in URL with `http://[Query service IP]:9090`.
+<img src="../../images/metric_grafana_datasource_query.png" alt="Alt Text" width="680" >
+
+Follow the same instruction as [Import Dashboard](../README.md#import-dashboard) to import the dashboard.
+Then you can play with it with different Thanos Receive/Query, Prometheus configurations.
+
+
+## Questions & Troubleshooting
+The guidance provided above consists of tested solutions that fulfill specific security requirements.
+If these configurations don't address your customized monitoring needs, please refer to the [official Thanos documentation](https://thanos.io/tip/thanos/quick-tutorial.md/) for more detailed configuration options.
+Should you encounter any challenges during implementation, please raise issue in [GitHub](https://github.com/tronprotocol/tron-docker/issues) following the template guidance.
