@@ -28,21 +28,17 @@ services:
       - tron_network
     ports:
       - "9090:9090" # used for local query metrics
-    deploy:
-      resources:
-        limits:
-          memory: 1g
     volumes:
-      - ./conf/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./conf:/etc/prometheus
       - ./prometheus_data:/prometheus
     command:
-      - --config.file=/etc/prometheus/prometheus.yml # the default path to the configuration file
-      - --storage.tsdb.path=/prometheus # the path where Prometheus stores its metric database
-      - --storage.tsdb.retention.time=30d # takes about 1GB of disk space per month
-      - --storage.tsdb.max-block-duration=30m #the maximum duration for a block of time series data that can be stored in the time series database (TSDB)
-      - --storage.tsdb.min-block-duration=30m
-      - --web.enable-lifecycle # tell Prometheus to expose the /-/reload HTTP endpoints
-      - --web.enable-admin-api
+      - "--config.file=/etc/prometheus/prometheus.yml" # the default path to the configuration file
+      - "--storage.tsdb.path=/prometheus" # the path where Prometheus stores its metric database
+      - "--storage.tsdb.retention.time=30d" # takes about 1GB of disk space per month
+      - "--storage.tsdb.max-block-duration=30m" #the maximum duration for a block of time series data that can be stored in the time series database (TSDB)
+      - "--storage.tsdb.min-block-duration=30m"
+      - "--web.enable-lifecycle" # tell Prometheus to expose the /-/reload HTTP endpoints
+      - "--web.enable-admin-api"
     restart: unless-stopped
 
   thanos-receive:
@@ -98,6 +94,7 @@ services:
       - query
       - --endpoint.info-timeout=30s
       - --http-address=0.0.0.0:9091
+      - --query.replica-label=replica
       - --store=thanos-receive:10907 # --store: The grpc-address of the Thanos Receive service，if Receive run remotely replace container name "thanos-receive" with the real ip
     restart: unless-stopped
 

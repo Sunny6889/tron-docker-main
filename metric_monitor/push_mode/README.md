@@ -1,6 +1,6 @@
 # Use Prometheus Remote Write to Monitor java-tron Node
 
-In this README, we will introduce how to use Prometheus remote-write to monitor java-tron node more securely.
+In this document, we will introduce how to use Prometheus remote-write to monitor java-tron node more securely.
 
 ## Background
 The previous [README](../README.md) explains how to monitor a java-tron node using Grafana and Prometheus. It can be illustrated by the image below:
@@ -43,7 +43,7 @@ Run below command to start Thanos Receive service and a minio service for long-t
 docker-compose up -d thanos-receive
 ```
 
-Core configuration in [docker-compose-receive.yml](tmp/docker-compose-receive.yml):
+Core configuration in [docker-compose.yml](tmp/docker-compose.yml):
 ```
   thanos-receive:
     ...
@@ -96,25 +96,24 @@ Run below command to start java-tron and Prometheus services:
 ```sh
 docker-compose up -d tron-node prometheus
 ```
-docker-compose -f docker-compose-tron-prometheus.yml up -d
-```
-Review the [docker-compose-tron-prometheus.yml](docker-compose-tron-prometheus.yml) file, the command explanation of java-tron service can be found in the [README](../single_node/README.md#run-the-container).
+
+Review the [docker-compose.yml](docker-compose.yml) file, the command explanation of java-tron service can be found in the [README](../single_node/README.md#run-the-container).
 
 Below are the core configurations for Prometheus service:
 ```yaml
   ports:
     - "9090:9090"  # Used for local Prometheus status check
   volumes:
-    - ./conf/prometheus.yml:/etc/prometheus/prometheus.yml  # Main config
-    - ./prometheus_data:/prometheus  # Persistent metric local storage
+    - ./conf:/etc/prometheus
+    - ./prometheus_data:/prometheus
   command:
-    - --config.file=/etc/prometheus/prometheus.yml
-    - --storage.tsdb.path=/prometheus
-    - --storage.tsdb.retention.time=30d  # ~1GB/month storage requirement at Prometheus side
-    - --storage.tsdb.max-block-duration=30m  # TSDB block generation frequency
-    - --storage.tsdb.min-block-duration=30m
-    - --web.enable-lifecycle  # Enable config reload endpoints "/-/reload"
-    - --web.enable-admin-api  # Expose administration endpoints
+    - "--config.file=/etc/prometheus/prometheus.yml" # the default path to the configuration file
+    - "--storage.tsdb.path=/prometheus" # the path where Prometheus stores its metric database
+    - "--storage.tsdb.retention.time=30d" # takes about 1GB of disk space per month
+    - "--storage.tsdb.max-block-duration=30m" #the maximum duration for a block of time series data that can be stored in the time series database (TSDB)
+    - "--storage.tsdb.min-block-duration=30m"
+    - "--web.enable-lifecycle" # tell Prometheus to expose the /-/reload HTTP endpoints
+    - "--web.enable-admin-api"
 ```
 #### Key Configuration Elements:
 ##### 1. Storage configurations
@@ -203,6 +202,6 @@ Then you can play with it with different Thanos Receive/Query, Prometheus config
 
 
 ## Questions & Troubleshooting
-The guidance provided above consists of tested solutions that fulfill specific security requirements.
+This guidance consists of tested solutions that fulfill specific security requirements.
 If these configurations don't address your customized monitoring needs, please refer to the [official Thanos documentation](https://thanos.io/tip/thanos/quick-tutorial.md/) for more detailed configuration options.
 Should you encounter any challenges during implementation, please raise issue in [GitHub](https://github.com/tronprotocol/tron-docker/issues) following the template guidance.
