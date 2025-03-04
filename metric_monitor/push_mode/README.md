@@ -1,4 +1,4 @@
-# Use Prometheus Remote Write to Monitor java-tron Node
+# Use Prometheus Remote Write with Thanos to Monitor java-tron Node
 
 In this document, we will introduce how to use Prometheus remote-write to monitor java-tron node more securely.
 
@@ -43,7 +43,7 @@ Run below command to start Thanos Receive service and a minio service for long-t
 docker-compose up -d thanos-receive
 ```
 
-Core configuration in [docker-compose.yml](tmp/docker-compose.yml):
+Core configuration for Thanos Receive in [docker-compose.yml](tmp/docker-compose.yml):
 ```
   thanos-receive:
     ...
@@ -70,7 +70,7 @@ Core configuration in [docker-compose.yml](tmp/docker-compose.yml):
 ##### 1. Storage configuration
 - Local Storage:
 `./receive-data:/receive/data` maps host directory for metric TSDB storage.
-  - Retention Policy: `--tsdb.retention=15d` auto-purges data older than 15 days. As observed, it takes about 0.5GB of Receive disk space per month for one java-tron(v4.7.6) FullNode connecting Mainnet.
+  - Retention Policy: `--tsdb.retention=15d` auto-purges data older than 15 days. As observed, it takes about 0.5GB of disk space per month for one java-tron(v4.7.6) FullNode connecting Mainnet.
 
 - External Storage:
 `./conf:/receive` mounts configuration files. The `--objstore.config-file` flag enables long-term storage in MinIO/S3-compatible buckets. In this case it is [bucket_storage_minio.yml](conf/bucket_storage_minio.yml).
@@ -193,8 +193,8 @@ Run below command to start Grafana services:
 ```sh
 docker-compose up -d querier
 ```
-Then log in to the Grafana web UI through http://localhost:3000/. The initial username and password are both `admin`.
-Click the **Connections** on the left side of the main page and select "Data Sources" to configure Grafana data sources. Enter the ip and port of the Query service in URL with `http://[Query service IP]:9090`.
+Then log in to the Grafana web UI through http://localhost:3000/ or your host machine's IP address. The initial username and password are both `admin`.
+Click the **Connections** on the left side of the main page and select "Data Sources" to configure Grafana data sources. Enter the ip and port of the Query service in URL with `http://[Query service IP]:9091`.
 <img src="../../images/metric_grafana_datasource_query.png" alt="Alt Text" width="680" >
 
 Follow the same instruction as [Import Dashboard](../README.md#import-dashboard) to import the dashboard.
@@ -212,4 +212,4 @@ For other challenges during implementation, please raise an issue on [GitHub](ht
 
 ## At the end
 
-This guide includes tested solutions that meet specific security requirements. If these configurations do not address your customized monitoring needs, please refer to the [official Thanos documentation](https://thanos.io/tip/thanos/quick-tutorial.md/) for more detailed configuration options.
+This guide provides tested solutions that meet specific security requirements. If these configurations do not address your customized monitoring needs, you may want to consult the [official Thanos documentation](https://thanos.io/tip/thanos/quick-tutorial.md/) for more detailed configuration options. Additionally, you can engage with the community on [GitHub](https://github.com/tronprotocol/tron-docker/issues) for further assistance.
