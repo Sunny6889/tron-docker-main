@@ -29,8 +29,8 @@ cd tron-docker/metric_monitor/push_mode
 ```
 ### Main components
 Before we start, let's list the main components of the monitoring system:
-- **TRON FullNode**: TRON FullNode service with metrics enabled
-- **Prometheus**: Monitoring service that collects metrics from java-tron node
+- **TRON FullNode**: TRON FullNode service with metrics enabled.
+- **Prometheus**: Monitoring service that collects metrics from java-tron node.
 - **Thanos Receive**: A component of Thanos that receives data from Prometheus’s remote write write-ahead log, exposes it, and/or uploads it to cloud storage.
 - **Thanos Query**: A component of Thanos that implements Prometheus’s v1 API to aggregate data from the underlying components.
 - **Grafana**: Visualization service that retrieves metrics from **Thanos Query** to provide visualized insights and alerts.
@@ -89,7 +89,7 @@ Core configuration in [docker-compose.yml](tmp/docker-compose.yml):
 
 <img src="../../images/metric_pull_receive_label.png" alt="Alt Text" width="880" >
 
-For more flags explanation and default value can be found in official [Thanos documentation](https://thanos.io/tip/components/receive.md/#flags).
+For more flags explanation and default value can be found in official [Thanos Receive](https://thanos.io/tip/components/receive.md/#flags) documentation.
 
 ### Step 2: Set up TRON and Prometheus services
 Run below command to start java-tron and Prometheus services:
@@ -97,7 +97,7 @@ Run below command to start java-tron and Prometheus services:
 docker-compose up -d tron-node prometheus
 ```
 
-Review the [docker-compose.yml](docker-compose.yml) file, the command explanation of java-tron service can be found in the [README](../single_node/README.md#run-the-container).
+Review the [docker-compose.yml](docker-compose.yml) file, the command explanation of java-tron service can be found in [Run Single Node](../single_node/README.md#run-the-container).
 
 Below are the core configurations for Prometheus service:
 ```yaml
@@ -107,19 +107,19 @@ Below are the core configurations for Prometheus service:
     - ./conf:/etc/prometheus
     - ./prometheus_data:/prometheus
   command:
-    - "--config.file=/etc/prometheus/prometheus.yml" # the default path to the configuration file
-    - "--storage.tsdb.path=/prometheus" # the path where Prometheus stores its metric database
-    - "--storage.tsdb.retention.time=30d" # takes about 1GB of disk space per month
-    - "--storage.tsdb.max-block-duration=30m" #the maximum duration for a block of time series data that can be stored in the time series database (TSDB)
+    - "--config.file=/etc/prometheus/prometheus.yml" # Default path to the configuration file
+    - "--storage.tsdb.path=/prometheus" # The path where Prometheus stores its metric database
+    - "--storage.tsdb.retention.time=30d"
+    - "--storage.tsdb.max-block-duration=30m" # The maximum duration for a block of time series data that can be stored in the time series database (TSDB)
     - "--storage.tsdb.min-block-duration=30m"
-    - "--web.enable-lifecycle" # tell Prometheus to expose the /-/reload HTTP endpoints
+    - "--web.enable-lifecycle" # Makes Prometheus to expose the /-/reload HTTP endpoints
     - "--web.enable-admin-api"
 ```
 #### Key configuration elements:
 ##### 1. Storage configurations
 - The volumes command `- ./prometheus_data:/prometheus` mounts a local directory used by Prometheus to store metrics data.
   - Although in this case, we use Prometheus with remote-write, it also stores metrics data locally. Through http://localhost:9090/, you can check the running status of the Prometheus service and observe targets.
-- The `--storage.tsdb.retention.time=30d` flag specifies the retention period for the metrics data. Prometheus will automatically delete data older than 30 days.
+- The `--storage.tsdb.retention.time=30d` flag specifies the retention period for the metrics data. Prometheus will automatically delete data older than 30 days. As observed, it takes about 1GB of Receive disk space per month for one java-tron(v4.7.6) FullNode connecting Mainnet. Notice this value is larger than the space need by Thanos Receive for the same period, as there exist compact operations.
 - Other storage flags can be found in the [official documentation](https://prometheus.io/docs/prometheus/latest/storage/#operational-aspects). For a quick start, you could use the default values.
 
 ##### 2. Prometheus remote-write configuration
