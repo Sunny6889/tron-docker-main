@@ -24,6 +24,8 @@ services:
     container_name: prometheus
     networks:
       - tron_network
+    ports:
+      - "9090:9090" # used for local query metrics
     deploy:
       resources:
         limits:
