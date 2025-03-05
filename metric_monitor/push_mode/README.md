@@ -119,7 +119,7 @@ Below are the core configurations for Prometheus service:
 ##### 1. Storage configurations
 - The volumes command `- ./prometheus_data:/prometheus` mounts a local directory used by Prometheus to store metrics data.
   - Although in this case, we use Prometheus with remote-write, it also stores metrics data locally. Through http://localhost:9090/, you can check the running status of the Prometheus service and observe targets.
-- The `--storage.tsdb.retention.time=30d` flag specifies the retention period for the metrics data. Prometheus will automatically delete data older than 30 days. As observed, it takes about 1GB of Receive disk space per month for one java-tron(v4.7.6) FullNode connecting Mainnet. Notice this value is larger than the space need by Thanos Receive for the same period, as there exist compact operations.
+- The `--storage.tsdb.retention.time=30d` flag specifies the retention period for the metrics data. Prometheus will automatically delete data older than 30 days. As observed, it takes about 1GB of disk space per month for one java-tron(v4.7.6) FullNode connecting Mainnet. Notice this value is larger than the space need by Thanos Receive for the same period, as there exist compact operations.
 - Other storage flags can be found in the [official documentation](https://prometheus.io/docs/prometheus/latest/storage/#operational-aspects). For a quick start, you could use the default values.
 
 ##### 2. Prometheus remote-write configuration
