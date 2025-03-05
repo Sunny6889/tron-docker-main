@@ -197,7 +197,7 @@ Then log in to the Grafana web UI through http://localhost:3000/ or your host ma
 Click the **Connections** on the left side of the main page and select "Data Sources" to configure Grafana data sources. Enter the IP and port of the Query service in URL with `http://[Query service IP]:9091`.
 <img src="../../images/metric_grafana_datasource_query.png" alt="Alt Text" width="680" >
 
-Follow the same instruction as [Import Dashboard](../README.md#grafana-service) to import the dashboard.
+Follow the same instruction as [Import Dashboard](https://github.com/tronprotocol/tron-docker/blob/main/metric_monitor/README.md#import-dashboard) to import the dashboard.
 Then you can play with it with different Thanos Receive/Query, Prometheus configurations.
 
 ### Step 5: Clean up
