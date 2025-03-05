@@ -43,7 +43,7 @@ Run the below command to start the Thanos Receive and [Minio](https://github.com
 docker-compose up -d thanos-receive minio
 ```
 
-Core configuration for Thanos Receive in [docker-compose.yml](tmp/docker-compose.yml):
+Core configuration for Thanos Receive in [docker-compose.yml](docker-compose.yml):
 ```
   thanos-receive:
     ...
@@ -89,7 +89,7 @@ Core configuration for Thanos Receive in [docker-compose.yml](tmp/docker-compose
 
 <img src="../../images/metric_pull_receive_label.png" alt="Alt Text" width="880" >
 
-For more flags explanation and default value can be found in the official [Thanos Receive](https://thanos.io/tip/components/receive.md/#flags) documentation.
+For more flags explanation and default value can be found in the official [Thanos Receive Flags](https://thanos.io/tip/components/receive.md/#flags) documentation.
 
 ### Step 2: Set up TRON and Prometheus services
 Run the below command to start java-tron and Prometheus services:
@@ -97,7 +97,7 @@ Run the below command to start java-tron and Prometheus services:
 docker-compose up -d tron-node prometheus
 ```
 
-Review the [docker-compose.yml](docker-compose.yml) file, the command explanation of the java-tron service can be found in [Run Single Node](../single_node/README.md#run-the-container).
+Review the [docker-compose.yml](docker-compose.yml) file, the command explanation of the java-tron service can be found in [Run Single Node](../../single_node/README.md#run-the-container).
 
 Below are the core configurations for the Prometheus service:
 ```yaml
