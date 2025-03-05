@@ -15,7 +15,7 @@ services:
       - "9527:9527" # used for metric API
     volumes:
       - ../../conf:/java-tron/conf # ensure the config path is correct, make sure the config file metric is enabled
-      - ../../datadir:/java-tron/data # mount a local directory to make the block data persistent.
+      - ./datadir:/java-tron/data # mount a local directory to make the block data persistent.
       - ./logs:/java-tron/logs
     command: >
       -jvm "{-Xmx12g -Xmn2g -XX:+UseConcMarkSweepGC -XX:+PrintGC -Xloggc:./logs/gc.log }" -c ./conf/main_net_config.conf
