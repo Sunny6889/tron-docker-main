@@ -120,7 +120,7 @@ To start all available features, or you want more customized operations, navigat
 - **TRON network deployment related:**
    - **Single FullNode**: Use the [single_node](./single_node) folder.
    - **Private TRON network**: Use the [private_net](./private_net) folder.
-   - **Node monitoring**: Use the [metric_monitor](./metric_monitor) folder.
+   - **Node monitoring**: Use the [metric_monitor](./metric_monitor) folder.  We provide two solutions: one with enhanced security considerations and another with a simpler setup.
 
 - **Tools**:
    - **Gradle Docker**: Automate Docker image builds and testing. Check the [gradle docker](./tools/docker/README.md) documentation.
