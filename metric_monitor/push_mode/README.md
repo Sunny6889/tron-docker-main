@@ -203,7 +203,7 @@ Then you can play with it with different Thanos Receive/Query, Prometheus config
 ### Step 5: Clean up
 To stop and remove all or part of services, you could run below commands:
 ```sh
-docker-compose down # all services
+docker-compose down # Stop and remove all services
 docker-compose down thanos-receive # Thanos Receive service only
 docker-compose down prometheus, tron-node, querier, grafana # Multiple Services at once
 ```
