@@ -14,11 +14,23 @@ services:
       - "8090:8090" # for external http API request
       - "9527:9527" # used for metric API
     volumes:
-      - ./conf:/java-tron/conf # ensure the config path is correct, make sure the config file metric is enabled
+      - ../conf:/java-tron/conf # ensure the config path is correct, make sure the config file metric is enabled
       - ./datadir:/java-tron/data # mount a local directory to make the block data persistent.
       - ./logs:/java-tron/logs
     command: >
       -jvm "{-Xmx12g -Xmn2g -XX:+UseConcMarkSweepGC -XX:+PrintGC -Xloggc:./logs/gc.log }" -c ./conf/main_net_config.conf
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    networks:
+      - tron_network
+    volumes:
+      - ./logs:/var/log
+      - ./conf:/etc/promtail
+    command: >
+      -config.file=/etc/promtail/promtail-config.yml
+    restart: unless-stopped
 
   loki:
     image: grafana/loki:latest
@@ -30,19 +42,7 @@ services:
     volumes:
       - ./conf:/etc/loki
     command: >
-      -config.file=/etc/loki/loki-config.yaml
-    restart: unless-stopped
-
-  promtail:
-    image: grafana/promtail:latest
-    container_name: promtail
-    networks:
-      - tron_network
-    volumes:
-      - ./logs:/var/log
-      - ./conf:/etc/promtail
-    command: >
-      -config.file=/etc/promtail/config.yml
+      -config.file=/etc/loki/loki-config.yml
     restart: unless-stopped
 
   grafana:
