@@ -189,9 +189,9 @@ Make sure the IP address is correct.
 For more complex usage, please refer to the [official Query document](https://thanos.io/tip/components/query.md/).
 
 ### Step 4: Monitor through Grafana
-Run below command to start Grafana services:
+To start the Grafana service on the host machine, run the following command:
 ```sh
-docker-compose up -d querier
+docker-compose up -d grafana
 ```
 Then log in to the Grafana web UI through http://localhost:3000/ or your host machine's IP address. The initial username and password are both `admin`.
 Click the **Connections** on the left side of the main page and select "Data Sources" to configure Grafana data sources. Enter the ip and port of the Query service in URL with `http://[Query service IP]:9091`.
