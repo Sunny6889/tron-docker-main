@@ -22,6 +22,7 @@ This section introduces the steps of setting up Prometheus remote write with Tha
 ### Prerequisites
 Before starting, ensure you have:
 - Docker and Docker Compose installed (refer to [prerequisites](../../README.md#prerequisites))
+  - Make sure docker resource memory is at least 16GB, as java-tron node needs at least 12GB memory.
 - The tron-docker repository cloned locally
 ```sh
 git clone https://github.com/tronprotocol/tron-docker.git
