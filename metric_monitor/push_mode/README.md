@@ -200,6 +200,13 @@ Click the **Connections** on the left side of the main page and select "Data Sou
 Follow the same instruction as [Import Dashboard](../README.md#import-dashboard) to import the dashboard.
 Then you can play with it with different Thanos Receive/Query, Prometheus configurations.
 
+### Step 5: Clean up
+To stop and remove all or part of services, you could run below commands:
+```sh
+docker-compose down # all services
+docker-compose down thanos-receive # Thanos Receive service only
+docker-compose down prometheus, tron-node, querier, grafana # Multiple Services at once
+```
 
 ## Troubleshooting
 
