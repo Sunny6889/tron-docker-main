@@ -38,9 +38,9 @@ Before we start, let's list the main components of the monitoring system:
 ### Step 1: Set up Thanos Receive
 As we can see from the above architecture, Thanos Receive is the intermediate component we need to set up first. The [Thanos Receive](https://thanos.io/tip/components/receive.md/#receiver) service implements the Prometheus Remote Write API. It builds on top of existing Prometheus TSDB and retains its usefulness while extending its functionality with long-term-storage, horizontal scalability, and downsampling.
 
-Run below command to start Thanos Receive service and a minio service for long-term metric storage:
+Run below command to start the Thanos Receive and [Minio](https://github.com/minio/minio) service for long-term metric storage:
 ```sh
-docker-compose up -d thanos-receive
+docker-compose up -d thanos-receive minio
 ```
 
 Core configuration for Thanos Receive in [docker-compose.yml](tmp/docker-compose.yml):
