@@ -194,7 +194,7 @@ To start the Grafana service on the host machine, run the following command:
 docker-compose up -d grafana
 ```
 Then log in to the Grafana web UI through http://localhost:3000/ or your host machine's IP address. The initial username and password are both `admin`.
-Click the **Connections** on the left side of the main page and select "Data Sources" to configure Grafana data sources. Enter the IP and port of the Query service in URL with `http://[Query service IP]:9091`.
+Click the **Connections** on the left side of the main page and select Prometheus as datasource. Enter the IP and port of the Query service in URL with `http://[Query service IP]:9091`.
 <img src="../../images/metric_grafana_datasource_query.png" alt="Alt Text" width="680" >
 
 Follow the same instruction as [Import Dashboard](https://github.com/tronprotocol/tron-docker/blob/main/metric_monitor/README.md#import-dashboard) to import the dashboard.
@@ -227,7 +227,8 @@ docker-compose down prometheus, tron-node, querier, grafana # Multiple Services 
   docker-compose logs [service-name]
   ```
 
-- Ensure all IP addresses are correctly configured in the compose file
+- Ensure all IP addresses are correctly configured in the docker-compose file
+- Ensure all exposed ports are accessible from external services
 
 3. **Storage Issues**
 

@@ -11,7 +11,7 @@ For Docker and Docker Compose installation refer [prerequisites](../README.md#pr
 Then check the Docker resource settings to ensure it has at least 16GB of memory per FullNode container.
 
 ## Quick start
-Download the `tron-docker` repository, enter the `metric` directory, and start the services defined in [docker-compose.yml](./docker-compose.yml) using the following command:
+Download the `tron-docker` repository, enter the [metric_monitor](./) directory, and start the services defined in [docker-compose.yml](./docker-compose.yml) using the following command:
 
 ```sh
 docker-compose up -d
@@ -46,18 +46,20 @@ If you want to monitor more nodes, simply add more targets following the same fo
 ### Grafana service
 After startup, you can log in to the Grafana web UI through [http://localhost:3000/](http://localhost:3000/). The initial username and password are both `admin`. After logging in, change the password according to the prompts, and then you can enter the main interface.
 
-Click the **Connections** on the left side of the main page and select "Data Sources" to configure Grafana data sources. Enter the ip and port of the prometheus service in URL with `http://prometheus:9090`.
+Click the **Connections** on the left side of the main page and select "Data Sources" to configure Grafana data sources.
+Choose Prometheus as datasource.
+Enter the ip and port of the prometheus service in URL with `http://prometheus:9090`.
 ![image](../images/grafana_data_source.png)
 
 #### Import dashboard
 For the convenience of java-tron node deployers, the TRON community provides a comprehensive dashboard configuration file [grafana_dashboard_tron_server.json](metric_conf/grafana_dashboard_tron_server.json).
-Click the Grafana dashboards icon on the left, then select "New" and "Import", then click "Upload JSON file" to import the downloaded dashboard configuration file:
+Click the Grafana dashboards icon on the left, then select "New" and "Import", then click "Upload JSON file" to import the downloaded dashboard configuration file. Choose the datasource you just connected.
 ![image](../images/grafana_dashboard.png)
 
 Then you can see the following monitors displaying the running status of the nodes in real time:
 ![image](../images/grafana_dashboard_monitoring.png)
 
-Below, we will introduce all supported metrics to facilitate customizing your dashboard.
+If you need to deploy Grafana on a remote server or isolate java-tron node, please refer to the document [Use Prometheus Remote Write with Thanos to Monitor java-tron Node](./push_mode/README.md).
 
 ## All metrics
 As you can see from above Grafana dashboard or http://localhost:9527/metrics, the available metrics are categorized into the following:
