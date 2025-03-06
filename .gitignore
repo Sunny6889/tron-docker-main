@@ -31,3 +31,4 @@ go1.*
 /metric_monitor/push_mode/receive-data/
 /metric_monitor/push_mode/minio/
 /metric_monitor/push_mode/prometheus_data/
+/logs_monitor/minio/

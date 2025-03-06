@@ -18,7 +18,7 @@ services:
       - ./datadir:/java-tron/data # mount a local directory to make the block data persistent.
       - ./logs:/java-tron/logs
     command: >
-      -jvm "{-Xmx12g -Xmn2g -XX:+UseConcMarkSweepGC -XX:+PrintGC -Xloggc:./logs/gc.log }" -c ./conf/main_net_config.conf
+      -jvm "{-Xmx12g -Xmn2g -XX:+UseConcMarkSweepGC -XX:+PrintGC -Xloggc:./logs/gc.log }" -c ./conf/main_net_config.conf -d /java-tron/data
 
   prometheus:
     image: quay.io/prometheus/prometheus:v2.38.0
