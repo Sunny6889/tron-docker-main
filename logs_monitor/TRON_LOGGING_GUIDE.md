@@ -5,7 +5,7 @@ In general java-tron will generate logs into:
 - `./logs/tron.log`
 - `./logs/db/db.log`
 
-Notice here all mentioned file paths are relative to the java-tron root directory.
+Notice here all mentioned file paths are relative to the java-tron service root directory.
 
 Below is an explanation of what logs will be captured in `tron.log`, what will be captured in `db.log`, and what will not be captured in any log file.
 
