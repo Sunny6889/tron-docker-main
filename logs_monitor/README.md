@@ -13,3 +13,9 @@ The key benefits of using Loki with Grafana include:
 In the following sections, we will guide you through the java-tron log system setup process with Loki and Grafana, and demonstrate how to configure alerts based on log data to ensure the health and performance of your services.
 
 ## Prerequisites
+
+java-tron has configured to output all its logs to `tron.log` file
+
+## TroubleShooting
+1. If your java-tron node exits unexpectedly but the `tron.log` file does not give you any clue or there is no error message.
+   - One possible reason is that the node is killed by the OOM killer. You could verify it by check the docker exit status using command `docker ps -a`. If the exit status is 137, it means the container is killed by the OOM killer. You could also check the `gc.log` files to see if there are any Full GC logs. If there are many Full GC logs, it means the JVM is running out of memory and the OOM killer may kill the container. Make sure each java-tron service has at least 16GB memory

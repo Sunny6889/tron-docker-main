@@ -33,7 +33,7 @@ services:
     restart: unless-stopped
 
   loki:
-    image: grafana/loki:latest
+    image: grafana/loki:3.4.1
     container_name: loki
     user: root
     networks:
@@ -43,7 +43,7 @@ services:
     volumes:
       - ./conf:/etc/loki
     command: >
-      -config.file=/etc/loki/loki-config.yml
+      -config.file=/etc/loki/loki-minio.yml
       -config.expand-env=true
     restart: unless-stopped
 
