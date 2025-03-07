@@ -23,11 +23,13 @@ services:
   promtail:
     image: grafana/promtail:latest
     container_name: promtail
+    user: root
     networks:
       - tron_network
     volumes:
       - ./logs:/var/log
       - ./conf:/etc/promtail
+      - ./promtail-data:/cache  # Add this line to map Promtail's local data to the host, important!
     command: >
       -config.file=/etc/promtail/promtail-config.yml
     restart: unless-stopped
@@ -42,6 +44,7 @@ services:
       - "3100:3100"
     volumes:
       - ./conf:/etc/loki
+      - ./loki-data:/loki  # Add this line to map Loki's local data to the host
     command: >
       -config.file=/etc/loki/loki-minio.yml
       -config.expand-env=true

@@ -4,6 +4,7 @@
 In general java-tron will generate logs into:
 - `./logs/tron.log`
 - `./logs/db/db.log`
+- `./logs/gc.log` with gc debug option enabled
 
 Notice here all mentioned file paths are relative to the java-tron service root directory.
 

@@ -16,6 +16,12 @@ common:
   replication_factor: 1
   path_prefix: /loki
 
+block_builder:
+  # How many flushes can happen concurrently?
+  concurrent_flushes: 8
+  # The interval at which to sync job status with the scheduler.
+  sync_interval: 10s
+
 schema_config:
   configs:
     - from: 2020-05-15
