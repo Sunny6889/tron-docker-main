@@ -47,7 +47,6 @@ services:
       - ./loki-data:/loki  # Add this line to map Loki's local data to the host
     command: >
       -config.file=/etc/loki/loki-minio.yml
-      -config.expand-env=true
     restart: unless-stopped
 
   minio: # about 5G of disk space for 1 year java-tron metrics, java-tron version xxx
@@ -72,6 +71,10 @@ services:
     user: root
     networks:
       - tron_network
+    environment:
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
     deploy:
       resources:
         limits:

@@ -1,41 +1,37 @@
-
-# This is a complete configuration to deploy Loki backed by a s3-compatible API
-# like MinIO for storage.
-# Index files will be written locally at /loki/index and, eventually, will be shipped to the storage via tsdb-shipper.
+# This is a complete configuration to deploy Loki backed by a s3-compatible API, like MinIO for storage.
 
 auth_enabled: false
 
 server:
   http_listen_port: 3100
+  http_listen_address: 0.0.0.0
 
 common:
   ring:
-    instance_addr: 127.0.0.1
+    instance_addr: 127.0.0.1  # Address of the instance
     kvstore:
-      store: inmemory
+      store: inmemory # Use in-memory key-value store for the ring
   replication_factor: 1
-  path_prefix: /loki
+  path_prefix: /loki # Prefix for storing data
 
-block_builder:
-  # How many flushes can happen concurrently?
-  concurrent_flushes: 8
-  # The interval at which to sync job status with the scheduler.
-  sync_interval: 10s
 
+# Configures the chunk index schema and where it is stored.
 schema_config:
   configs:
-    - from: 2020-05-15
+    - from: 2020-06-12 # The date from which the schema will be applied. For a single schema, just any past date.
       store: tsdb
       object_store: s3
       schema: v13
       index:
-        prefix: index_
-        period: 24h
+        prefix: index_ # Prefix for index files
+        period: 24h  # Period for creating new index files
 
+# Index files will be written locally at /loki/index and, eventually, will be shipped to the storage via tsdb-shipper.
 storage_config:
   tsdb_shipper:
     active_index_directory: /loki/index
     cache_location: /loki/index_cache
+    cache_ttl: 48h # Default = 24h, can be increased for faster performance over longer query periods, uses more disk space
   aws:
     s3: s3://minio:melovethanos@minio.:9000/loki # The endpoint for the s3-compatible API.
-    s3forcepathstyle: true
+    s3forcepathstyle: true # needed to recognize the above endpoint as a path-style endpoint
