@@ -5,14 +5,17 @@ auth_enabled: false
 server:
   http_listen_port: 3100
   http_listen_address: 0.0.0.0
+  grpc_listen_port: 9096
+  log_level: debug
+  grpc_server_max_concurrent_streams: 1000
 
 common:
   ring:
     instance_addr: 127.0.0.1  # Address of the instance
     kvstore:
       store: inmemory # Use in-memory key-value store for the ring
-  replication_factor: 1
-  path_prefix: /loki # Prefix for storing data
+  path_prefix: /loki # Prefix for storing in-memory data
+  replication_factor: 1 # For monolithic deployment, the replication factor is 1
 
 
 # Configures the chunk index schema and where it is stored.
@@ -35,3 +38,21 @@ storage_config:
   aws:
     s3: s3://minio:melovethanos@minio.:9000/loki # The endpoint for the s3-compatible API.
     s3forcepathstyle: true # needed to recognize the above endpoint as a path-style endpoint
+
+query_range:
+  results_cache:
+    cache:
+      embedded_cache:
+        enabled: true
+        max_size_mb: 100
+
+limits_config:
+  metric_aggregation_enabled: true
+
+pattern_ingester:
+  enabled: true
+  metric_aggregation:
+    loki_address: localhost:3100
+
+frontend:
+  encoding: protobuf

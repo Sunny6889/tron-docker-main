@@ -46,7 +46,7 @@ services:
       - ./conf:/etc/loki
       - ./loki-data:/loki  # Add this line to map Loki's local data to the host
     command: >
-      -config.file=/etc/loki/loki-minio.yml
+      -config.file=/etc/loki/loki-local-config.yml
     restart: unless-stopped
 
   # Minio: which Loki uses to store its index and chunks.
