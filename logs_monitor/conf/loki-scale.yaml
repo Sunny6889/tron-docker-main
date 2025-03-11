@@ -20,6 +20,7 @@ schema_config:
       index:
         prefix: index_
         period: 24h
+
 common:
   path_prefix: /loki
   replication_factor: 1
@@ -32,9 +33,14 @@ common:
       access_key_id: minio
       secret_access_key: melovethanos
       s3forcepathstyle: true
-  ring:
+  ring: # refer https://grafana.com/docs/loki/latest/configure/#common
     kvstore:
       store: memberlist
+
+limits_config:
+  # Maximum number of queries that will be scheduled in parallel by the frontend.
+  # CLI flag: -querier.max-query-parallelism
+  max_query_parallelism: 32 # default = 32
 
 ruler:
   storage:
@@ -43,3 +49,5 @@ ruler:
 
 compactor:
   working_directory: /tmp/compactor
+  shared_store: s3
+  compaction_interval: 10m

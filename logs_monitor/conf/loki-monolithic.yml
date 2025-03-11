@@ -18,7 +18,7 @@ common:
 # Configures the chunk index schema and where it is stored.
 schema_config:
   configs:
-    - from: 2020-06-12 # The date from which the schema will be applied. For a single schema, just any past date.
+    - from: 2025-01-01 # The date from which the schema will be applied. For a single schema, just any past date.
       store: tsdb
       object_store: s3
       schema: v13

@@ -14,7 +14,7 @@ The key benefits of using Loki with Grafana include:
 In the following sections, we will guide you through the java-tron log system setup process with Loki and Grafana, and demonstrate how to configure alerts based on log data to ensure the health and performance of your services.
 
 ### Architecture Overview
-![img.png](loki_architecture.png)
+![img.png](logs_architecture.png)
 
 A typical Loki-based logging stack consists of 3 components:
 
@@ -30,50 +30,97 @@ Refer the official loki architecture [guide](https://grafana.com/docs/loki/lates
 
 java-tron has configured to output all its logs to `tron.log` file
 
-## Setup
 
-### java-tron setup
-
-### Promtail setup
+## java-tron and Promtail setup
 
 https://grafana.com/docs/loki/latest/send-data/promtail/configuration
 持久化
 
-### Loki setup
+## Loki setup
 
-#### Loki components
-Loki stored compressed log data in chunks in object stores such as S3 or GCS, or even locally on the filesystem.
+### Loki components introduction
 
-![img.png](loki_components.png)
-Distributor
-distributor 服务负责处理客户端写入的日志，它本质上是日志数据写入路径中的第一站，一旦 distributor 收到日志数据，会将其拆分为多个批次，然后并行发送给多个 ingester。
+We need to understand the Loki [components](https://grafana.com/docs/loki/latest/get-started/components/#loki-components) to better build a reliable Loki logging system. Reliability includes scalability to maintain high performance, high availability to ensure service stability, and persistence to ensure data is not lost.
 
-Ingester
-ingester 服务负责将日志数据写入长期存储后端（DynamoDB、S3、Cassandra 等）。此外 ingester 会验证摄取的日志行是按照时间戳递增的顺序接收的（即每条日志的时间戳都比前面的日志晚一些），当 ingester 收到不符合这个顺序的日志时，该日志行会被拒绝并返回一个错误。
+Loki is composed of several components, each responsible for different aspects of log processing and storage.
+Here is an overview of the data flow in Loki:
+![img.png](../images/loki_components_dataflow.png)
 
-如果传入的行与之前收到的行完全匹配（与之前的时间戳和日志文本都匹配），传入的行将被视为完全重复并被忽略。
-如果传入的行与前一行的时间戳相同，但内容不同，则接受该日志行。这意味着同一时间戳有两个不同的日志行是可能的。
-来自每个唯一标签集的日志在内存中被建立成 chunks(块)，然后可以根据配置的时间间隔刷新到支持的后端存储。在下列情况下，块被压缩并标记为只读：
-- 当前块容量已满（该值可配置）
-- 过了太长时间没有更新当前块的内容
-- 刷新了
+**Write Path**
+- The distributor receives an HTTP POST request with streams and log lines. The distributor hashes and send each stream to the ingester and its replicas.
+- The ingester receives the stream, creates a chunk, and acknowledges the writing.
+- The distributor waits for a quorum of ingesters to acknowledge their writings.
+- The distributor responds with a success or error status code.
 
-如果一个 ingester 进程崩溃或突然退出，所有尚未刷新的数据都会丢失。Loki 通常配置为多个副本（通常是 3 个）来降低这种风险。
-WAL
+**Read Path**
+- The query frontend(optional) receives an HTTP GET request with a LogQL query. It splits the query into sub-queries and passes them to the query scheduler.
+- The querier pulls sub-queries from the scheduler.
+- The querier queries all ingesters for in-memory data and the backing store for long-term data.
+- The querier deduplicates data and returns the result to the query frontend.
+- The query frontend merges the results and returns them to the client.
 
-上面我们也提到了 ingesters 将数据临时存储在内存中，如果发生了崩溃，可能会导致数据丢失，而 WAL 就可以帮助我们来提高这方面的可靠性。
+The main components of Loki are:
+1. **Distributor**
+   - **Role**: The distributor is responsible for handling incoming push requests from clients. It validates the streams and forwards them to ingesters.
+   - **Key Features**: Validation and reliable acknowledgment.
+     Distributor will validate each stream for correctness and to ensure that it is within the configured tenant(or global) limits.
+     Each valid stream is then sent to n([replication_factor](https://grafana.com/docs/loki/latest/get-started/components/#replication-factor)) ingesters in parallel,
+     only returning success to the client once a quorum of ingester has acknowledged the writing success.
+     If an ingester fails to write the stream, the distributor will retry the writing to another ingester.
 
-在计算机领域，WAL（Write-ahead logging，预写式日志）是数据库系统提供原子性和持久化的一系列技术。
-Loki 中的 WAL 记录了传入的数据，并将其存储在本地文件系统中，以保证在进程崩溃的情况下持久保存已确认的数据。重新启动后，Loki 将重放日志中的所有数据，然后将自身注册，准备进行后续写操作。这使得 Loki 能够保持在内存中缓冲数据的性能和成本优势，以及持久性优势（一旦写被确认，它就不会丢失数据）。
+2. **Ingester**
+   - **Description**: The ingester receives and validates log streams from distributors, stores them temporarily in memory, and periodically flushes them to long-term storage.
+   - **Key Features**: In-memory storage, chunk creation, and flushing to long-term storage.
+     - **Write Ahead Log (WAL)**: Ensures data is not lost in case of a crash by persisting incoming writes to disk.
+     - **Replication Factor**: Generally, the [replication\_factor](https://grafana.com/docs/loki/latest/get-started/components/#replication-factor) is 3. This allows for ingester restarts and rollouts without failing writes, adds additional protection from data loss, and helps in achieving high availability and fault tolerance.
+
+3. **Querier**
+   - **Description**: The querier executes LogQL queries, fetching data from both ingesters and long-term storage.
+   - **Key Features**: Query execution, data fetching, and deduplication.
+     - **Deduplication**: The querier deduplicates data from multiple ingesters to ensure that the same log lines are not returned multiple times.
+     - **Query Parallelism**: The querier can fetch data from multiple ingesters in parallel to speed up query execution.
+     - **Query Merging**: The querier merges results from multiple ingesters to provide a single response to the query frontend.
+
+4. **Compactor**
+   - **Description**: The compactor consolidates multiple index files produced by ingesters into single index files per day and tenant.
+   - **Key Features**: Index file compaction and optimization.
+     - **Index Compaction**: The compactor reduces the number of index files by merging them into larger files, improving query performance and reducing storage overhead.
+
+Besides the above compulsory main parts, there are other optional components that can be added to the Loki system to enhance its functionally.
+These components can be omitted if the existing architecture already meets performance requirements:
+- [Query Frontend](https://grafana.com/docs/loki/latest/get-started/components/#query-frontend): Provides API endpoints for queries and speeds up the read path by splitting queries into sub-queries.
+- [Query Scheduler](https://grafana.com/docs/loki/latest/get-started/components/#query-scheduler): Provides advanced queuing functionality for queries, ensuring fairness across clients.
+- [Ruler](https://grafana.com/docs/loki/latest/get-started/components/#ruler): The ruler evaluates rule and alert expressions, managing rule configurations stored in object storage.
+
+
+### Loki deployment modes
+
+Refer to [deployment-modes](https://grafana.com/docs/loki/latest/get-started/deployment-modes/), there are three deployment modes for Loki:
+
+| Deployment Mode     | Description                                                                 | Pros                                                                 | Cons                                                                 | Suitable Log Volumes                |
+|---------------------|-----------------------------------------------------------------------------|----------------------------------------------------------------------|----------------------------------------------------------------------|-------------------------------------|
+| Monolithic Mode     | All Loki components run within a single process.                            | Easy to deploy and manage.                                           | Limited scalability. Not suitable for high availability.             | Up to approximately 20GB per day.   |
+| Simple Scalable Mode| Components are separated into different processes and can run on different hosts, but still relatively simple to manage. | Better scalability compared to monolithic mode. Easier to manage than microservices mode. | More complex than monolithic mode. Limited scalability compared to microservices mode. | Up to a few TBs of logs per day.    |
+| Microservices Mode  | Each Loki component runs as a separate microservice.                        | Highly scalable. Suitable for very large deployments. Allows precise control over scaling and cluster operations. | Most complex to set up and maintain. Requires more resources and expertise. | Suitable for very large clusters and high log volumes beyond a few TBs per day. |
+
+
+A single java-tron fullnode produces about 6GB of logs per day while catching up with the Mainnet, with the local highest block number significantly behind the Mainnet.
+In a stable state, syncing one block every 3 seconds, it produces less than 2GB(? to confirm) of logs per day.
+As loki could connect with multiple java-tron fullnodes or other related services, the log volume could be higher than 20GB per day.
+Considering all these factors, below we will show the deployment guidance of Monolithic Mode and Simple Scalable Mode, as they can satisfy most usage cases.
+If microservices mode is required for your architecture, please refer to the official [guide](https://grafana.com/docs/loki/latest/get-started/deployment-modes/) for more details.
+
+#### Loki monolithic development mode - quick start
+
+
+#### Loki simple scalable development mode
+
+硬件要求
+https://grafana.com/docs/loki/latest/setup/size/
 
 
 
-
-
-
-Refer the official loki configuration [guide](https://grafana.com/docs/loki/latest/configuration/) for more details.
-
-
+###
 ```
 # This is a complete configuration to deploy Loki backed by a s3-compatible API, like MinIO for storage.
 

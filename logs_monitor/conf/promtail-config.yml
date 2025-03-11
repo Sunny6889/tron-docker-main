@@ -9,6 +9,7 @@ positions:
 # check https://grafana.com/docs/loki/latest/send-data/promtail/configuration/#clients
 clients:
   - url: http://loki:3100/loki/api/v1/push
+    tenant_id: tenant-java-tron-node1 # tenant_id is used to differentiate between different data sources of logs.
     batchsize: 1024 # Maximum batch size (in bytes) of logs to accumulate before sending to Loki
     batchwait: 1s   # Maximum amount of time to wait before sending a batch, even if that batch isn't full.
 
@@ -23,10 +24,10 @@ scrape_configs:
   - targets:
       - localhost # Configures the discovery to look on the current machine.
     labels:
-      job: java-tron-node1-tron # The job label is used to differentiate between different sources of logs.
+      job: general # you can use this label to filter the logs in Grafana.
       __path__: /var/log/*log  # The path matching the logs to be collected. It should be in the mounted path of the java-tron generated logs.
   - targets:
       - localhost # Configures the discovery to look on the current machine.
     labels:
-      job: java-tron-node1-db # The job label is used to differentiate between different sources of logs.
+      job: db  # you can use this label to filter the logs in Grafana.
       __path__: /var/log/db/*log  # The path matching the logs to be collected. It should be in the mounted path of the java-tron generated logs.
