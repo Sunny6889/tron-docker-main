@@ -31,11 +31,14 @@ A typical Loki-based logging stack consists of 3 components:
 quick start, docker and docker compose.
 scale mode, helm and k8s environment.
 
+
 ## java-tron and Promtail setup
 
 java-tron has configured to output all its logs to `tron.log` file
 https://grafana.com/docs/loki/latest/send-data/promtail/configuration
 持久化
+
+单部署这俩服务硬件要求
 
 ## Loki setup
 
@@ -128,6 +131,15 @@ If microservices mode is required for your architecture, please refer to the off
 As a quick start, the simplest mode of operation is the monolithic deployment mode. This mode runs all of Loki’s microservice components inside a single process as a single binary or Docker image.
 
 <img src="../images/loki_monolithic_mode.png" alt="Alt Text" width="480" >
+
+Install with Docker Compose
+```
+docker-compose up -d loki
+```
+
+硬件要求
+https://grafana.com/docs/loki/latest/setup/size/
+
 
 ### Loki cluster development mode - simple scalable
 
