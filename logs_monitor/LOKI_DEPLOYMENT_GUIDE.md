@@ -153,11 +153,10 @@ helm upgrade loki grafana/loki  --values ./helm/loki-values.yml
 helm upgrade grafana grafana/grafana --values ./helm/grafana-values.yml
 ```
 
-
 The [loki-values.yml](./helm/loki-values.yml) Helm config deploys the following components:
-- Read component (3 replicas)
+- Read component (2 replicas)
 - Write component (3 replicas)
-- Backend component (3 replicas)
+- Backend component (2 replicas)
 - Gateway (1 NGINX replica)
   - Reverse proxy to be deployed in front of Loki, to direct client API requests to either the read or write nodes.
 - Minio
