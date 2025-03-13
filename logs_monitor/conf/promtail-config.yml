@@ -8,8 +8,10 @@ positions:
 #The clients block configures how Promtail connects to instances of Loki:
 # check https://grafana.com/docs/loki/latest/send-data/promtail/configuration/#clients
 clients:
-  - url: http://loki:3100/loki/api/v1/push
+  - url: http://host.docker.internal:3100/loki/api/v1/push
     tenant_id: tenant-java-tron-node1 # tenant_id is used to differentiate between different data sources of logs.
+    headers:
+      X-Scope-OrgID: tenant-java-tron-node1  # Ensure this matches your Loki tenant configuration
     batchsize: 1024 # Maximum batch size (in bytes) of logs to accumulate before sending to Loki
     batchwait: 1s   # Maximum amount of time to wait before sending a batch, even if that batch isn't full.
 

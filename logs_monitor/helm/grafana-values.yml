@@ -1,0 +1,21 @@
+service:
+  type: NodePort
+  port: 3000
+  nodePort: 30000
+
+persistence:
+  enabled: true
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  size: 1Gi
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Loki
+        type: loki
+        url: http://loki-gateway.default.svc.cluster.local # Loki gateway
+        access: proxy
+        version: 1

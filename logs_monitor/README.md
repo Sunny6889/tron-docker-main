@@ -26,11 +26,29 @@ A typical Loki-based logging stack consists of 3 components:
 
 - **Grafana** for querying and displaying log data. You can also query logs using the Loki API directly.
 
-## Prerequisites
+## Environment Prerequisites
 
-quick start, docker and docker compose.
-scale mode, helm and k8s environment.
+- Docker and Docker Compose
 
+   For Docker and Docker Compose installation refer [prerequisites](../README.md#prerequisites).
+   Then check the Docker resource settings to ensure it has at least 16GB of memory per java-tron service.
+
+- Helm and Kubernetes (Optional)
+   If you need to deploy Loki cluster mode, you need to install Helm 3 or above and set up Kubernetes (must have at least 3 nodes) on the host machines.
+   Refer to the [official documentation](https://helm.sh/docs/intro/install/) for latest Helm installation and the [official documentation](https://kubernetes.io/docs/tasks/tools/install-kubectl/) for Kubernetes installation.
+
+- Hardware Requirement
+
+   The hardware requirements for deploying the logging system depend on your deployment strategy. Among all services, java-tron nodes consume the most system resources and therefore determine the baseline hardware requirements.
+
+   For a quick setup with all services (java-tron, Promtail, Loki, and Grafana) running on a single machine:
+   - Follow the [minimum hardware requirements](../single_node/README.md#hardware-requirements) specified for java-tron nodes
+   - This configuration is sufficient as java-tron's resource demands exceed those of the logging components
+   - If running multiple java-tron nodes, scale the resources proportionally
+
+   For a production-grade setup with services distributed across different machines:
+   - Calculate the total hardware requirements by summing up the individual requirements for each component
+   - Refer to the specific hardware requirements detailed in each service's setup section
 
 ## java-tron and Promtail setup
 
@@ -38,160 +56,90 @@ java-tron has configured to output all its logs to `tron.log` file
 https://grafana.com/docs/loki/latest/send-data/promtail/configuration
 持久化
 
-单部署这俩服务硬件要求
+单部署这俩服务硬件要求, 内存，日志，硬盘日志最多占用 50G
+
 
 ## Loki setup
+Loki offers deployment options that cater to different reliability and scalability requirements. You can choose between single-node deployment for simpler setups or cluster deployment for enhanced reliability and scalability. For quick start below we will show you how to deploy Loki in monolithic mode. For more information on Loki components and cluster mode deployment, refer to our detailed documentation: [Loki cluster mode guidance](LOKI_ClUSTER_MODE_DEPLOYMENT.md).
 
-### Loki components introduction
-
-We need to understand the Loki [components](https://grafana.com/docs/loki/latest/get-started/components/#loki-components) to better build a reliable Loki logging system. Reliability includes scalability to maintain high performance, high availability to ensure service stability, and persistence to ensure data is not lost.
-
-Loki is composed of several components, each responsible for different aspects of log processing and storage.
-Here is an overview of [Loki architecture](https://grafana.com/docs/loki/latest/get-started/architecture/#loki-architecture):
-<img src="../images/loki_architecture_components.svg" alt="Alt Text" width="680" >
-
-Notice: Grafana Loki has a microservices-based architecture and is designed to run as a horizontally scalable,
-distributed system.
-Thus, it can be deployed in a single-node or multi-node cluster mode (Cluster Services).
-
-
-The main components of Loki are:
-1. **Distributor**
-   - **Role**: The distributor is responsible for handling incoming push requests from clients. It validates the streams and forwards them to ingesters.
-   - **Key Features**: Validation and reliable acknowledgment.
-     Distributor will validate each stream for correctness and to ensure that it is within the configured tenant(or global) limits.
-     In cluster mode, each valid stream is then sent to n([replication_factor](https://grafana.com/docs/loki/latest/get-started/components/#replication-factor))
-     ingesters in parallel, only returning success to the client once a quorum of ingester has acknowledged the writing success.
-     If an ingester fails to write the stream, the distributor will retry the writing to another ingester.
-
-2. **Ingester**
-   - **Description**: The ingester receives and validates log streams from distributors, stores them temporarily in memory, and periodically flushes them to long-term storage. It returns recently ingested, in-memory log data for queries on the read path.
-   - **Key Features**: In-memory storage, chunk creation, and flushing to long-term storage.
-     - **Write Ahead Log (WAL)**: Ensures data is not lost in case of a crash by persisting incoming writes to disk.
-     - **Replication Factor**: Generally, in cluster mode the [replication\_factor](https://grafana.com/docs/loki/latest/get-started/components/#replication-factor) is 3. This allows for ingester restarts and rollouts without failing writes, adds additional protection from data loss, and helps in achieving high availability and fault tolerance.
-
-3. **Querier Frontend**
-    - **Description**: The querier frontend receives queries from clients, splits them into sub-queries, and forwards them to queriers.
-    - **Key Features**: Query splitting and forwarding.
-      - **Query Splitting**: The querier frontend splits queries into sub-queries to be executed in parallel by queriers.
-      - **Query Forwarding**: The querier frontend forwards sub-queries to queriers, which fetch data from ingesters and long-term storage.
-      - **Query Merging**: The querier frontend merges results from multiple queriers to provide a single response to the client.
-
-4. **Querier**
-   - **Description**: The querier executes LogQL queries, fetching data from both ingesters and long-term storage.
-   - **Key Features**: Query execution, data fetching, and deduplication.
-     - **Deduplication**: The querier deduplicates data from multiple ingesters to ensure that the same log lines are not returned multiple times.
-     - **Query Parallelism**: The querier can fetch data from multiple ingesters in parallel to speed up query execution.
-     - **Query Merging**: The querier merges results from multiple ingesters to provide a single response to the query frontend.
-
-5. **Compactor**
-   - **Description**: The compactor consolidates multiple index files produced by ingesters into single index files per day and tenant.
-   - **Key Features**: Index file compaction and optimization.
-     - **Index Compaction**: The compactor reduces the number of index files by merging them into larger files, improving query performance and reducing storage overhead.
-
-Besides the above compulsory main parts, there are other optional components that can be added to the Loki system to enhance its functionally.
-These components can be omitted if the existing architecture already meets performance requirements.
-Refer to the [official documentation](https://grafana.com/docs/loki/latest/get-started/components/) for complete components lists and details.
-
-Here is the log data flow with Loki components:
-<img src="../images/loki_components_dataflow.png" alt="Alt Text" width="880" >
-
-**Write Path**
-- The distributor receives an HTTP POST request with streams and log lines. The distributor hashes and send each stream to the ingester and its replicas.
-- The ingester receives the stream, creates a chunk, and acknowledges the writing.
-- The distributor waits for a quorum of ingesters to acknowledge their writings.
-- The distributor responds with a success or error status code.
-
-**Read Path**
-- The query frontend(optional) receives an HTTP GET request with a LogQL query. It splits the query into sub-queries and passes them to the query scheduler.
-- The querier pulls sub-queries from the scheduler(optional).
-- The querier queries all ingesters for in-memory data and the backing store for long-term data.
-- The querier deduplicates data and returns the result to the query frontend.
-- The query frontend merges the results and returns them to the client.
-
-### Loki deployment modes
-Loki can be deployed in different modes to meet different requirements for scalability, availability, and complexity.
-Refer to [deployment-modes](https://grafana.com/docs/loki/latest/get-started/deployment-modes/), there are three deployment modes for Loki:
-
-| Deployment Mode                  | Description                                                                                                                                   | Pros                                                                                                                        | Cons                                                                 | Suitable Log Volumes                |
-|----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------|-------------------------------------|
-| Monolithic Mode                  | All Loki components run within a single process.                                                                                              | Easy to deploy and manage. It's useful for getting started quickly to experiment with Loki.                                 | Limited scalability. Not suitable for high availability.             | Up to approximately 20GB per day.   |
-| Cluster Mode - Simple Scalable   | Group components into read, write, and backend services, and each service can be scaled independently. | - Better scalability compared to monolithic mode. <br/> - Easier to manage than microservices mode.                         | More complex than monolithic mode. Limited scalability compared to microservices mode. | Up to a few TBs of logs per day.    |
-| Cluster Mode - All Microservices | Each Loki component runs as a separate microservice.                                                                                          | - Highly scalable. Suitable for very large deployments. <br/> - Allows precise control over scaling and cluster operations. | Most complex to set up and maintain. Requires more resources and expertise. | Suitable for very large clusters and high log volumes beyond a few TBs per day. |
-
-**java-tron logs volume:**
-- A single java-tron fullnode produces about 6GB of logs per day while catching up with the Mainnet, with the local highest block number significantly behind the Mainnet.
-- In a stable state, syncing one block every 3 seconds, it produces less than 2GB(? to confirm) of logs per day.
-- As loki could connect with multiple java-tron fullnodes or other related services, the log volume could be higher than 20GB per day.
-
-Considering all these factors, below we will show the deployment guidance of Monolithic Mode and Simple Scalable Cluster Mode, as they can satisfy most usage cases with scalability and availability.
-If microservices mode is required for your architecture, please refer to the official [guide](https://grafana.com/docs/loki/latest/get-started/deployment-modes/) for more details.
-
-### Loki monolithic development mode as quick start
-As a quick start, the simplest mode of operation is the monolithic deployment mode. This mode runs all of Loki’s microservice components inside a single process as a single binary or Docker image.
+Monolithic mode runs all of Loki’s microservice components inside a single process as a single binary or Docker image.
 
 <img src="../images/loki_monolithic_mode.png" alt="Alt Text" width="480" >
 
-Install with Docker Compose
+
+### Hardware Requirements for Loki service with Remote Storage
+
+If you run Loki in monolithic mode, the following minimum specifications are recommended with remote storage:
+
+| Resource | Requirement | Purpose |
+|----------|------------|----------|
+| CPU | 2 cores | General processing |
+| Memory | < 1GB  | Primarily for logs buffer and Write Ahead Log (WAL) |
+| Storage | 1~6GB | 6GB is local cache for 7 days log retention (worst case scenario) |
+| Remote Storage/Bucket | < 10GB per month | Compressed logs and index |
+| | | |
+
+These requirements assume a standard deployment with remote storage configured. Adjust specifications based on your specific workload and retention policies.
+
+### Deploy Loki with Docker Compose
+Run Loki and Minio with docker-compose use below command:
+```sh
+docker-compose -f docker-compose.yml up -d loki minio
 ```
-docker-compose up -d loki
+Minio, an S3-compatible object storage service, is used as the remote storage backend for Loki. This allows Loki to store its log data and indexes in a scalable and durable manner while maintaining compatibility with the S3 API.
+
+Check Loki is running using command:
+```sh
+curl -s http://localhost:3100/ready
 ```
+If the response is `Ready`, Loki is running successfully. Then you can connect to Loki using Grafana in the below [section](#setup-grafana).
 
-硬件要求
-https://grafana.com/docs/loki/latest/setup/size/
+### Key configuration breakdown for Loki
+The Loki configuration file used by [docker-compose.yml](docker-compose.yml) located at [loki-local-config.yml](./conf/loki-local-config.yml) refered from the Loki [official website](https://raw.githubusercontent.com/grafana/loki/v3.4.1/cmd/loki/loki-local-config.yaml).
 
+Below are the key configuration components and their settings:
 
-### Loki cluster development mode - simple scalable
+| Component | Parameter | Value | Description |
+|-----------|-----------|--------|-------------|
+| **Server Configuration** | `http_listen_port` | 3100 | Port for Loki's HTTP API - used by Promtail and Grafana |
+| **Common Settings** | `replication_factor` | 1 | Number of replicas for single-node deployment |
+| **Schema Configuration** | `object_store` | s3| Storage configuration for MinIO integration |
+| | `index.prefix` | tron_logs_ | Prefix used for index files |
+| **Storage Settings** | `aws.s3` | Minio connection url | Remote storage |
+| | `s3forcepathstyle` | true | Required setting for MinIO S3 compatibility |
+| |   |   |   |
 
-硬件要求
-https://grafana.com/docs/loki/latest/setup/size/
+## Setup Grafana
+Grafana is used for log visualization and querying. It can be used to create dashboards, alerts, and explore log data in real-time.
 
+### Deploy Grafana with Docker Compose
 
+### steps to connect loki in grafana
+1. Open Grafana in your browser by visiting `http://localhost:3000`.
+2. Log in with the default credentials (username: `admin`, password: `admin`).
+3. Add Loki as a data source:
+   - Click on the gear icon on the left sidebar to open the Configuration menu.
+   - Select `Data Sources` and click on `Add data source`.
+   - Choose `Loki` from the list of available data sources.
+   - In the HTTP section, set the URL to `http://loki:3100` and click `Save & Test`.
+4. Create a new dashboard:
+   - Click on the `+` icon on the left sidebar to create a new dashboard.
+   - Add a new panel to the dashboard by clicking on `Add new panel`.
+   - In the query editor, select the Loki data source and write a LogQL query to retrieve log data.
+   - Click `Apply` to see the log data in the panel.
+   - Customize the panel settings, such as time range, log level, and log format.
+   - Save the dashboard by clicking on the disk icon in the top menu bar.
+5. Explore log data:
+   - Use the query editor to write LogQL queries to filter and search log data.
+   - Create visualizations, alerts, and annotations to monitor log data in real-time.
+   - Customize the dashboard layout, theme, and appearance to suit your needs.
 
-###
-```
-# This is a complete configuration to deploy Loki backed by a s3-compatible API, like MinIO for storage.
+### Create Alerts in Grafana
 
-auth_enabled: false
-
-server:
-  http_listen_port: 3100
-
-common:
-  ring:
-    instance_addr: 127.0.0.1
-    kvstore:
-      store: inmemory
-  replication_factor: 1
-  path_prefix: /loki
-
-block_builder:
-  concurrent_flushes: 8 # How many flushes can happen concurrently?
-  sync_interval: 10s # The interval at which to sync job status with the scheduler.
-
-# Configures the chunk index schema and where it is stored.
-schema_config:
-  configs:
-    - from: 2020-05-15 #
-      store: tsdb
-      object_store: s3
-      schema: v13
-      index:
-        prefix: index_
-        period: 24h
-
-# Index files will be written locally at /loki/index and, eventually, will be shipped to the storage via tsdb-shipper.
-storage_config:
-  tsdb_shipper:
-    active_index_directory: /loki/index
-    cache_location: /loki/index_cache
-  aws:
-    s3: s3://minio:melovethanos@minio.:9000/loki # The endpoint for the s3-compatible API.
-    s3forcepathstyle: true
-```
-loki ingester?
-持久化
+### At last, use grafana to observe Loki service healthiness
 
 ## TroubleShooting
 1. If your java-tron node exits unexpectedly but the `tron.log` file does not give you any clue or there is no error message.
    - One possible reason is that the node is killed by the OOM killer. You could verify it by check the docker exit status using command `docker ps -a`. If the exit status is 137, it means the container is killed by the OOM killer. You could also check the `gc.log` files to see if there are any Full GC logs. If there are many Full GC logs, it means the JVM is running out of memory and the OOM killer may kill the container. Make sure each java-tron service has at least 16GB memory
+
+添加 Loki 死亡 alert
