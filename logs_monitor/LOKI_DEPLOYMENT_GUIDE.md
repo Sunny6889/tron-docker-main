@@ -124,42 +124,33 @@ helm repo update
 
 ```bash
 # Install Loki with custom values file
-helm install loki grafana/loki \
-  --namespace default \
-  --values ./helm/loki-values.yml
+helm install loki grafana/loki --values ./helm/loki-values.yml
 
 # Port-forward Loki Gateway for local access
-kubectl port-forward --namespace default svc/loki-gateway 3100:80 &
+kubectl port-forward  svc/loki-gateway 3100:80 &
 ```
 3. Deploy Grafana
 
 ```bash
 # Install Grafana with custom values
-helm install grafana grafana/grafana \
-  --namespace default \
-  --values ./helm/grafana-values.yml
+helm install grafana grafana/grafana --values ./helm/grafana-values.yml
 
 # Port-forward Grafana service
-kubectl port-forward --namespace default svc/grafana 3000:3000 &
+kubectl port-forward  svc/grafana 3000:3000 &
 ```
 Then you could open grafana using http://localhost:3000, the user name is `admin`, and the password is retreived by below command:
 ``` sh
 # Retrieve auto-generated admin password
-kubectl get secret --namespace default grafana \
-  -o jsonpath="{.data.admin-password}" | base64 --decode
+kubectl get secret  grafana -o jsonpath="{.data.admin-password}" | base64 --decode
 ```
 
 4. Upgrade Deployments (When Making Changes)
 ```sh
 # Update Loki configuration
-helm upgrade loki grafana/loki \
-  --namespace default \
-  --values ./helm/loki-values.yml
+helm upgrade loki grafana/loki  --values ./helm/loki-values.yml
 
 # Update Grafana configuration
-helm upgrade grafana grafana/grafana \
-  --namespace default \
-  --values ./helm/grafana-values.yml
+helm upgrade grafana grafana/grafana --values ./helm/grafana-values.yml
 ```
 
 
