@@ -52,7 +52,12 @@ A typical Loki-based logging stack consists of 3 components:
 
 ## java-tron and Promtail setup
 
-java-tron has configured to output all its logs to `tron.log` file
+Run the below command to start java-tron and Promtail services:
+```sh
+docker-compose up -d tron-node promtail
+```
+
+java-tron has configured to output all its logs to `./logs` directory.
 https://grafana.com/docs/loki/latest/send-data/promtail/configuration
 持久化
 
