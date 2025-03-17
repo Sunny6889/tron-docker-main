@@ -108,6 +108,7 @@ In the `promtail-config.yml` file:
 - `clients.batchwait` and `clients.batchsize` are used to control the batch size and wait time before sending logs to Loki. Set a short time to ensure logs are sent promptly.
 - `scrape_configs.static_configs` specify the targets and labels for scraping logs. As java-tron generates logs in different directories, we have configured two scrape_configs:
   - `targets` should be set to host IP address to scrape logs from the host machine. Usually, Promtail service run on the same machine with java-tron, thus it is set to `localhost`.
+  - The `labels` field is used to add metadata to the logs. You can use these labels to filter logs in Grafana (explained in the below section).
   - The `__path__` field should match the path of the java-tron generated logs in the mounted directory.
 For more Promtail configurations, refer [official documentation](https://grafana.com/docs/loki/latest/send-data/promtail/configuration/).
 
@@ -165,27 +166,27 @@ Below are the key configuration components and their settings:
 Grafana is used for log visualization and querying. It can be used to create dashboards, alerts, and explore log data in real-time.
 
 ### Deploy Grafana with Docker Compose
-
-1. Open Grafana in your browser by visiting `http://localhost:3000` or your host machine's IP if you access remotely.
-2. Log in with the default credentials (username: `admin`, password: `admin`).
+Run Grafana service with docker-compose use below command:
+```sh
+docker-compose -f docker-compose.yml up -d grafana
+```
+Then you could open Grafana in your browser by visiting `http://localhost:3000` or your host machine's IP if you access remotely.
 
 ### Connect Loki in Grafana
 - Add Loki as a data source:
-   - Click on the gear icon on the left sidebar to open the Configuration menu.
-   - Select `Data Sources` and click on `Add data source`.
+   - Click on the gear icon on the left sidebar to open the Configuration menu. Navigate to `Connections` -> `Data sources`, then click on `Add data source`.
    - Choose `Loki` from the list of available data sources.
    - In the HTTP section, set the URL to `http://loki:3100` and click `Save & Test`.
-- Create a new dashboard:
-   - Click on the `+` icon on the left sidebar to create a new dashboard.
-   - Add a new panel to the dashboard by clicking on `Add new panel`.
-   - In the query editor, select the Loki data source and write a LogQL query to retrieve log data.
-   - Click `Apply` to see the log data in the panel.
-   - Customize the panel settings, such as time range, log level, and log format.
-   - Save the dashboard by clicking on the disk icon in the top menu bar.
-- Explore log data:
-   - Use the query editor to write LogQL queries to filter and search log data.
-   - Create visualizations, alerts, and annotations to monitor log data in real-time.
-   - Customize the dashboard layout, theme, and appearance to suit your needs.
+
+   <img src="../images/grafana_datasource_loki.png" alt="Alt Text" width="680" >
+
+### Explore Log Data in Grafana
+
+To explore Loki logs within Grafana, navigate to `Explore` in the main menu, select the Loki data source,
+then you could search logs with label filters and identify patterns without needing to write LogQL queries.
+
+<img src="../images/grafana_loki_explore.png" alt="Alt Text"  >
+
 
 ### Create Alerts in Grafana
 

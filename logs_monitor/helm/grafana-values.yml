@@ -13,7 +13,7 @@ persistence:
 datasources:
   datasources.yaml:
     apiVersion: 1
-    datasources:
+    datasources: # Preload a datasource list
       - name: Loki
         type: loki
         url: http://loki-gateway.default.svc.cluster.local # Loki gateway

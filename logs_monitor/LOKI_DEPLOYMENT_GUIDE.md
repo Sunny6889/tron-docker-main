@@ -150,14 +150,8 @@ We utilize Helm Charts to deploy Grafana Loki in simple scalable mode within a K
        # Update Grafana configuration
        helm upgrade grafana grafana/grafana --values ./helm/grafana-values.yml
        ```
-Then you could open grafana using http://localhost:3000 or your host machine's IP if you access remotely.
-The username is `admin`, and the password is retreived by below command:
 
-``` sh
-# Retrieve auto-generated admin password
-kubectl get secret  grafana -o jsonpath="{.data.admin-password}" | base64 --decode
-```
-
+### Loki Helm Configurations
 The [loki-values.yml](./helm/loki-values.yml) Helm config deploys the following components:
 - Read component (2 replicas)
 - Write component (3 replicas)
@@ -173,4 +167,13 @@ The [loki-values.yml](./helm/loki-values.yml) Helm config deploys the following 
 
 Depending on your workload, you can adjust the number of replicas for each component to meet your specific requirements.
 
-For how to use grafana to visualize java-tron Loki logs, please refer to the [official documentation](README.md#steps-to-connect-loki-in-grafana).
+### Explore log data in Grafana
+After the above steps, you could open grafana using http://localhost:3000 or your host machine's IP if you access remotely.
+The Loki already added to Grafana as a datasource through helm config [grafana-values.yml](./helm/grafana-values.yml), you could check the datasource in Grafana UI.
+The username is `admin`, and the password is retrieved by below command:
+
+``` sh
+# Retrieve auto-generated admin password
+kubectl get secret  grafana -o jsonpath="{.data.admin-password}" | base64 --decode
+```
+For how to use grafana to visualize java-tron Loki logs, please refer to the [guidance](README.md#explore-log-data-in-grafana).
