@@ -20,6 +20,7 @@ services:
     command: >
       -jvm "{-Xmx12g -Xmn2g -XX:+UseConcMarkSweepGC -XX:+PrintGC -Xloggc:./logs/gc.log }" -c ./conf/main_net_config.conf -d /java-tron/data
 
+
   promtail:
     image: grafana/promtail:latest
     container_name: promtail

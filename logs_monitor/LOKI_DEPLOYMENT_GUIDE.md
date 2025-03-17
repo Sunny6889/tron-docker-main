@@ -113,44 +113,49 @@ For a simple scalable Loki cluster deployment, here are the recommended hardware
 ### Deploy simple scalable cluster mode with helm
 We utilize Helm Charts to deploy Grafana Loki in simple scalable mode within a Kubernetes cluster. Helm is essential for leveraging Kubernetes-native features such as auto-recovery, rolling updates, and horizontal scaling - capabilities that are crucial for maintaining reliable log ingestion Service Level Agreements (SLAs) in production environments.
 
-1. Add Helm Repositories
-```bash
-# Add Grafana's Helm repository
-helm repo add grafana https://grafana.github.io/helm-charts
-helm repo update
-```
+1. You need a running kubernetes cluster with at least 3 nodes. For how to start a kubernetes cluster, please refer to the [official documentation](https://kubernetes.io/docs/setup/).
 
-2. Deploy Loki Cluster
+2. Then, deploy Loki cluster with the following steps:
+   - Add Helm Repositories
+      ```bash
+       # Add Grafana's Helm repository
+       helm repo add grafana https://grafana.github.io/helm-charts
+       helm repo update
+       ```
+   - Deploy Loki Cluster
 
-```bash
-# Install Loki with custom values file
-helm install loki grafana/loki --values ./helm/loki-values.yml
+      ```bash
+      # Install Loki with custom values file
+      helm install loki grafana/loki --values ./helm/loki-values.yml
 
-# Port-forward Loki Gateway for local access
-kubectl port-forward  svc/loki-gateway 3100:80 &
-```
-3. Deploy Grafana
+      # Port-forward Loki Gateway for host access, needed by promtail
+      kubectl port-forward  svc/loki-gateway 3100:80 &
+      ```
 
-```bash
-# Install Grafana with custom values
-helm install grafana grafana/grafana --values ./helm/grafana-values.yml
+   - Deploy Grafana on the same Kubernetes cluster, then do port-forwarding to access Grafana UI on the host machine.
 
-# Port-forward Grafana service
-kubectl port-forward  svc/grafana 3000:3000 &
-```
-Then you could open grafana using http://localhost:3000, the user name is `admin`, and the password is retreived by below command:
+       ```bash
+       # Install Grafana with custom values
+       helm install grafana grafana/grafana --values ./helm/grafana-values.yml
+
+       # Port-forward Grafana service
+       kubectl port-forward  svc/grafana 3000:3000 &
+       ```
+   - Upgrade Deployments (If you make any config changes)
+
+       ```sh
+       # Update Loki configuration
+       helm upgrade loki grafana/loki  --values ./helm/loki-values.yml
+
+       # Update Grafana configuration
+       helm upgrade grafana grafana/grafana --values ./helm/grafana-values.yml
+       ```
+Then you could open grafana using http://localhost:3000 or your host machine's IP if you access remotely.
+The username is `admin`, and the password is retreived by below command:
+
 ``` sh
 # Retrieve auto-generated admin password
 kubectl get secret  grafana -o jsonpath="{.data.admin-password}" | base64 --decode
-```
-
-4. Upgrade Deployments (When Making Changes)
-```sh
-# Update Loki configuration
-helm upgrade loki grafana/loki  --values ./helm/loki-values.yml
-
-# Update Grafana configuration
-helm upgrade grafana grafana/grafana --values ./helm/grafana-values.yml
 ```
 
 The [loki-values.yml](./helm/loki-values.yml) Helm config deploys the following components:
@@ -163,7 +168,9 @@ The [loki-values.yml](./helm/loki-values.yml) Helm config deploys the following 
   - Used for remote logs index and chunk storage
 - Loki Canary (1 DaemonSet)
   - A monitoring component that continuously verifies the Loki logging pipeline by writing and querying logs. It helps detect issues with log ingestion and retrieval, acting as an early warning system for potential problems in the logging infrastructure.
-- Index and Chunk cache (1 replica)
+- Index and Chunk cache (1 each)
   - A memory caching system that improves query performance by caching frequently accessed index and chunk data
 
 Depending on your workload, you can adjust the number of replicas for each component to meet your specific requirements.
+
+For how to use grafana to visualize java-tron Loki logs, please refer to the [official documentation](README.md#steps-to-connect-loki-in-grafana).

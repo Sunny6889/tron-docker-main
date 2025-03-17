@@ -28,25 +28,22 @@ A typical Loki-based logging stack consists of 3 components:
 
 ## Environment Prerequisites
 
-- Docker and Docker Compose
+**Docker and Docker Compose**
+- For installation refer [prerequisites](../README.md#prerequisites). Then check the Docker resource settings to ensure it has at least 16GB of memory per java-tron service.
 
-   For Docker and Docker Compose installation refer [prerequisites](../README.md#prerequisites).
-   Then check the Docker resource settings to ensure it has at least 16GB of memory per java-tron service.
-
-- Helm and Kubernetes (Optional)
-   If you need to deploy Loki cluster mode, you need to install Helm 3 or above and set up Kubernetes (must have at least 3 nodes) on the host machines.
+**Helm and Kubernetes (Optional)**
+- If you need to deploy Loki cluster mode, you need to install Helm 3 or above and set up Kubernetes (must have at least 3 nodes) on the host machines.
    Refer to the [official documentation](https://helm.sh/docs/intro/install/) for latest Helm installation and the [official documentation](https://kubernetes.io/docs/tasks/tools/install-kubectl/) for Kubernetes installation.
 
-- Hardware Requirement
+**Hardware Requirement**
+- The hardware requirements for deploying the logging system depend on your deployment strategy. Among all services, java-tron nodes consume the most system resources and therefore determine the baseline hardware requirements.
 
-   The hardware requirements for deploying the logging system depend on your deployment strategy. Among all services, java-tron nodes consume the most system resources and therefore determine the baseline hardware requirements.
-
-   For a quick setup with all services (java-tron, Promtail, Loki, and Grafana) running on a single machine:
+- For a quick setup with all services (java-tron, Promtail, Loki, and Grafana) running on a single machine:
    - Follow the [minimum hardware requirements](../single_node/README.md#hardware-requirements) specified for java-tron nodes
    - This configuration is sufficient as java-tron's resource demands exceed those of the logging components
    - If running multiple java-tron nodes, scale the resources proportionally
 
-   For a production-grade setup with services distributed across different machines:
+- For a production-grade setup with services distributed across different machines:
    - Calculate the total hardware requirements by summing up the individual requirements for each component
    - Refer to the specific hardware requirements detailed in each service's setup section
 
@@ -119,22 +116,23 @@ Grafana is used for log visualization and querying. It can be used to create das
 
 ### Deploy Grafana with Docker Compose
 
-### steps to connect loki in grafana
-1. Open Grafana in your browser by visiting `http://localhost:3000`.
+1. Open Grafana in your browser by visiting `http://localhost:3000` or your host machine's IP if you access remotely.
 2. Log in with the default credentials (username: `admin`, password: `admin`).
-3. Add Loki as a data source:
+
+### Connect Loki in Grafana
+- Add Loki as a data source:
    - Click on the gear icon on the left sidebar to open the Configuration menu.
    - Select `Data Sources` and click on `Add data source`.
    - Choose `Loki` from the list of available data sources.
    - In the HTTP section, set the URL to `http://loki:3100` and click `Save & Test`.
-4. Create a new dashboard:
+- Create a new dashboard:
    - Click on the `+` icon on the left sidebar to create a new dashboard.
    - Add a new panel to the dashboard by clicking on `Add new panel`.
    - In the query editor, select the Loki data source and write a LogQL query to retrieve log data.
    - Click `Apply` to see the log data in the panel.
    - Customize the panel settings, such as time range, log level, and log format.
    - Save the dashboard by clicking on the disk icon in the top menu bar.
-5. Explore log data:
+- Explore log data:
    - Use the query editor to write LogQL queries to filter and search log data.
    - Create visualizations, alerts, and annotations to monitor log data in real-time.
    - Customize the dashboard layout, theme, and appearance to suit your needs.

@@ -1,10 +1,16 @@
 # java-tron Logging Configuration
 
 [java-tron](https://github.com/tronprotocol/java-tron) uses Logback for logging. The logging configuration is defined in the [logback.xml](https://github.com/tronprotocol/java-tron/blob/develop/framework/src/main/resources/logback.xml) file.
-In general java-tron will generate logs into:
-- `./logs/tron.log`
-- `./logs/db/db.log`
-- `./logs/gc.log` with gc debug option enabled
+java-tron will generate logback logs into:
+- `./logs/tron.log` with general application logs
+- `./logs/db/db.log` with db low-level related logs
+
+For debug logs not captured in logback logs, you can refer to:
+- `./logs/gc.log` with gc debug option enabled `-Xloggc:gc.log` in the start command.
+- `./start.log` with start-up logs if you:
+  - Start java-tron with `sh start.sh` command. Refer [start.sh](https://github.com/tronprotocol/java-tron/blob/develop/start.sh#L348)
+  - Directly start FullNode.jar with `java -jar ... FullNode.jar >> start.log ...`
+
 
 Notice here all mentioned file paths are relative to the java-tron service root directory.
 
