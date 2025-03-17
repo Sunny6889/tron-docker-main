@@ -81,6 +81,13 @@ This is important for maintaining the state of Promtail across restarts.
 - The `promtail-config.yml` file is used to configure Promtail to scrape logs from the mounted directory and send them to Loki.
 ``` yml
 # promtail-config.yml
+clients:
+  - url: http://host.docker.internal:3100/loki/api/v1/push
+    tenant_id: tenant-java-tron-node1 # tenant_id is used to differentiate between different data sources of logs.
+    headers:
+      X-Scope-OrgID: tenant-java-tron-node1  # Ensure this matches your Loki tenant configuration
+    batchsize: 1024 # Maximum batch size (in bytes) of logs to accumulate before sending to Loki
+    batchwait: 1s   # Maximum amount of time to wait before sending a batch, even if that batch isn't full.
 scrape_configs:
 - job_name: system
   # A static_configs allows specifying a list of targets and a common label set for them.
@@ -97,11 +104,12 @@ scrape_configs:
       job: db  # you can use this label to filter the logs in Grafana.
       __path__: /var/log/db/*log  # The path matching the logs to be collected. It should be in the mounted path of the java-tron generated logs.
 ```
-https://grafana.com/docs/loki/latest/send-data/promtail/configuration
-持久化
-
-单部署这俩服务硬件要求, 内存，日志，硬盘日志最多占用 50G
-
+In the `promtail-config.yml` file:
+- `clients.batchwait` and `clients.batchsize` are used to control the batch size and wait time before sending logs to Loki. Set a short time to ensure logs are sent promptly.
+- `scrape_configs.static_configs` specify the targets and labels for scraping logs. As java-tron generates logs in different directories, we have configured two scrape_configs:
+  - `targets` should be set to host IP address to scrape logs from the host machine. Usually, Promtail service run on the same machine with java-tron, thus it is set to `localhost`.
+  - The `__path__` field should match the path of the java-tron generated logs in the mounted directory.
+For more Promtail configurations, refer [official documentation](https://grafana.com/docs/loki/latest/send-data/promtail/configuration/).
 
 ## Loki setup
 Loki offers deployment options that cater to different reliability and scalability requirements. You can choose between single-node deployment for simpler setups or cluster deployment for enhanced reliability and scalability. For quick start below we will show you how to deploy Loki in monolithic mode. For more information on Loki components and cluster mode deployment, refer to our detailed documentation: [Loki cluster mode guidance](LOKI_ClUSTER_MODE_DEPLOYMENT.md).
