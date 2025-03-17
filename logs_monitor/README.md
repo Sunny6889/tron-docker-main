@@ -16,7 +16,7 @@ Then, we will demonstrate how to search log and configure alerts to ensure the h
 
 ### Architecture Overview
 
-![img.png](../images/logs_architecture.png)
+<img src="../images/logs_architecture.png" alt="Alt Text" width="780" >
 
 A typical Loki-based logging stack consists of 3 components:
 
@@ -184,16 +184,20 @@ Then you could open Grafana in your browser by visiting `http://localhost:3000` 
 
 To explore Loki logs within Grafana, navigate to `Explore` in the main menu, select the Loki data source,
 then you could search logs with label filters and identify patterns without needing to write LogQL queries.
+The `job` label is configured in the above-mentioned `promtail-config.yml` file to differentiate between different log sources.
 
 <img src="../images/grafana_loki_explore.png" alt="Alt Text"  >
 
-
 ### Create Alerts in Grafana
 
-### At last, use grafana to observe Loki service healthiness
+Grafana allows you to create alerts based on log data. You can set up alert conditions, notification channels, and thresholds to monitor the health and performance of your services.
+Check the [official documentation](https://grafana.com/docs/grafana/latest/alerting/create-alerts/) for more information on creating alerts in Grafana.
+
+## At last, Monitor log service healthiness
+At last, we also need to monitor the whole log service healthiness.
+Metric guidance is provided in the [metrics_monitor](../metrics_monitor/README.md) section.
+You can use the metrics to monitor the healthiness of the java-tron, Promatil, Loki, Grafana healthiness.
 
 ## TroubleShooting
 1. If your java-tron node exits unexpectedly but the `tron.log` file does not give you any clue or there is no error message.
    - One possible reason is that the node is killed by the OOM killer. You could verify it by check the docker exit status using command `docker ps -a`. If the exit status is 137, it means the container is killed by the OOM killer. You could also check the `gc.log` files to see if there are any Full GC logs. If there are many Full GC logs, it means the JVM is running out of memory and the OOM killer may kill the container. Make sure each java-tron service has at least 16GB memory
-
-添加 Loki 死亡 alert
