@@ -31,7 +31,7 @@ services:
     ports:
       - "9090:9090" # used for external collect metrics
     volumes:
-      - ./metric_conf/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./conf/prometheus.yml:/etc/prometheus/prometheus.yml
   grafana:
     image: grafana/grafana-oss
     container_name: grafana
