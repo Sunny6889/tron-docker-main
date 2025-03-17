@@ -1,0 +1,27 @@
+allprojects {
+    group = 'io.github.tronprotocol'
+    version = '0.1'
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+}
+
+//tasks.register('copyToParent', Copy) {
+//    into "$buildDir/libs"
+//    subprojects.each { subproject ->
+//        from(subproject.tasks.withType(Jar))
+//    }
+//}
+
+
+gradle.buildFinished {
+    if (project.hasProperty('cleanSubBuild')) {
+        subprojects.each { subproject ->
+            if (subproject.buildDir.exists()) {
+                subproject.buildDir.deleteDir()
+            }
+        }
+    }
+}
