@@ -28,9 +28,9 @@ services:
     networks:
       - tron_network
     volumes:
-      - ./logs:/var/log
+      - ./logs:/var/log # The same directory as the java-tron logs
       - ./conf:/etc/promtail
-      - ./promtail-data:/cache  # Add this line to map Promtail's local data to the host, important!
+      - ./promtail-data:/cache  # Add this line to map Promtail local data to the host, so it can be persisted
     command: >
       -config.file=/etc/promtail/promtail-config.yml
     restart: unless-stopped

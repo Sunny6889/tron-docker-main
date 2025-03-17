@@ -54,7 +54,49 @@ Run the below command to start java-tron and Promtail services:
 docker-compose up -d tron-node promtail
 ```
 
-java-tron has configured to output all its logs to `./logs` directory.
+In the docker-compose file, java-tron has configured to output all its logs to `./logs` directory,
+then mount to the Promtail container. Promtail will scrape the logs from the mounted directory and send them to Loki.
+
+### Key configuration breakdown for Promtail
+```yml
+  # docker-compose.yml
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    user: root
+    networks:
+      - tron_network
+    volumes:
+      - ./logs:/var/log # The same directory as the java-tron logs
+      - ./conf:/etc/promtail
+      - ./promtail-data:/cache  # Add this line to map Promtail local data to the host, so it can be persisted
+    command: >
+      -config.file=/etc/promtail/promtail-config.yml
+```
+- Volumes mount the `./promtail-data` directory to the Promtail container to persist the local data.
+This is important for maintaining the state of Promtail across restarts.
+  Check the `./promtail-data` directory it contains a `positions.yaml` file after the Promtail service is started.
+  It is used to store the current position of the logs being scraped by Promtail.
+
+- The `promtail-config.yml` file is used to configure Promtail to scrape logs from the mounted directory and send them to Loki.
+``` yml
+# promtail-config.yml
+scrape_configs:
+- job_name: system
+  # A static_configs allows specifying a list of targets and a common label set for them.
+  # https://grafana.com/docs/loki/latest/send-data/promtail/configuration/#static_configs
+  static_configs:
+  - targets:
+      - localhost # Configures the discovery to look on the current machine.
+    labels:
+      job: general # you can use this label to filter the logs in Grafana.
+      __path__: /var/log/*log  # The path matching the logs to be collected. It should be in the mounted path of the java-tron generated logs.
+  - targets:
+      - localhost # Configures the discovery to look on the current machine.
+    labels:
+      job: db  # you can use this label to filter the logs in Grafana.
+      __path__: /var/log/db/*log  # The path matching the logs to be collected. It should be in the mounted path of the java-tron generated logs.
+```
 https://grafana.com/docs/loki/latest/send-data/promtail/configuration
 持久化
 
