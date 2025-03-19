@@ -197,7 +197,3 @@ Check the [official documentation](https://grafana.com/docs/grafana/latest/alert
 At last, we also need to monitor the whole log service healthiness.
 Metric guidance is provided in the [metrics_monitor](../metrics_monitor/README.md) section.
 You can use the metrics to monitor the healthiness of the java-tron, Promatil, Loki, Grafana healthiness.
-
-## TroubleShooting
-1. If your java-tron node exits unexpectedly but the `tron.log` file does not give you any clue or there is no error message.
-   - One possible reason is that the node is killed by the OOM killer. You could verify it by check the docker exit status using command `docker ps -a`. If the exit status is 137, it means the container is killed by the OOM killer. You could also check the `gc.log` files to see if there are any Full GC logs. If there are many Full GC logs, it means the JVM is running out of memory and the OOM killer may kill the container. Make sure each java-tron service has at least 16GB memory
