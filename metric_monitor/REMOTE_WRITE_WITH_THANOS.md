@@ -3,8 +3,8 @@
 In this document, we will introduce how to use Prometheus remote-write to monitor a java-tron node more securely.
 
 ## Background
-The previous [README](../README.md) explains how to monitor a java-tron node using Grafana and Prometheus. It can be illustrated by the image below:
-![image](../../images/metric_pull_simple.png)
+The previous [README](README.md) explains how to monitor a java-tron node using Grafana and Prometheus. It can be illustrated by the image below:
+![image](../images/metric_pull_simple.png)
 Basically, the Prometheus service pulls metrics from the java-tron node through an exposed port. Subsequently, Grafana retrieves these metrics from Prometheus to provide visualized insights and alerts.
 
 There are some limitations to this approach. From a security perspective, it is essential to separate java-tron services and monitoring services into different network zones. Specifically, we need to isolate java-tron nodes, especially SR nodes, from external exposure to reduce risks such as Denial of Service (DoS) attacks. However, monitoring metrics and similar indicators of TRON blockchain status can be made more accessible to a broader range of users.
@@ -14,14 +14,14 @@ To address these concerns, we need to change the pull mode either from the java-
 Given these considerations, we will implement a push mode for the data flow from Prometheus to Grafana. Prometheus offers a **remote-write** feature that supports push mode, facilitating this transition. We have selected [Thanos](https://github.com/thanos-io/thanos) as an intermediate component. Thanos not only supports remote write but also provides additional features such as long-term storage, high availability, and global querying, thereby improving the overall architecture and functionality of our monitoring system.
 
 Below is the new architecture of the monitoring system. We will introduce how to set up the Prometheus remote-write feature and Thanos in the following sections.
-![image](../../images/metric_push_with_thanos.png)
+![image](../images/metric_push_with_thanos.png)
 
 ## Implementation Guide
 This section introduces the steps of setting up Prometheus remote write with Thanos.
 
 ### Prerequisites
 Before starting, ensure you have:
-- Docker and Docker Compose installed (refer to [prerequisites](../../README.md#prerequisites))
+- Docker and Docker Compose installed (refer to [prerequisites](../README.md#prerequisites))
   - Make sure docker resource memory is at least 16GB, as java-tron node needs at least 12GB memory.
 - The tron-docker repository cloned locally
 ```sh
@@ -44,7 +44,7 @@ Run the below command to start the Thanos Receive and [Minio](https://github.com
 docker-compose up -d thanos-receive minio
 ```
 
-Core configuration for Thanos Receive in [docker-compose.yml](docker-compose.yml):
+Core configuration for Thanos Receive in [docker-compose-thanos.yml](docker-compose-thanos.yml):
 ```
   thanos-receive:
     ...
