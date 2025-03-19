@@ -14,10 +14,10 @@ services:
       - "9527:9527" # used for metric API
     volumes:
       - ../conf:/java-tron/conf
-      - ./datadir:/java-tron/data # mount a local directory to make the blocks data persistent.
+      - ./output-directory:/java-tron/output-directory # mount a local directory to make the block data persistent.
       - ./logs:/java-tron/logs
     command: >
-      -jvm "{-Xmx12g -Xmn2g -XX:+UseConcMarkSweepGC -XX:+PrintGC -Xloggc:./logs/gc.log }" -c ./conf/main_net_config.conf -d /java-tron/data
+      -jvm "{-Xmx12g -Xmn2g -XX:+UseConcMarkSweepGC -XX:+PrintGC -Xloggc:./logs/gc.log }" -c ./conf/main_net_config.conf -d /java-tron/output-directory
 
   prometheus:
     image: prom/prometheus:latest
@@ -31,7 +31,7 @@ services:
     ports:
       - "9090:9090" # used for external collect metrics
     volumes:
-      - ./conf/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./conf/prometheus-quick-start.yml:/etc/prometheus/prometheus.yml
   grafana:
     image: grafana/grafana-oss
     container_name: grafana

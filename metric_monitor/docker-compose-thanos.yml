@@ -16,10 +16,10 @@ services:
       - "18888:18888" # for p2p node discovery
     volumes:
       - ../../conf:/java-tron/conf # ensure the config path is correct, make sure the config file metric is enabled
-      - ./datadir:/java-tron/data # mount a local directory to make the block data persistent.
+      - ./output-directory:/java-tron/output-directory # mount a local directory to make the block data persistent.
       - ./logs:/java-tron/logs
     command: >
-      -jvm "{-Xmx12g -Xmn2g -XX:+UseConcMarkSweepGC -XX:+PrintGC -Xloggc:./logs/gc.log }" -c ./conf/main_net_config.conf -d /java-tron/data
+      -jvm "{-Xmx12g -Xmn2g -XX:+UseConcMarkSweepGC -XX:+PrintGC -Xloggc:./logs/gc.log }" -c ./conf/main_net_config.conf -d /java-tron/output-directory
 
   prometheus:
     image: quay.io/prometheus/prometheus:v2.38.0
@@ -33,7 +33,7 @@ services:
       - ./conf:/etc/prometheus
       - ./prometheus_data:/prometheus
     command:
-      - "--config.file=/etc/prometheus/prometheus.yml" # the default path to the configuration file
+      - "--config.file=/etc/prometheus/prometheus-remoet-write.yml" # the default path to the configuration file
       - "--storage.tsdb.path=/prometheus" # the path where Prometheus stores its metric database
       - "--storage.tsdb.retention.time=30d" # takes about 1GB of disk space per month
       - "--storage.tsdb.max-block-duration=30m" #the maximum duration for a block of time series data that can be stored in the time series database (TSDB)

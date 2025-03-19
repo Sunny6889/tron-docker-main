@@ -108,7 +108,7 @@ Below are the core configurations for the Prometheus service:
     - ./conf:/etc/prometheus
     - ./prometheus_data:/prometheus
   command:
-    - "--config.file=/etc/prometheus/prometheus.yml" # Default path to the configuration file
+    - "--config.file=/etc/prometheus/prometheus-remoet-write.yml" # Default path to the configuration file
     - "--storage.tsdb.path=/prometheus" # The path where Prometheus stores its metric database
     - "--storage.tsdb.retention.time=30d"
     - "--storage.tsdb.max-block-duration=30m" # The maximum duration for a block of time series data that can be stored in the time series database (TSDB)
@@ -125,7 +125,7 @@ Below are the core configurations for the Prometheus service:
 
 ##### 2. Prometheus remote-write configuration
 
-The Prometheus configuration file is set to use the [prometheus.yml](conf/prometheus.yml) by volume mapping `./conf/prometheus.yml:...` and flag `--config.file=...`.
+The Prometheus configuration file is set to use the [prometheus-remoet-write.yml](conf/prometheus-remoet-write.yml) by volume mapping `./conf/prometheus-remoet-write.yml:...` and flag `--config.file=...`.
 It contains the configuration of `scrape_configs` and `remote_write`.
 You need to fill the `url` with the IP address of the Thanos Receive service started in the first step.
 Check the official documentation [remote_write](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) for all configurations'
