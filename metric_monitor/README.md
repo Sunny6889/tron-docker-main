@@ -11,7 +11,7 @@ For Docker and Docker Compose installation refer [prerequisites](../README.md#pr
 Then check the Docker resource settings to ensure it has at least 16GB of memory per FullNode container.
 
 ## Quick start
-Download the `tron-docker` repository, enter the [metric_monitor](./) directory, and start the services defined in [docker-compose.yml](./docker-compose.yml) using the following command:
+Download the `tron-docker` repository, enter the [metric_monitor](./) directory, and start the services defined in [docker-compose-quick-start.yml](docker-compose-quick-start.yml) using the following command:
 
 ```sh
 docker-compose -f docker-compose-quick-start.yml up -d
@@ -27,7 +27,7 @@ metrics{
 ```
 
 ### Prometheus service
-The Prometheus service will use the configuration file [prometheus.yml](conf/prometheus.yml). It uses the configuration below to add targets for monitoring.
+The Prometheus service will use the configuration file [prometheus-quick-start.yml](conf/prometheus-quick-start.yml). It uses the configuration below to add targets for monitoring.
 ```
 - targets:
     - tron-node1:9527 # use container name
@@ -59,7 +59,7 @@ Click the Grafana dashboards icon on the left, then select "New" and "Import", t
 Then you can see the following monitors displaying the running status of the nodes in real time:
 ![image](../images/grafana_dashboard_monitoring.png)
 
-If you need to deploy Grafana on a remote server or isolate java-tron node, please refer to the document [Use Prometheus Remote Write with Thanos to Monitor java-tron Node](./push_mode/README.md).
+If you need to deploy Grafana on a remote server or isolate java-tron node, please refer to the document [Use Prometheus Remote Write with Thanos to Monitor java-tron Node](REMOTE_WRITE_WITH_THANOS.md).
 
 ## All metrics
 As you can see from above Grafana dashboard or http://localhost:9527/metrics, the available metrics are categorized into the following:

@@ -1,8 +1,8 @@
 version: '3.8'
 services:
-  tron-node:
+  tron-node1:
     image: tronprotocol/java-tron:latest
-    container_name: tron-node
+    container_name: tron-node1
     user: root
     networks:
       - tron_network
@@ -19,10 +19,12 @@ services:
       - ./output-directory:/java-tron/output-directory # mount a local directory to make the block data persistent.
       - ./logs:/java-tron/logs
     command: >
-      -jvm "{-Xmx12g -Xmn2g -XX:+UseConcMarkSweepGC -XX:+PrintGC -Xloggc:./logs/gc.log }" -c ./conf/main_net_config.conf -d /java-tron/output-directory
+      -jvm "{-Xmx12g -Xmn2g -XX:+UseConcMarkSweepGC -XX:+PrintGC -Xloggc:./logs/gc.log }" -c ./conf/main_net_config.conf
+    environment:
+      - TZ=Asia/Shanghai
 
   prometheus:
-    image: quay.io/prometheus/prometheus:v2.38.0
+    image: quay.io/prometheus/prometheus:v2.38.0 # NOTE: It is highly recommended to use Prometheus v2.13.0+ due to its remote read improvements.
     container_name: prometheus
     user: root
     networks:

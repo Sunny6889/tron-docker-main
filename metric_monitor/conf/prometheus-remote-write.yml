@@ -5,6 +5,7 @@ global:
   external_labels:
     monitor: 'java-tron-node1-remote-write' # the external label is used to identify the Prometheus instance in the Thanos Querier UI
 
+
 scrape_configs:
   - job_name: java-tron
     honor_timestamps: true
@@ -15,7 +16,7 @@ scrape_configs:
     follow_redirects: true
     static_configs:
       - targets:
-          - tron-node:9527
+          - tron-node1:9527
         labels:
           group: group-tron
           instance: fullnode-01
@@ -37,3 +38,5 @@ remote_write:
       send: true
       send_interval: 3s # How frequently metric metadata is sent to remote storage.
       max_samples_per_send: 500
+    headers:
+      Content-Encoding: snappy    # Explicit compression, as Prometheus sends raw uncompressed samples by default (2.7× reduction)
