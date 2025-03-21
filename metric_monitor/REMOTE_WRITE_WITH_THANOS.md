@@ -160,18 +160,16 @@ Core configuration for Thanos Receive in [docker-compose-thanos.yml](docker-comp
   - The `ports` combined with flags `--grpc-address, --http-address` expose the ports for the Thanos Query service.
 - Security Note: `0.0.0.0` means it accepts all incoming connections from any IP address. For production, consider restricting access to specific IP addresses.
 
-##### 3. Operational parameters
-
-- `--label=receive_replica=.` and `--label=receive_cluster=.`: Cluster labels ensure unique identification in the Thanos ecosystem. You could find these labels in Grafana dashboards. You could add any key-value pairs as labels.
-
-<img src="../images/metric_pull_receive_label.png" alt="Alt Text" width="780" >
-
 For more flags explanation and default value can be found in the official [Thanos Receive Flags](https://thanos.io/tip/components/receive.md/#flags) documentation.
 
-### Step 3: Set up Thanos Query
-As Grafana cannot directly query Thanos Receive, we need Thanos Query that implements Prometheus’s v1 API to aggregate data from the Receive services.
+#### Thanos Receive reliable deployment
+For systems monitoring multiple services with increasing scale, there are two approaches to prevent Thanos Receive from becoming a single point of failure or performance bottleneck:
 
-** The Querier component is stateless and horizontally scalable, and can be deployed with any number of replicas. **
+1. Deploy multiple independent Thanos Receive instances, each dedicated to different monitoring targets. The configurations outlined in this document provide clear guidance for setting up this distributed architecture.
+2. Implement Thanos Receive in cluster mode, which provides a unified entry point with automatic scaling capabilities as illustrated in the architecture diagram. We are working to provide guidance.
+
+### Step 3: Set up Thanos Query
+As Grafana cannot directly query Thanos Receive, we need Thanos Query that implements Prometheus’s v1 API to aggregate data from the Receive services. **Querier is fully stateless and horizontally scalable**.
 
 Run the below command to start the Thanos Query service:
 ```sh
@@ -189,11 +187,15 @@ Below are the core configurations for the Thanos Query service:
       - query
       - --endpoint.info-timeout=30s
       - --http-address=0.0.0.0:9091
-      - --store=[Thanos Receive IP]:10907 # --store: The grpc-address of the Thanos Receive service，if Receive run remotely replace container name "thanos-receive" with the real IP
+      - --query.replica-label=replica # Deduplication turned on for identical series except the replica label.
+      - --store=thanos-receive:10907 # --store: The grpc-address of the Thanos Receive service，if Receive run remotely replace container name "thanos-receive" with the real ip
+     # - --store=thanos-receive2:10907 # Add more thanos-receive services
 ```
 It will set up the Thanos Query service
 that listens to port 9091 and queries metrics from the Thanos Receive service from `--store=[Thanos Receive IP]:10907`.
 Make sure the IP address is correct.
+
+You could add multiple Thanos Receive services to the Querier service. It will do duplication based on the
 For more complex usage, please refer to the [official Query document](https://thanos.io/tip/components/query.md/).
 
 ### Step 4: Monitor through Grafana
@@ -203,6 +205,7 @@ docker-compose -f docker-compose-thanos.yml up -d grafana
 ```
 Then log in to the Grafana web UI through http://localhost:3000/ or your host machine's IP address. The initial username and password are both `admin`.
 Click the **Connections** on the left side of the main page and select Prometheus as datasource. Enter the IP and port of the Query service in URL with `http://[Query service IP]:9091`.
+
 <img src="../images/metric_grafana_datasource_query.png" alt="Alt Text" width="680" >
 
 Follow the same instruction as [Import Dashboard](https://github.com/tronprotocol/tron-docker/blob/main/metric_monitor/README.md#import-dashboard) to import the dashboard.

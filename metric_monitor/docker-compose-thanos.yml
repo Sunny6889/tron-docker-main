@@ -35,7 +35,7 @@ services:
       - ./conf:/etc/prometheus
       - ./prometheus_data:/prometheus
     command:
-      - "--config.file=/etc/prometheus/prometheus-remoet-write.yml" # the default path to the configuration file
+      - "--config.file=/etc/prometheus/prometheus-remote-write.yml" # the default path to the configuration file
       - "--storage.tsdb.path=/prometheus" # the path where Prometheus stores its metric database
       - "--storage.tsdb.retention.time=30d" # takes about 1GB of disk space per month
       - "--storage.tsdb.max-block-duration=30m" #the maximum duration for a block of time series data that can be stored in the time series database (TSDB)
