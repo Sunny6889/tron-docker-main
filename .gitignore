@@ -34,3 +34,6 @@ go1.*
 /logs_monitor/loki-data/
 /logs_monitor/minio/
 /logs_monitor/promtail-data/
+/metric_monitor/prometheus_data/
+/metric_monitor/receive-data/
+/metric_monitor/minio/

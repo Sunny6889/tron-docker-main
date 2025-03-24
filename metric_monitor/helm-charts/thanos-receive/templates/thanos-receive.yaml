@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: thanos-receive
+  labels:
+    app.kubernetes.io/component: receive
+spec:
+  serviceName: thanos-receive
+  replicas: {{ .Values.replicaCount | default 2 }}   #lint-ignore
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: receive
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: receive
+    spec:
+      securityContext:
+        fsGroup: 2000  # Ensures group ownership of mounted volumes
+      containers:
+      - name: thanos
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        securityContext:
+          runAsUser: 0  # Run as root for permission changes
+        args:
+        - "receive"
+        - "--label=receive_replica=\"0\""
+        - "--grpc-address=0.0.0.0:10907"
+        - "--http-address=0.0.0.0:10909"
+        - "--remote-write.address=0.0.0.0:10908"
+        - "--tsdb.path=/receive/data"  # Explicitly set TSDB path
+        resources:
+          limits:
+            memory: {{ .Values.resources.limits.memory | default "2Gi" }}
+          requests:
+            cpu: {{ .Values.resources.requests.cpu | default "1" }}
+            memory: {{ .Values.resources.requests.memory | default "2Gi" }}
+        securityContext:
+          runAsUser: 1000
+        ports:
+        - containerPort: 10907
+          name: grpc
+        - containerPort: 10908
+          name: remote-write
+        - containerPort: 10909
+          name: http
+        livenessProbe:
+          httpGet:
+            path: /-/healthy
+            port: 10909
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /-/ready
+            port: 10909
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        securityContext:
+          runAsUser: 70
+          runAsGroup: 70
+        volumeMounts:
+        - name: data
+          mountPath: /receive/data
+        # - name: thanos-config
+        #   mountPath: /etc/thanos
+      # volumes:  # Move this to pod spec level
+      # - name: thanos-config
+      #   configMap:
+      #     name: thanos-receive-config
+      #     items:
+      #     - key: bucket.yml
+      #       path: bucket.yml
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]  # Changed from ReadWriteMany
+      storageClassName: {{ .Values.storageClass }}
+      resources:
+        requests:
+          storage: {{ .Values.storageSize }}  # Ensure this matches for all replicas

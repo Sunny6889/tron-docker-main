@@ -41,7 +41,7 @@ The monitoring system consists of:
 ### Step 1: Set up TRON and Prometheus services
 Run the below command to start java-tron and Prometheus services:
 ```sh
-docker-compose up -d tron-node1 prometheus
+docker-compose up -f docker-compose-thanos.yml -d tron-node1 prometheus
 ```
 
 Review the [docker-compose-thanos.yml](docker-compose-thanos.yml) file, the command explanation of the java-tron service can be found in [Run Single Node](../single_node/README.md#run-the-container).
@@ -117,7 +117,7 @@ remote_write:
 
 Run the below command to start the Thanos Receive and [Minio](https://github.com/minio/minio) service for long-term metric storage. Minio is S3 compatible object storage service.
 ```sh
-docker-compose up -d thanos-receive minio
+docker-compose up -f docker-compose-thanos.yml -d thanos-receive minio
 ```
 
 Core configuration for Thanos Receive in [docker-compose-thanos.yml](docker-compose-thanos.yml):
@@ -166,7 +166,7 @@ For more flags explanation and default value can be found in the official [Thano
 For systems monitoring multiple services with increasing scale, there are two approaches to prevent Thanos Receive from becoming a single point of failure or performance bottleneck:
 
 1. Deploy multiple independent Thanos Receive instances, each dedicated to different monitoring targets. The configurations outlined in this document provide clear guidance for setting up this distributed architecture.
-2. Implement Thanos Receive in cluster mode, which provides a unified entry point with automatic scaling capabilities as illustrated in the architecture diagram. We are working to provide guidance.
+2. Implement Thanos Receive in cluster mode, which provides a unified entry point with automatic scaling capabilities as illustrated in the architecture diagram. For detailed instructions on setting up Thanos Receive cluster mode, refer to the [Thanos receive cluster mode](THANOS_CLUSTER.md) guide.
 
 ### Step 3: Set up Thanos Query
 As Grafana cannot directly query Thanos Receive, we need Thanos Query that implements Prometheus’s v1 API to aggregate data from the Receive services. **Querier is fully stateless and horizontally scalable**.

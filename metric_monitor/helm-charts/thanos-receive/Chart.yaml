@@ -1,0 +1,7 @@
+apiVersion: v2
+name: thanos-receive
+description: Thanos Receive Helm chart for TRON metric monitoring
+type: application
+version: 0.1.0
+appVersion: "0.33.0"
+dependencies: []
