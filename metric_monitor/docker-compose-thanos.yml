@@ -44,14 +44,14 @@ services:
       - "--web.enable-admin-api"
     restart: unless-stopped
 
-  thanos-receive:
+  thanos-receive-0:
     image: quay.io/thanos/thanos:v0.33.0
     user: root
-    container_name: thanos-receive
+    container_name: thanos-receive-0
     networks:
       - tron_network
     volumes:
-      - ./receive-data:/receive/data
+      - ./receive-data-0:/receive/data
       - ./conf:/receive
     ports:
       - "10907:10907"
@@ -60,7 +60,7 @@ services:
     command:
       - "receive"
       - "--tsdb.path=/receive/data"
-      - "--tsdb.retention=15d" # How long to retain raw samples on local storage.
+      - "--tsdb.retention=1h" # How long to retain raw samples on local storage.
       - "--grpc-address=0.0.0.0:10907"
       - "--http-address=0.0.0.0:10909"
       - "--remote-write.address=0.0.0.0:10908"
@@ -97,8 +97,10 @@ services:
       - query
       - --endpoint.info-timeout=30s
       - --http-address=0.0.0.0:9091
-      - --query.replica-label=replica
-      - --store=thanos-receive:10907 # --store: The grpc-address of the Thanos Receive service，if Receive run remotely replace container name "thanos-receive" with the real ip
+      - --query.replica-label=receive_replica # Deduplication turned on for identical series except the replica label.
+      - --endpoint=thanos-receive-0:10907
+      # - --endpoint=thanos-receive-1:10907 # could add multiple receive services
+      #- --store=thanos-store-gateway:10907 #
     restart: unless-stopped
 
   grafana:

@@ -24,7 +24,7 @@ scrape_configs:
 # The remote_write configuration tells Prometheus to continuously write metrics to the Thanos Receive service.
 # Refer https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write
 remote_write:
-  - url: http://thanos-receive:10908/api/v1/receive # if Thanos Receive service run on the same host with Prometheus
+  - url: http://thanos-receive-0:10908/api/v1/receive # if Thanos Receive service run on the same host with Prometheus
     remote_timeout: 30s
     queue_config:
       capacity: 2500
@@ -38,5 +38,3 @@ remote_write:
       send: true
       send_interval: 3s # How frequently metric metadata is sent to remote storage.
       max_samples_per_send: 500
-    headers:
-      Content-Encoding: snappy    # Explicit compression, as Prometheus sends raw uncompressed samples by default (2.7× reduction)
