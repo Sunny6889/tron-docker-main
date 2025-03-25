@@ -20,8 +20,8 @@ spec:
       containers:
       - name: thanos
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        securityContext:
-          runAsUser: 0  # Run as root for permission changes
+        # securityContext:
+        #   runAsUser: 0  # Run as root for permission changes
         args:
         - "receive"
         - "--label=receive_replica=\"0\""
@@ -84,7 +84,7 @@ spec:
   - metadata:
       name: data
     spec:
-      accessModes: [ "ReadWriteOnce" ] 
+      accessModes: [ "ReadWriteOnce" ]
       storageClassName: {{ .Values.thanosReceive.storageClass }}
       resources:
         requests:
