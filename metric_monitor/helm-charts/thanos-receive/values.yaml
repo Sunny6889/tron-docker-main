@@ -2,16 +2,16 @@ image:
   repository: quay.io/thanos/thanos
   tag: v0.33.0
 
-replicaCount: 2
-clusterName: "mainnet"
-retention: "1h" # for testing only
-
-storageClass: "standard"
-storageSize: "1Gi"  # Ensure consistent size across all replicas
-
-resources:
-  limits:
-    memory: 4Gi
-  requests:
-    cpu: 500m
-    memory: 2Gi
+thanosReceive:
+  replicaCount: 2
+  clusterName: "mainnet"
+  retention: "30d" # for production suggest 30 days
+  storageClass: "standard"
+  storageSize: "4Gi" # enough for 6 fullnodes metrics with one month records for each replica
+  resources:
+    limits:
+      cpu: 2000m # 2 CPU
+      memory: 4Gi
+    requests:
+      cpu: 1000m # 1 CPU
+      memory: 2Gi

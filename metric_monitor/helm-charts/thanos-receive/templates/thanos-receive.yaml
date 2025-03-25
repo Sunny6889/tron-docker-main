@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/component: receive
 spec:
   serviceName: thanos-receive
-  replicas: {{ .Values.replicaCount | default 2 }}   #lint-ignore
+  replicas: {{ .Values.thanosReceive.replicaCount | default 2 }}
   selector:
     matchLabels:
       app.kubernetes.io/component: receive
@@ -31,10 +31,10 @@ spec:
         - "--tsdb.path=/receive/data"  # Explicitly set TSDB path
         resources:
           limits:
-            memory: {{ .Values.resources.limits.memory | default "2Gi" }}
+            memory: {{ .Values.thanosReceive.resources.limits.memory | default "2Gi" }}
           requests:
-            cpu: {{ .Values.resources.requests.cpu | default "1" }}
-            memory: {{ .Values.resources.requests.memory | default "2Gi" }}
+            cpu: {{ .Values.thanosReceive.resources.requests.cpu | default "1000m" }}
+            memory: {{ .Values.thanosReceive.resources.requests.memory | default "2Gi" }}
         securityContext:
           runAsUser: 1000
         ports:
@@ -84,8 +84,8 @@ spec:
   - metadata:
       name: data
     spec:
-      accessModes: [ "ReadWriteOnce" ]  # Changed from ReadWriteMany
-      storageClassName: {{ .Values.storageClass }}
+      accessModes: [ "ReadWriteOnce" ] 
+      storageClassName: {{ .Values.thanosReceive.storageClass }}
       resources:
         requests:
-          storage: {{ .Values.storageSize }}  # Ensure this matches for all replicas
+          storage: {{ .Values.thanosReceive.storageSize }}
