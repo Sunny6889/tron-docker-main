@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  tron-node1:
+    extends:
+      file: tron-node.yml
+      service: tron-node1
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+    ports:
+      - "9090:9090" # used for external collect metrics
+    volumes:
+      - ./conf/prometheus-quick-start.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    extends:
+      file: grafana.yml
+      service: grafana

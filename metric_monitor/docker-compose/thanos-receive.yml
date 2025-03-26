@@ -5,8 +5,8 @@ services:
     user: root
     container_name: thanos-receive-0
     volumes:
-      - ./receive-data-0:/receive/data
-      - ./conf:/receive
+      - ../receive-data-0:/receive/data
+      - ../conf:/receive
     ports:
       - "10907:10907"
       - "10908:10908"

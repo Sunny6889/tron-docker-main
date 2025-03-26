@@ -11,10 +11,10 @@ For Docker and Docker Compose installation refer [prerequisites](../README.md#pr
 Then check the Docker resource settings to ensure it has at least 16GB of memory per FullNode container.
 
 ## Quick start
-Download the `tron-docker` repository, enter the [metric_monitor](./) directory, and start the services defined in [docker-compose-quick-start.yml](docker-compose-quick-start.yml) using the following command:
+Download the `tron-docker` repository, enter the [metric_monitor](./) directory, and start the services defined in [docker-compose-quick-start.yml](./docker-compose/docker-compose-quick-start.yml) using the following command:
 
 ```sh
-docker-compose -f docker-compose-quick-start.yml up -d
+docker-compose -f ./docker-compose/docker-compose-quick-start.yml up -d
 ```
 It will start a TRON FullNode that connects to the Mainnet, along with Prometheus and Grafana services. Note that in [main_net_config.conf](../conf/main_net_config.conf), it contains the configuration below to enable metrics.
 ```

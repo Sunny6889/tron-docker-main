@@ -11,5 +11,5 @@ services:
       MINIO_ACCESS_KEY: minio
       MINIO_SECRET_KEY: melovethanos
     volumes:
-      - ./minio:/data  # Bind mount the host directory to the container
+      - ../minio:/data  # Bind mount the host directory to the container
     command: server /data  # Command to run MinIO server

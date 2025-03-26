@@ -41,18 +41,18 @@ The monitoring system consists of:
 ### Step 1: Set up TRON and Prometheus services
 Run the below command to start java-tron and Prometheus services:
 ```sh
-docker-compose -f docker-compose-thanos.yml up -d tron-node1 prometheus
+docker-compose -f ./docker-compose/docker-compose-fullnode.yml up -d
 ```
 
-Review the [docker-compose-thanos.yml](docker-compose-thanos.yml) file, the command explanation of the java-tron service can be found in [Run Single Node](../single_node/README.md#run-the-container).
+Review the [docker-compose-fullnode.yml](./docker-compose/docker-compose-fullnode.yml) file, the command explanation of the java-tron service can be found in [Run Single Node](../single_node/README.md#run-the-container).
 
 Below are the core configurations for the Prometheus service:
 ```yaml
   ports:
     - "9090:9090"  # Used for local Prometheus status check
   volumes:
-    - ./conf:/etc/prometheus
-    - ./prometheus_data:/prometheus
+    - ../conf:/etc/prometheus # Path relative to the docker compose file
+    - ../prometheus_data:/prometheus
   command:
     - "--config.file=/etc/prometheus/prometheus-remote-write.yml" # Default path to the configuration file
     - "--storage.tsdb.path=/prometheus" # The path where Prometheus stores its metric database
@@ -103,7 +103,7 @@ remote_write:
   - Check the official documentation [remote_write](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) for all configurations' explanation.
 
 ##### 2. Storage configurations
-- The volumes command `- ./prometheus_data:/prometheus` mounts a local directory used by Prometheus to store metrics data.
+- The volumes command `- ../prometheus_data:/prometheus` mounts a local directory used by Prometheus to store metrics data.
   - Although in this case, we use Prometheus with remote-write, it also stores metrics data locally. Through http://host_IP:9090/, you can check the running status of the Prometheus service and observe targets.
 - The `--storage.tsdb.retention.time=30d` flag specifies the retention period for the metrics data. Prometheus will automatically delete data older than 30 days. For each metric request of a java-tron(v4.7.6+) FullNode connecting Mainnet, it returns ~9KB raw metric data. With the `scrape_interval: 3s`, it takes about 7GB per month raw data. TSDB will do compression, **thus for 30d retention, one java-tron takes about promethus less than 1GB**. The TSDB is useful for long-term storage and querying.
 - The `--storage.tsdb.max-block-duration=30m` and `--storage.tsdb.min-block-duration=30m` flags specify the block generation duration for the TSDB. In this case, it is set to 30 minutes. This means that the TSDB will generate a new block every 30 minutes with about 900KB raw metric data.
@@ -114,17 +114,19 @@ remote_write:
 
 Run the below command to start the Thanos Receive and [Minio](https://github.com/minio/minio) service for long-term metric storage. Minio is S3 compatible object storage service.
 ```sh
-docker-compose -f docker-compose-thanos.yml up -d thanos-receive minio
+docker-compose -f ./docker-compose/thanos-receive up -d
+docker-compose -f ./docker-compose/minio up -d
+
 ```
 
-Core configuration for Thanos Receive in [docker-compose-thanos.yml](docker-compose-thanos.yml):
-```
+Core configuration for Thanos Receive in [thanos-receive.yml](./docker-compose/thanos-receive.yml):
+``` yml
   thanos-receive:
     ...
     container_name: thanos-receive
     volumes:
-      - ./receive-data:/receive/data
-      - ./conf:/receive
+      - ../receive-data:/receive/data
+      - ../conf:/receive # Path relative to the docker compose file
     ports:
       - "10907:10907"
       - "10908:10908"
@@ -143,11 +145,11 @@ Core configuration for Thanos Receive in [docker-compose-thanos.yml](docker-comp
 #### Key configuration elements:
 ##### 1. Storage configuration
 - Local Storage:
-  `./receive-data:/receive/data` maps the host directory for metric TSDB storage.
+  `../receive-data:/receive/data` maps the host directory for metric TSDB storage.
   - Retention Policy: `--tsdb.retention=30d` auto-purges data older than 30 days. **It takes less than 1GB of Receive disk space per month for one java-tron(v4.7.6) FullNode connecting Mainnet**.
 
 - External Storage:
-  `./conf:/receive` mounts configuration files. The `--objstore.config-file` flag enables long-term storage in MinIO/S3-compatible buckets. In this case, it is [bucket_storage_minio.yml](conf/bucket_storage_minio.yml).
+  `../conf:/receive` mounts configuration files. The `--objstore.config-file` flag enables long-term storage in MinIO/S3-compatible buckets. In this case, it is [bucket_storage_minio.yml](conf/bucket_storage_minio.yml).
   - Thanos Receive uploads TSDB blocks to an object storage bucket every 2 hours by default.
   - Fallback Behavior: Omitting this flag keeps data local-only.
 
@@ -169,7 +171,12 @@ For systems monitoring multiple services with increasing scale, there are two ap
 ### Step 3: Set up Thanos Store
 While Thanos Receive handles recent data (30 days retention), Store Gateway provides access to older metrics persisted in object storage.
 
-Core configuration in [docker-compose-thanos.yml](docker-compose-thanos.yml):
+Run the below command to start the Thanos Query service:
+```sh
+docker-compose -f ./docker-compose/thanos-store.yml up -d
+```
+
+Core configuration in [thanos-store.yml](./docker-compose/thanos-store.yml):
 ```yaml
   thanos_store:
     command:
@@ -187,21 +194,19 @@ With both Receive and Store connected to Query, we get seamless access to:
 - Real-time data from Receive
 - Historical data from Store
 
-add more
-
 ### Step 4: Set up Thanos Query
 As Grafana cannot directly query Thanos Receive, we need Thanos Query that implements Prometheus’s v1 API to aggregate data from the Receive services. **Querier is fully stateless and horizontally scalable**.
 
 Run the below command to start the Thanos Query service:
 ```sh
-docker-compose -f docker-compose-thanos.yml up -d querier
+docker-compose -f ./docker-compose/thanos-querier.yml up -d
 ```
 
 Below are the core configurations for the Thanos Query service:
 ``` yaml
-  querier:
+  thanos-querier:
     ...
-    container_name: querier
+    container_name: thanos-querier
     ports:
       - "9091:9091"
     command:
@@ -221,7 +226,7 @@ You could add multiple Thanos Receive services to the Querier service. It will d
 ### Step 4: Monitor through Grafana
 To start the Grafana service on the host machine, run the following command:
 ```sh
-docker-compose -f docker-compose-thanos.yml up -d grafana
+docker-compose -f ./docker-compose/grafana.yml up -d
 ```
 Then log in to the Grafana web UI through http://localhost:3000/ or your host machine's IP address. The initial username and password are both `admin`.
 Click the **Connections** on the left side of the main page and select Prometheus as datasource. Enter the IP and port of the Query service in URL with `http://[Query service IP]:9091`.
@@ -234,9 +239,9 @@ Then you can play with it with different Thanos Receive/Query, Prometheus config
 ### Step 5: Clean up
 To stop and remove all or part of the services, you could run the below commands:
 ```sh
-docker-compose -f docker-compose-thanos.yml down # Stop and remove all services
-docker-compose -f docker-compose-thanos.yml down thanos-receive # Thanos Receive service only
-docker-compose -f docker-compose-thanos.yml down prometheus, tron-node1, querier, grafana # Multiple Services at once
+docker-compose -f ./docker-compose/docker-compose-all.yml down # Stop and remove all services, if you start all on the same host
+docker-compose -f ./docker-compose/thanos-receive.yml down # Thanos Receive service only
+docker-compose -f ./docker-compose/docker-compose-fullnode.yml down prometheus, tron-node1 # Multiple Services at once
 ```
 
 ## Troubleshooting

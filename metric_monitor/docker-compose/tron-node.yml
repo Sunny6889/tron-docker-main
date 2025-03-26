@@ -15,9 +15,9 @@ services:
       - "18888:18888/udp"
       - "50051:50051"
     volumes:
-      - ../conf:/java-tron/conf # ensure the config path is correct, make sure the config file metric is enabled
-      - ./output-directory:/java-tron/output-directory # mount a local directory to make the block data persistent.
-      - ./logs:/java-tron/logs
+      - ../../conf:/java-tron/conf # ensure the config path is correct, make sure the config file metric is enabled
+      - ../output-directory:/java-tron/output-directory # mount a local directory to make the block data persistent.
+      - ../logs:/java-tron/logs
     command: >
       -jvm "{-Xmx14g -Xms12g -Xmn2g -XX:+UseConcMarkSweepGC -XX:+PrintGC -Xloggc:./logs/gc.log }" -c ./conf/main_net_config.conf
     environment:

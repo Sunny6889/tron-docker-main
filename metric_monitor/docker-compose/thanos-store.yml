@@ -8,8 +8,8 @@ services:
       - "10911:10911"  # HTTP
       - "10912:10912"  # gRPC
     volumes:
-      - ./store-data:/var/thanos/store
-      - ./conf:/etc/thanos
+      - ../store-data:/var/thanos/store
+      - ../conf:/etc/thanos
     command:
       - "store"
       - "--data-dir=/var/thanos/store"
