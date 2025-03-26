@@ -1,7 +1,7 @@
 # TRON Node Metrics Monitoring
 Starting from the GreatVoyage-4.5.1 (Tertullian) version, the node provides a series of interfaces compatible with the Prometheus protocol, allowing the node deployer to monitor the health status of the node more conveniently.
 
-Below, we provide a guide on using metrics to monitor the TRON node status. Then, we list all available metrics.
+Below, we provide a quick-start guide on using metrics to monitor the TRON node status. Then, we list all available metrics.
 
 ## Prerequisites
 ### Docker
@@ -59,7 +59,7 @@ Click the Grafana dashboards icon on the left, then select "New" and "Import", t
 Then you can see the following monitors displaying the running status of the nodes in real time:
 ![image](../images/grafana_dashboard_monitoring.png)
 
-If you need to deploy Grafana on a remote server or isolate java-tron node, please refer to the document [Use Prometheus Remote Write with Thanos to Monitor java-tron Node](REMOTE_WRITE_WITH_THANOS.md).
+If you need to do a monitor system with a more safe and reliable architecture on production, please refer to the document [Use Prometheus Remote Write with Thanos to Monitor java-tron Node](REMOTE_WRITE_WITH_THANOS.md).
 
 ## All metrics
 As you can see from above Grafana dashboard or http://localhost:9527/metrics, the available metrics are categorized into the following:
