@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  thanos-receive-0:
+    image: quay.io/thanos/thanos:v0.33.0
+    user: root
+    container_name: thanos-receive-0
+    volumes:
+      - ./receive-data-0:/receive/data
+      - ./conf:/receive
+    ports:
+      - "10907:10907"
+      - "10908:10908"
+      - "10909:10909"
+    command:
+      - "receive"
+      - "--tsdb.path=/receive/data"
+      - "--tsdb.retention=30d" # How long to retain raw samples on local storage.
+      - "--grpc-address=0.0.0.0:10907"
+      - "--http-address=0.0.0.0:10909"
+      - "--remote-write.address=0.0.0.0:10908"
+      - "--label=receive_replica=\"0\""
+      - "--label=receive_cluster=\"java-tron-mainnet\""
+      - "--objstore.config-file=/receive/bucket_storage_minio.yml"
+    restart: unless-stopped

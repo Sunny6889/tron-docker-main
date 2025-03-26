@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  querier:
+    image: quay.io/thanos/thanos:v0.33.0
+    container_name: querier
+    user: root
+    ports:
+      - "9091:9091"
+    command:
+      - query
+      - --endpoint.info-timeout=30s
+      - --http-address=0.0.0.0:9091
+      - --query.replica-label=receive_replica # Deduplication turned on for identical series except the replica label.
+      - --endpoint=thanos-receive-0:10907
+      # - --endpoint=thanos-receive-1:10907 # could add multiple receive services
+      - --store=thanos_store:10912 # for historical data query
+    restart: unless-stopped

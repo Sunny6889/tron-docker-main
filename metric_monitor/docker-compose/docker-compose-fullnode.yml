@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  tron-node1:
+    extends:
+      file: tron-node.yml
+      service: tron-node1
+
+  prometheus:
+    extends:
+      file: prometheus.yml
+      service: prometheus
+
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node-exporter
+    network_mode: host
+    pid: host
+    volumes:
+      - "/:/host:ro,rslave"
+    command:
+      - "--path.rootfs=/host"
+    restart: unless-stopped
