@@ -1,0 +1,40 @@
+global:
+  scrape_interval: 6s
+  scrape_timeout: 4s
+  evaluation_interval: 6s
+  external_labels:
+    monitor: 'java-tron-node1-remote-write' # the external label is used to identify the Prometheus instance in the Thanos Querier UI
+
+
+scrape_configs:
+  - job_name: java-tron
+    honor_timestamps: true
+    scrape_interval: 1s
+    scrape_timeout: 1s
+    metrics_path: /metrics
+    scheme: http
+    follow_redirects: true
+    static_configs:
+      - targets:
+          - tron-node1:9527
+        labels:
+          group: group-tron
+          instance: fullnode-01
+
+# The remote_write configuration tells Prometheus to continuously write metrics to the Thanos Receive service.
+# Refer https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write
+remote_write:
+  - url: http://thanos-receive-0:10908/api/v1/receive # if Thanos Receive service run on the same host with Prometheus
+    remote_timeout: 10s
+    queue_config:
+      capacity: 2500
+      max_shards: 200 # the maximum number of shards, or parallelism, Prometheus will use for each remote write queue
+      min_shards: 1
+      max_samples_per_send: 500
+      batch_send_deadline: 5s
+      min_backoff: 30ms
+      max_backoff: 5s
+    metadata_config:
+      send: true
+      send_interval: 1s # How frequently metric metadata is sent to remote storage.
+      max_samples_per_send: 500

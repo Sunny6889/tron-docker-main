@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  minio:
+    image: minio/minio:RELEASE.2019-01-31T00-31-19Z
+    container_name: minio
+    user: root
+    restart: always  # Optional: Restart policy
+    ports:
+      - "9000:9000"  # Map port 9000 on the host to port 9000 in the container
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: melovethanos
+    volumes:
+      - ../minio:/data  # Bind mount the host directory to the container
+    command: server /data  # Command to run MinIO server

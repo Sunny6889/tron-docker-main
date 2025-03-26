@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  prometheus:
+    image: quay.io/prometheus/prometheus:v2.38.0 # NOTE: It is highly recommended to use Prometheus v2.13.0+ due to its remote read improvements.
+    container_name: prometheus
+    user: root
+    ports:
+      - "9090:9090" # used for local query metrics
+    volumes:
+      - ../conf:/etc/prometheus
+      - ../prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus-remote-write.yml" # the default path to the configuration file
+      - "--storage.tsdb.path=/prometheus" # the path where Prometheus stores its metric database
+      - "--storage.tsdb.retention.time=30d" # takes about 1GB of disk space per month
+      - "--storage.tsdb.max-block-duration=30m" #the maximum duration for a block of time series data that can be stored in the time series database (TSDB)
+      - "--storage.tsdb.min-block-duration=30m"
+      - "--web.enable-lifecycle" # tell Prometheus to expose the /-/reload HTTP endpoints
+      - "--web.enable-admin-api"
+    restart: unless-stopped

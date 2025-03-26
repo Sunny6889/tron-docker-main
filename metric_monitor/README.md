@@ -1,7 +1,7 @@
 # TRON Node Metrics Monitoring
 Starting from the GreatVoyage-4.5.1 (Tertullian) version, the node provides a series of interfaces compatible with the Prometheus protocol, allowing the node deployer to monitor the health status of the node more conveniently.
 
-Below, we provide a guide on using metrics to monitor the TRON node status. Then, we list all available metrics.
+Below, we provide a quick-start guide on using metrics to monitor the TRON node status. Then, we list all available metrics.
 
 ## Prerequisites
 ### Docker
@@ -11,10 +11,10 @@ For Docker and Docker Compose installation refer [prerequisites](../README.md#pr
 Then check the Docker resource settings to ensure it has at least 16GB of memory per FullNode container.
 
 ## Quick start
-Download the `tron-docker` repository, enter the [metric_monitor](./) directory, and start the services defined in [docker-compose.yml](./docker-compose.yml) using the following command:
+Download the `tron-docker` repository, enter the [metric_monitor](./) directory, and start the services defined in [docker-compose-quick-start.yml](./docker-compose/docker-compose-quick-start.yml) using the following command:
 
 ```sh
-docker-compose up -d
+docker-compose -f ./docker-compose/docker-compose-quick-start.yml up -d
 ```
 It will start a TRON FullNode that connects to the Mainnet, along with Prometheus and Grafana services. Note that in [main_net_config.conf](../conf/main_net_config.conf), it contains the configuration below to enable metrics.
 ```
@@ -27,7 +27,7 @@ metrics{
 ```
 
 ### Prometheus service
-The Prometheus service will use the configuration file [prometheus.yml](metric_conf/prometheus.yml). It uses the configuration below to add targets for monitoring.
+The Prometheus service will use the configuration file [prometheus-quick-start.yml](conf/prometheus-quick-start.yml). It uses the configuration below to add targets for monitoring.
 ```
 - targets:
     - tron-node1:9527 # use container name
@@ -52,14 +52,14 @@ Enter the ip and port of the prometheus service in URL with `http://prometheus:9
 ![image](../images/grafana_data_source.png)
 
 #### Import dashboard
-For the convenience of java-tron node deployers, the TRON community provides a comprehensive dashboard configuration file [grafana_dashboard_tron_server.json](metric_conf/grafana_dashboard_tron_server.json).
+For the convenience of java-tron node deployers, the TRON community provides a comprehensive dashboard configuration file [grafana_dashboard_tron_server.json](conf/grafana_dashboard_tron_server.json).
 Click the Grafana dashboards icon on the left, then select "New" and "Import", then click "Upload JSON file" to import the downloaded dashboard configuration file. Choose the datasource you just connected.
 ![image](../images/grafana_dashboard.png)
 
 Then you can see the following monitors displaying the running status of the nodes in real time:
 ![image](../images/grafana_dashboard_monitoring.png)
 
-If you need to deploy Grafana on a remote server or isolate java-tron node, please refer to the document [Use Prometheus Remote Write with Thanos to Monitor java-tron Node](./push_mode/README.md).
+If you need to do a monitor system with a more safe and reliable architecture on production, please refer to the document [Use Prometheus Remote Write with Thanos to Monitor java-tron Node](REMOTE_WRITE_WITH_THANOS.md).
 
 ## All metrics
 As you can see from above Grafana dashboard or http://localhost:9527/metrics, the available metrics are categorized into the following:
@@ -128,7 +128,7 @@ Verify the latency of all transactions' signatures when processing a block:
 - `tron:verify_sign_latency_seconds_count`: Count of events
 - `tron:verify_sign_latency_seconds_sum`: Total sum of all observed values
 
-Check the usage from dashboard panel (enter edit mode), or by searching in [grafana_dashboard_tron_server.json](metric_conf/grafana_dashboard_tron_server.json).
+Check the usage from dashboard panel (enter edit mode), or by searching in [grafana_dashboard_tron_server.json](conf/grafana_dashboard_tron_server.json).
 ![image](../images/metric_block_latency.png)
 
 ### Transaction status
@@ -278,7 +278,7 @@ Currently, for `db` values of above metrics TRON has below possible objects:
 * `jvm_memory_pool_collection_used_bytes`: Used bytes after last collection of a given JVM memory pool
 
 ### Other metrics
-Beside above metrics, there are also metrics to measure the duration of a scrape process, which is useful for monitoring and understanding the performance of your Prometheus server and the targets it scrapes.
+Besides the above metrics, there are also metrics to measure the duration of a scrape process, which is useful for monitoring and understanding the performance of your Prometheus server and the targets it scrapes.
 - `scrape_duration_seconds`: It measures the time taken (in seconds) for Prometheus to scrape a target. This includes the entire process of making an HTTP request to the target, receiving the response, and processing the metrics.
 - `scrape_samples_post_metric_relabeling`
 - `scrape_samples_scraped`
