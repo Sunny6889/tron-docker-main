@@ -3,8 +3,6 @@ services:
   tron-node1:
     image: tronprotocol/java-tron:latest
     container_name: tron-node1
-    networks:
-      - tron_network
     deploy:
       resources:
         limits:
@@ -24,8 +22,6 @@ services:
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
-    networks:
-      - tron_network
     deploy:
       resources:
         limits:
@@ -34,17 +30,13 @@ services:
       - "9090:9090" # used for external collect metrics
     volumes:
       - ./conf/prometheus-quick-start.yml:/etc/prometheus/prometheus.yml
+
   grafana:
     image: grafana/grafana-oss
     container_name: grafana
-    networks:
-      - tron_network
     deploy:
       resources:
         limits:
           memory: 1g
     ports:
       - "3000:3000"
-networks:
-  tron_network:
-    driver: bridge
