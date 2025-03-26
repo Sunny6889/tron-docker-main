@@ -28,7 +28,7 @@ Before starting, ensure you have:
 - The tron-docker repository cloned locally
 ```sh
 git clone https://github.com/tronprotocol/tron-docker.git
-cd tron-docker/metric_monitor/push_mode
+cd tron-docker/metric_monitor
 ```
 ### Main components
 The monitoring system consists of:
@@ -114,8 +114,9 @@ remote_write:
 
 Run the below command to start the Thanos Receive and [Minio](https://github.com/minio/minio) service for long-term metric storage. Minio is S3 compatible object storage service.
 ```sh
-docker-compose -f ./docker-compose/thanos-receive.yml up -d
 docker-compose -f ./docker-compose/minio.yml up -d
+
+docker-compose -f ./docker-compose/thanos-receive.yml up -d
 
 ```
 
@@ -229,7 +230,7 @@ To start the Grafana service on the host machine, run the following command:
 docker-compose -f ./docker-compose/grafana.yml up -d
 ```
 Then log in to the Grafana web UI through http://localhost:3000/ or your host machine's IP address. The initial username and password are both `admin`.
-Click the **Connections** on the left side of the main page and select Prometheus as datasource. Enter the IP and port of the Query service in URL with `http://[Query service IP]:9091`. If you run on the same host could use `http://thanos-querier:9091` or `http://host.docker.internal:9091`.
+Click the **Connections** on the left side of the main page and select Prometheus as datasource. Enter the IP and port of the Query service in URL with `http://[Query service IP]:9091`. If you run on the same host could use `http://thanos-querier:9091` or `http://host.docker.internal:9091` on MacOS.
 
 <img src="../images/metric_grafana_datasource_query.png" alt="Alt Text" width="680" >
 
