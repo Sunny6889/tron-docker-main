@@ -242,7 +242,6 @@ To stop and remove all or part of the services, you could run the below commands
 ```sh
 docker-compose -f ./docker-compose/docker-compose-all.yml down # Stop and remove all services, if you start all on the same host
 docker-compose -f ./docker-compose/thanos-receive.yml down # Thanos Receive service only
-docker-compose -f ./docker-compose/docker-compose-fullnode.yml down prometheus, tron-node1 # Multiple Services at once
 ```
 
 ## Troubleshooting
