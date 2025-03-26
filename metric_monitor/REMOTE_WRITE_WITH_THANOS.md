@@ -5,7 +5,7 @@ In this document, we will introduce how to use Prometheus remote-write to monito
 ## Background
 The previous [README](README.md) explains how to monitor a java-tron node using Grafana and Prometheus. It can be illustrated by the image below:
 
-<img src="../images/metric_pull_simple.png" alt="Alt Text" width="600" >
+<img src="../images/metric_pull_simple.png" alt="Alt Text" width="720" >
 
 Basically, the Prometheus service pulls metrics from the java-tron node through an exposed port. Subsequently, Grafana retrieves these metrics from Prometheus to provide visualized insights and alerts.
 
@@ -15,7 +15,7 @@ To address these concerns, we need to change the pull mode either from the java-
 ### New Architecture
 Given these considerations, we will implement a push mode for the data flow from Prometheus to Grafana. Prometheus offers a **remote-write** feature that supports push mode, facilitating this transition. We have selected [Thanos](https://github.com/thanos-io/thanos) as an intermediate component. Thanos not only supports remote write but also provides additional features such as long-term storage, high availability, and global querying, thereby improving the overall architecture and functionality of our monitoring system.
 
-Below is the new more reliable architecture of the monitoring system used on production. We will introduce how to set up the Prometheus remote-write feature and Thanos cluster in the following sections.
+Below is the new more reliable architecture of the monitoring system. We will introduce how to set up the Prometheus remote-write feature and Thanos related services in the following sections.
 <img src="../images/metric_thanos_arch.png" alt="Alt Text" width="950" >
 
 ## Implementation Guide
@@ -41,7 +41,7 @@ The monitoring system consists of:
 ### Step 1: Set up TRON and Prometheus services
 Run the below command to start java-tron and Prometheus services:
 ```sh
-docker-compose up -f docker-compose-thanos.yml -d tron-node1 prometheus
+docker-compose -f docker-compose-thanos.yml up -d tron-node1 prometheus
 ```
 
 Review the [docker-compose-thanos.yml](docker-compose-thanos.yml) file, the command explanation of the java-tron service can be found in [Run Single Node](../single_node/README.md#run-the-container).
@@ -87,8 +87,6 @@ remote_write:
       send: true  # Enable metric metadata transmission
       send_interval: 3s  # How frequently metric metadata is sent to remote Receive.
       max_samples_per_send: 500  # Batch size optimization
-    headers:
-      Content-Encoding: snappy    # Explicit compression, as Prometheus sends raw uncompressed samples by default (2.7× reduction)
 ```
 - For `global.external_labels`:
   - The `external_labels` defined in the Prometheus configuration file are propagated with all metric data to Thanos Receive. You could add multiple Prometheus services with remote-write to the same Receive service, just make sure the `external_labels` are unique. It uniquely identifies the Prometheus instance, acting as critical tracing metadata that ultimately correlates metrics to their originating java-tron node. You can use it in Grafana dashboards using label-based filtering (e.g., `{monitor="java-tron-node1-remote-write"}`).
@@ -102,7 +100,6 @@ remote_write:
 
 - For `remote_write`:
   - Fill the `url` with the IP address of the Thanos Receive service started in the first step.
-  - The `headers` section specifies the compression method for the data sent to Thanos Receive. The `Content-Encoding: snappy` flag compresses the data before sending it to the Receive service. This reduces the network traffic and storage space required by the Receive service.
   - Check the official documentation [remote_write](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) for all configurations' explanation.
 
 ##### 2. Storage configurations
@@ -117,7 +114,7 @@ remote_write:
 
 Run the below command to start the Thanos Receive and [Minio](https://github.com/minio/minio) service for long-term metric storage. Minio is S3 compatible object storage service.
 ```sh
-docker-compose up -f docker-compose-thanos.yml -d thanos-receive minio
+docker-compose -f docker-compose-thanos.yml up -d thanos-receive minio
 ```
 
 Core configuration for Thanos Receive in [docker-compose-thanos.yml](docker-compose-thanos.yml):
@@ -135,7 +132,7 @@ Core configuration for Thanos Receive in [docker-compose-thanos.yml](docker-comp
     command:
       - "receive"
       - "--tsdb.path=/receive/data"
-      - "--tsdb.retention=15d" # How long to retain raw samples on local storage.
+      - "--tsdb.retention=30d" # How long to retain raw samples on local storage.
       - "--grpc-address=0.0.0.0:10907"
       - "--http-address=0.0.0.0:10909"
       - "--remote-write.address=0.0.0.0:10908"
@@ -147,7 +144,7 @@ Core configuration for Thanos Receive in [docker-compose-thanos.yml](docker-comp
 ##### 1. Storage configuration
 - Local Storage:
   `./receive-data:/receive/data` maps the host directory for metric TSDB storage.
-  - Retention Policy: `--tsdb.retention=15d` auto-purges data older than 15 days. **It takes about 0.5GB of Receive disk space per month for one java-tron(v4.7.6) FullNode connecting Mainnet**.
+  - Retention Policy: `--tsdb.retention=30d` auto-purges data older than 30 days. **It takes less than 1GB of Receive disk space per month for one java-tron(v4.7.6) FullNode connecting Mainnet**.
 
 - External Storage:
   `./conf:/receive` mounts configuration files. The `--objstore.config-file` flag enables long-term storage in MinIO/S3-compatible buckets. In this case, it is [bucket_storage_minio.yml](conf/bucket_storage_minio.yml).
@@ -165,10 +162,34 @@ For more flags explanation and default value can be found in the official [Thano
 #### Thanos Receive reliable deployment
 For systems monitoring multiple services with increasing scale, there are two approaches to prevent Thanos Receive from becoming a single point of failure or performance bottleneck:
 
-1. Deploy multiple independent Thanos Receive instances, each dedicated to different monitoring targets. The configurations outlined in this document provide clear guidance for setting up this distributed architecture.
-2. Implement Thanos Receive in cluster mode, which provides a unified entry point with automatic scaling capabilities as illustrated in the architecture diagram. For detailed instructions on setting up Thanos Receive cluster mode, refer to the [Thanos receive cluster mode](THANOS_CLUSTER.md) guide.
+1. Deploy multiple independent Thanos Receive instances, each dedicated to different monitoring targets. The configurations outlined in this document provide clear guidance for setting up this distributed architecture, as shown in the above architecture.
 
-### Step 3: Set up Thanos Query
+2. Implement Thanos Receive in cluster mode, which provides a unified entry point with automatic scaling capabilities. For detailed instructions on setting up Thanos Receive cluster mode, refer to the [Thanos receive cluster mode](THANOS_CLUSTER.md) guide.
+
+### Step 3: Set up Thanos Store
+While Thanos Receive handles recent data (30 days retention), Store Gateway provides access to older metrics persisted in object storage.
+
+Core configuration in [docker-compose-thanos.yml](docker-compose-thanos.yml):
+```yaml
+  thanos_store:
+    command:
+      - "store"
+      - "--objstore.config-file=/etc/thanos/bucket_storage_minio.yml"
+      - "--grpc-address=0.0.0.0:10912"
+```
+The Store gateway:
+
+1. Connects to our Minio bucket via bucket_storage_minio.yml
+2. Exposes gRPC endpoint (10912) for Thanos Query to access historical data
+3. Indexes object storage blocks for fast lookups
+With both Receive and Store connected to Query, we get seamless access to:
+
+- Real-time data from Receive
+- Historical data from Store
+
+add more
+
+### Step 4: Set up Thanos Query
 As Grafana cannot directly query Thanos Receive, we need Thanos Query that implements Prometheus’s v1 API to aggregate data from the Receive services. **Querier is fully stateless and horizontally scalable**.
 
 Run the below command to start the Thanos Query service:
@@ -187,16 +208,15 @@ Below are the core configurations for the Thanos Query service:
       - query
       - --endpoint.info-timeout=30s
       - --http-address=0.0.0.0:9091
-      - --query.replica-label=replica # Deduplication turned on for identical series except the replica label.
-      - --store=thanos-receive:10907 # --store: The grpc-address of the Thanos Receive service，if Receive run remotely replace container name "thanos-receive" with the real ip
-     # - --store=thanos-receive2:10907 # Add more thanos-receive services
+      - --query.replica-label=receive_replica # Deduplication turned on for metric with the same replica_label
+      - --endpoint=thanos-receive-0:10907 # The grpc-address of the Thanos Receive service，if Receive run remotely replace container name "thanos-receive" with the real ip, could add multiple receive services
+      - --store=thanos_store:10907 # for historical data query
 ```
 It will set up the Thanos Query service
 that listens to port 9091 and queries metrics from the Thanos Receive service from `--store=[Thanos Receive IP]:10907`.
 Make sure the IP address is correct.
 
-You could add multiple Thanos Receive services to the Querier service. It will do duplication based on the
-For more complex usage, please refer to the [official Query document](https://thanos.io/tip/components/query.md/).
+You could add multiple Thanos Receive services to the Querier service. It will do duplication based on the `replica-label`. For more complex usage, please refer to the [official Query document](https://thanos.io/tip/components/query.md/).
 
 ### Step 4: Monitor through Grafana
 To start the Grafana service on the host machine, run the following command:
@@ -218,10 +238,6 @@ docker-compose -f docker-compose-thanos.yml down # Stop and remove all services
 docker-compose -f docker-compose-thanos.yml down thanos-receive # Thanos Receive service only
 docker-compose -f docker-compose-thanos.yml down prometheus, tron-node1, querier, grafana # Multiple Services at once
 ```
-### Multiple targets metric monitoring
-As stated in [Thanos Scaling](https://thanos.io/tip/thanos/design.md/#scaling):
-"Overall, first-class horizontal sharding is possible but will not be considered for the time being since there’s no evidence that it is required in practical setups".
-Thus for multiple services/targets monitoring, it is recommended to use Thanos Recieve + Querier per target.
 
 ## Troubleshooting
 

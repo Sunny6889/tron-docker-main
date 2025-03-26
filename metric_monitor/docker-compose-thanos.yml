@@ -15,7 +15,7 @@ services:
       - "9527:9527" # used for metric API
       - "18888:18888" # for p2p node discovery
     volumes:
-      - ../../conf:/java-tron/conf # ensure the config path is correct, make sure the config file metric is enabled
+      - ../conf:/java-tron/conf # ensure the config path is correct, make sure the config file metric is enabled
       - ./output-directory:/java-tron/output-directory # mount a local directory to make the block data persistent.
       - ./logs:/java-tron/logs
     command: >
@@ -60,7 +60,7 @@ services:
     command:
       - "receive"
       - "--tsdb.path=/receive/data"
-      - "--tsdb.retention=1h" # How long to retain raw samples on local storage.
+      - "--tsdb.retention=30d" # How long to retain raw samples on local storage.
       - "--grpc-address=0.0.0.0:10907"
       - "--http-address=0.0.0.0:10909"
       - "--remote-write.address=0.0.0.0:10908"
@@ -85,6 +85,26 @@ services:
       - ./minio:/data  # Bind mount the host directory to the container
     command: server /data  # Command to run MinIO server
 
+  thanos_store:
+    image: quay.io/thanos/thanos:v0.33.0
+    container_name: thanos_store
+    user: root
+    networks:
+      - tron_network
+    ports:
+      - "10911:10911"  # HTTP
+      - "10912:10912"  # gRPC
+    volumes:
+      - ./store-data:/var/thanos/store
+      - ./conf:/etc/thanos
+    command:
+      - "store"
+      - "--data-dir=/var/thanos/store"
+      - "--objstore.config-file=/etc/thanos/bucket_storage_minio.yml"
+      - "--http-address=0.0.0.0:10911"
+      - "--grpc-address=0.0.0.0:10912"
+    restart: unless-stopped
+
   querier:
     image: quay.io/thanos/thanos:v0.33.0
     container_name: querier
@@ -100,7 +120,7 @@ services:
       - --query.replica-label=receive_replica # Deduplication turned on for identical series except the replica label.
       - --endpoint=thanos-receive-0:10907
       # - --endpoint=thanos-receive-1:10907 # could add multiple receive services
-      #- --store=thanos-store-gateway:10907 #
+      - --store=thanos_store:10912 # for historical data query
     restart: unless-stopped
 
   grafana:

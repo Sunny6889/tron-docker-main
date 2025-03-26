@@ -28,12 +28,12 @@ go1.*
 /single_node/output-directory/
 /metric_monitor/logs/
 /private_net/logs/
-/metric_monitor/push_mode/receive-data/
-/metric_monitor/push_mode/minio/
-/metric_monitor/push_mode/prometheus_data/
 /logs_monitor/loki-data/
 /logs_monitor/minio/
 /logs_monitor/promtail-data/
 /metric_monitor/prometheus_data/
 /metric_monitor/receive-data/
 /metric_monitor/minio/
+/metric_monitor/helm-charts/thanos-receive/charts/
+/metric_monitor/helm-charts/thanos-receive/Chart.lock
+/metric_monitor/store-data/
