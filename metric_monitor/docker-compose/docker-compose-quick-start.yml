@@ -3,7 +3,7 @@ services:
   tron-node1:
     extends:
       file: tron-node.yml
-      service: tron-node1
+      service: tron-node
 
   prometheus:
     image: prom/prometheus:latest

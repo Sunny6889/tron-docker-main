@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  tron-node1:
+  tron-node:
     image: tronprotocol/java-tron:latest
     container_name: tron-node1
     user: root
@@ -22,4 +22,3 @@ services:
       -jvm "{-Xmx14g -Xms12g -Xmn2g -XX:+UseConcMarkSweepGC -XX:+PrintGC -Xloggc:./logs/gc.log }" -c ./conf/main_net_config.conf
     environment:
       - TZ=Asia/Shanghai # The metric and log date will be changed accordingly
-    restart: unless-stopped

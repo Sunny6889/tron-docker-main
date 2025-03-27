@@ -25,13 +25,17 @@ scrape_configs:
 # Refer https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write
 remote_write:
   - url: http://thanos-receive-0:10908/api/v1/receive # if Thanos Receive service run on the same host with Prometheus
+    headers:
+      X-Auth-Token: "token"
+      X-Service-Group: "java-tron"
     remote_timeout: 10s
     queue_config:
       capacity: 2500
-      max_shards: 200 # the maximum number of shards, or parallelism, Prometheus will use for each remote write queue
+      max_shards: 200 # the maximum number of shards, or parallelism, Prometheus will use for each remote-write queue
       min_shards: 1
       max_samples_per_send: 500
       batch_send_deadline: 5s
+
       min_backoff: 30ms
       max_backoff: 5s
     metadata_config:
