@@ -31,23 +31,41 @@ var NodeCmd = &cobra.Command{
 			# Check and configure node local environment. Make sure run this first before starting the node.
 			$ ./trond node env
 
-			# Run single java-tron fullnode for main network
+			# Run single java-tron fullnode for main network using the default docker compose file
+			# The default docker compose file is ./single_node/docker-compose.fullnode.main.yml
+			# The default configuration file is ./conf/main_net_config.conf
 			$ ./trond node run-single -t full-main
 
-			# Stop
-			$ ./trond node run-single stop -t full-main
-
-			# Run single java-tron fullnode for nile network
+			# Run single java-tron fullnode for nile network using the default docker compose file
+			# The default docker compose file is ./single_node/docker-compose.fullnode.nile.yml
+			# The default configuration file is ./conf/nile_net_config.conf
 			$ ./trond node run-single -t full-nile
 
-			# Stop
-			$ ./trond node run-single stop -t full-nile
-
-			# Run single java-tron witness node for private network
+			# Run single java-tron witness node for private network using the default docker compose file
+			# The default docker compose file is ./single_node/docker-compose.witness.private.yml
+			# The default configuration file is ./conf/private_net_config_*.conf
 			$ ./trond node run-single -t witness-private
 
-			# Stop
+			# Run single java-tron fullnode for main network using the specified docker compose file
+			# The docker compose file is ./docker-compose.fullnode.main.yml
+			# You need to specify the configuration file in the docker compose file, please refer to the default docker compose files for details
+			$./trond node run-single -t full-main -f ./docker-compose.fullnode.main.yml
+
+			# Stop single java-tron fullnode for main network using the default docker compose file
+			# The default docker compose file is ./single_node/docker-compose.fullnode.main.yml
+			$ ./trond node run-single stop -t full-main
+
+			# Stop single java-tron fullnode for nile network using the default docker compose file
+			# The default docker compose file is ./single_node/docker-compose.fullnode.nile.yml
+			$ ./trond node run-single stop -t full-nile
+
+			# Stop single java-tron witness node for private network using the default docker compose file
+			# The default docker compose file is ./single_node/docker-compose.witness.private.yml
 			$ ./trond node run-single stop -t witness-private
+
+			# Stop single java-tron fullnode for main network using the specified docker compose file
+			# The docker compose file is ./docker-compose.fullnode.main.yml
+			$ ./trond node run-single stop -t full-main -f ./docker-compose.fullnode.main.yml
 		`),
 }
 
