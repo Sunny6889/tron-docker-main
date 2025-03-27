@@ -5,10 +5,10 @@ services: # install the thanos components + grafana
       file: thanos-receive.yml
       service: thanos-receive-0
 
-  thanos_store:
+  thanos-store:
     extends:
       file: thanos-store.yml
-      service: thanos_store
+      service: thanos-store
 
   querier:
     extends:

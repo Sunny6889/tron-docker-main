@@ -1,8 +1,8 @@
 version: '3.8'
 services:
-  thanos_store:
+  thanos-store:
     image: quay.io/thanos/thanos:v0.33.0
-    container_name: thanos_store
+    container_name: thanos-store
     user: root
     ports:
       - "10911:10911"  # HTTP
@@ -13,7 +13,7 @@ services:
     command:
       - "store"
       - "--data-dir=/var/thanos/store"
-      - "--objstore.config-file=/etc/thanos/bucket_storage_minio.yml"
+      - "--objstore.config-file=/etc/thanos/bucket_storage_bucket.yml"
       - "--http-address=0.0.0.0:10911"
       - "--grpc-address=0.0.0.0:10912"
     restart: unless-stopped

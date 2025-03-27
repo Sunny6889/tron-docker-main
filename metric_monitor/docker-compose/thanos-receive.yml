@@ -20,5 +20,5 @@ services:
       - "--remote-write.address=0.0.0.0:10908"
       - "--label=receive_replica=\"0\""
       - "--label=receive_cluster=\"java-tron-mainnet\""
-      - "--objstore.config-file=/receive/bucket_storage_minio.yml"
+      - "--objstore.config-file=/receive/bucket_storage_bucket.yml"
     restart: unless-stopped

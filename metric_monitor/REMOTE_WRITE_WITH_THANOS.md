@@ -155,7 +155,7 @@ Core configuration for Thanos Receive in [thanos-receive.yml](./docker-compose/t
       - "--remote-write.address=0.0.0.0:10908"
       - "--label=receive_replica=\"0\""
       - "--label=receive_cluster=\"java-tron-mainnet\""
-      - "--objstore.config-file=/receive/bucket_storage_minio.yml"
+      - "--objstore.config-file=/receive/bucket_storage_bucket.yml"
 ```
 #### Key configuration elements:
 ##### 1. Storage configuration
@@ -164,7 +164,7 @@ Core configuration for Thanos Receive in [thanos-receive.yml](./docker-compose/t
   - Retention Policy: `--tsdb.retention=30d` auto-purges data older than 30 days. **It takes less than 1GB of Receive disk space per month for one java-tron(v4.7.6) FullNode connecting Mainnet**.
 
 - External Storage:
-  `../conf:/receive` mounts configuration files. The `--objstore.config-file` flag enables long-term storage in MinIO/S3-compatible buckets. In this case, it is [bucket_storage_minio.yml](conf/bucket_storage_minio.yml).
+  `../conf:/receive` mounts configuration files. The `--objstore.config-file` flag enables long-term storage in MinIO/S3-compatible buckets. In this case, it is [bucket_storage_bucket.yml](conf/bucket_storage_bucket.yml).
   - Thanos Receive uploads TSDB blocks to an object storage bucket every 2 hours by default.
   - Fallback Behavior: Omitting this flag keeps data local-only.
 
@@ -196,12 +196,12 @@ Core configuration in [thanos-store.yml](./docker-compose/thanos-store.yml):
   thanos_store:
     command:
       - "store"
-      - "--objstore.config-file=/etc/thanos/bucket_storage_minio.yml"
+      - "--objstore.config-file=/etc/thanos/bucket_storage_bucket.yml"
       - "--grpc-address=0.0.0.0:10912"
 ```
 The Store gateway:
 
-1. Connects to our Minio bucket via bucket_storage_minio.yml
+1. Connects to our Minio bucket via bucket_storage_bucket.yml
 2. Exposes gRPC endpoint (10912) for Thanos Query to access historical data
 3. Indexes object storage blocks for fast lookups
 With both Receive and Store connected to Query, we get seamless access to:
