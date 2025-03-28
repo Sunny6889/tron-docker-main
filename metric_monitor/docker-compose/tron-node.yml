@@ -19,6 +19,6 @@ services:
       - ../output-directory:/java-tron/output-directory # mount a local directory to make the block data persistent.
       - ../logs:/java-tron/logs
     command: >
-      -jvm "{-Xmx14g -Xms4g -Xmn1g -XX:+UseConcMarkSweepGC -XX:+PrintGC -Xloggc:./logs/gc.log }" -c ./conf/main_net_config.conf
+      -jvm "{-Xmx14g -Xmn1g -XX:+UseConcMarkSweepGC -XX:+PrintGC -Xloggc:./logs/gc.log }" -c ./conf/main_net_config.conf
     environment:
       - TZ=Asia/Shanghai # The metric and log date will be changed accordingly
