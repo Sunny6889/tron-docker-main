@@ -35,7 +35,6 @@ remote_write:
       min_shards: 1
       max_samples_per_send: 500
       batch_send_deadline: 5s
-
       min_backoff: 30ms
       max_backoff: 5s
     metadata_config:
