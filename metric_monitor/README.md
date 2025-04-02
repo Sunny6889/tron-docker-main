@@ -52,7 +52,7 @@ Enter the ip and port of the prometheus service in URL with `http://prometheus:9
 ![image](../images/grafana_data_source.png)
 
 #### Import dashboard
-For the convenience of java-tron node deployers, the TRON community provides a comprehensive dashboard configuration file [grafana_dashboard_tron_server.json](conf/grafana_dashboard_tron_server.json).
+For the convenience of java-tron node deployers, the TRON community provides a comprehensive dashboard configuration file [grafana_dashboard_tron_server.json](grafana_dashboard/grafana_dashboard_tron_server.json).
 Click the Grafana dashboards icon on the left, then select "New" and "Import", then click "Upload JSON file" to import the downloaded dashboard configuration file. Choose the datasource you just connected.
 ![image](../images/grafana_dashboard.png)
 
@@ -128,7 +128,7 @@ Verify the latency of all transactions' signatures when processing a block:
 - `tron:verify_sign_latency_seconds_count`: Count of events
 - `tron:verify_sign_latency_seconds_sum`: Total sum of all observed values
 
-Check the usage from dashboard panel (enter edit mode), or by searching in [grafana_dashboard_tron_server.json](conf/grafana_dashboard_tron_server.json).
+Check the usage from dashboard panel (enter edit mode), or by searching in [grafana_dashboard_tron_server.json](grafana_dashboard/grafana_dashboard_tron_server.json).
 ![image](../images/metric_block_latency.png)
 
 ### Transaction status
