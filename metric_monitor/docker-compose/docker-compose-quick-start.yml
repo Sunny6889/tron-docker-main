@@ -15,7 +15,9 @@ services:
     ports:
       - "9090:9090" # used for external collect metrics
     volumes:
-      - ./conf/prometheus-quick-start.yml:/etc/prometheus/prometheus.yml
+      - ../conf:/etc/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus-monitor-system.yml" # the default path to the configuration file
 
   grafana:
     extends:

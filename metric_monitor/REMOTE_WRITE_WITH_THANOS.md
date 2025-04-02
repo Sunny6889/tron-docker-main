@@ -109,8 +109,8 @@ remote_write:
 ##### 2. Storage configurations
 - The volumes command `../prometheus_data:/prometheus` mounts a local directory used by Prometheus to store metrics data.
   - Although in this case, we use Prometheus with remote-write, it also stores metrics data locally. Through http://host_IP:9090/, you can check the running status of the Prometheus service and observe targets.
-- The `--storage.tsdb.retention.time=30d` flag specifies the retention period for the metrics data. Prometheus will automatically delete data older than 30 days. For each metric request of a java-tron(v4.7.6+) FullNode connecting Mainnet, it returns ~9KB raw metric data. With the `scrape_interval: 1s`, it takes about 23GB per month raw data. TSDB will do compression, **thus for 30d retention, one java-tron takes about promethus 5GB**. The TSDB is useful for long-term storage and querying.
-- The `--storage.tsdb.max-block-duration=1h` flags specify the block generation duration for the TSDB locally. In this case, it is set to 1 hours. This means that the TSDB will generate a new block every hour with about 30MB raw metric data.
+- The `--storage.tsdb.retention.time=7d` flag specifies the retention period for the metrics data. Prometheus will automatically delete data older than 7 days. For each metric request of a java-tron(v4.7.6+) FullNode connecting Mainnet, it returns ~9KB raw metric data. With the `scrape_interval: 1s`, along with TSDB will do compression, **thus for 7d retention, one java-tron takes about promethus 2GB**.
+- The `--storage.tsdb.max-block-duration=1h` flags specify the maximum block generation duration for the TSDB locally. In this case, it is set to 1 hours. This means that the TSDB will generate a new block no more than 1 hour.
 - Other storage flags can be found in the [official documentation](https://prometheus.io/docs/prometheus/latest/storage/#operational-aspects). For a quick start, you could use the default values.
 
 ### Step 2: Set up Thanos Receive
