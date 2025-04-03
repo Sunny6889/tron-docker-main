@@ -43,7 +43,7 @@ Check [Gradlew Docker](../tools/docker/README.md) for instructions on building a
 
 You can run the following command to start java-tron:
 ```
-docker-compose -f docker-compose-quick-start.yml up
+docker-compose -f docker-compose-quick-start.yml up -d
 ```
 Check the file content:
 ```
@@ -136,24 +136,54 @@ For example, a request to get block info with a specific number:
 curl --location 'localhost:8090/wallet/getblock' \
 --header 'Content-Type: application/json' \
 --data '{
-    "id_or_num": "100",
+    "id_or_num": "2936021",
     "detail": true
 }'
 ```
 Response:
 ```
 {
-    "blockID": "00000000000000644df09e6883a3a7900814f8d78cf47b255b7ed284527a773d",
+    "blockID": "00000000002cccd50141f9067dffe98acf8f042b0e97e92a32da469ea12b6217",
     "block_header": {
         "raw_data": {
-            "number": 100,
-            "txTrieRoot": "0000000000000000000000000000000000000000000000000000000000000000",
-            "witness_address": "414b4778beebb48abe0bc1df42e92e0fe64d0c8685",
-            "parentHash": "0000000000000063ed8544c4c17fc053dfc729e610673c783bcdc3cf0781b07f",
-            "timestamp": 1529891811000
+            "number": 2936021,
+            "txTrieRoot": "f7019193ae9ee239bd0b60cf46cc6800a33f15e136906f5503107f27f2d56c3a",
+            "witness_address": "41243accc5241d97ce79272b06952ee88a34d8e1f9",
+            "parentHash": "00000000002cccd4d614847f112128e84750d0b6326c10396c51322dadc02ef4",
+            "version": 3,
+            "timestamp": 1538732154000
         },
-        "witness_signature": "277d4440e2feb552b6d2d557ba407f68310887020fcc7ef6e2733286a0d13c703ebf2306293bda9d2ddac09835be67583c736a65494115825b6f4ab6a15f1e0f01"
-    }
+        "witness_signature": "3ff90d8825b3a2524154a71c9144f95534229ad3e3333d33e3d1c30bdd16c6827f23da82b4b1c353253a993688189368b98de79184d036768387d3f94fe226bf00"
+    },
+    "transactions": [
+        {
+            "signature": [
+                "e856b3671be380b94d01986ade3f7103211e4b00a96280c1c892cc847796e8493e4fc2f54e5cf5d1c6c1c741620fbf1b7678c64f1ccf89296c5538fdb4a6803700"
+            ],
+            "txID": "c97ebda79cb2265963cf5a30949d290edb151492dc60a8a9cd244d2948a92222",
+            "raw_data": {
+                "contract": [
+                    {
+                        "parameter": {
+                            "value": {
+                                "amount": 2066756,
+                                "owner_address": "41ef404c62c8760cd385036f741a71ee7553daddd0",
+                                "to_address": "419474534de777d724355c5d051084fc10b8c79f70"
+                            },
+                            "type_url": "type.googleapis.com/protocol.TransferContract"
+                        },
+                        "type": "TransferContract"
+                    }
+                ],
+                "ref_block_bytes": "ccd3",
+                "ref_block_hash": "57c2c6c50a313845",
+                "expiration": 1538732208000,
+                "timestamp": 1538732149804
+            },
+            "raw_data_hex": "0a02ccd3220857c2c6c50a3138454080dfd89ce42c5a67080112630a2d747970652e676f6f676c65617069732e636f6d2f70726f746f636f6c2e5472616e73666572436f6e747261637412320a1541ef404c62c8760cd385036f741a71ee7553daddd01215419474534de777d724355c5d051084fc10b8c79f7018c4927e70ac98d59ce42c"
+        },
+        ...
+    ]
 }
 ```
 **Notice**: Before the local full node has synced with the latest block transactions, requests for account state or transaction information may be outdated or empty.

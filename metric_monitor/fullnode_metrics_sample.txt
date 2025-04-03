@@ -1,0 +1,947 @@
+# HELP tron:db_size_bytes tron  db  size .
+# TYPE tron:db_size_bytes gauge
+tron:db_size_bytes{type="LEVELDB",db="trans",level="3",} 5.59939584E8
+tron:db_size_bytes{type="LEVELDB",db="trans",level="1",} 1.048576E7
+tron:db_size_bytes{type="LEVELDB",db="accountid-index",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="trans",level="2",} 1.02760448E8
+tron:db_size_bytes{type="LEVELDB",db="trans",level="0",} 7340032.0
+tron:db_size_bytes{type="LEVELDB",db="block-index",level="2",} 8.7031808E7
+tron:db_size_bytes{type="LEVELDB",db="block-index",level="1",} 9437184.0
+tron:db_size_bytes{type="LEVELDB",db="balance-trace",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="market_pair_price_to_order",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="asset-issue",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="abi",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="transactionHistoryStore",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="asset-issue",level="1",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="IncrementalMerkleTree",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="tmp",level="2",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="account-index",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="tmp",level="0",} 3145728.0
+tron:db_size_bytes{type="LEVELDB",db="market_order",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="code",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="block-index",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="accountTrie",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="contract-state",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="account-trace",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="recent-block",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="recent-block",level="1",} 1048576.0
+tron:db_size_bytes{type="LEVELDB",db="IncrementalMerkleTree",level="2",} 2097152.0
+tron:db_size_bytes{type="LEVELDB",db="IncrementalMerkleTree",level="1",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="block",level="4",} 1.06954752E9
+tron:db_size_bytes{type="LEVELDB",db="market_pair_to_price",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="section-bloom",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="exchange-v2",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="tree-block-index",level="2",} 1.4680064E7
+tron:db_size_bytes{type="LEVELDB",db="contract",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="block",level="0",} 1.4680064E7
+tron:db_size_bytes{type="LEVELDB",db="block",level="1",} 9437184.0
+tron:db_size_bytes{type="LEVELDB",db="storage-row",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="block",level="2",} 9.8566144E7
+tron:db_size_bytes{type="LEVELDB",db="block",level="3",} 1.041235968E9
+tron:db_size_bytes{type="LEVELDB",db="exchange",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="properties",level="1",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="DelegatedResource",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="tree-block-index",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="properties",level="0",} 6291456.0
+tron:db_size_bytes{type="LEVELDB",db="tree-block-index",level="1",} 7340032.0
+tron:db_size_bytes{type="LEVELDB",db="account-index",level="1",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="votes",level="1",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="recent-transaction",level="2",} 4.0894464E7
+tron:db_size_bytes{type="LEVELDB",db="recent-transaction",level="1",} 9437184.0
+tron:db_size_bytes{type="LEVELDB",db="votes",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="proposal",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="recent-transaction",level="0",} 7340032.0
+tron:db_size_bytes{type="LEVELDB",db="delegation",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="account",level="0",} 1.572864E7
+tron:db_size_bytes{type="LEVELDB",db="transactionRetStore",level="0",} 4194304.0
+tron:db_size_bytes{type="LEVELDB",db="account",level="2",} 5.9768832E7
+tron:db_size_bytes{type="LEVELDB",db="transactionRetStore",level="2",} 1.02760448E8
+tron:db_size_bytes{type="LEVELDB",db="transactionRetStore",level="1",} 1.048576E7
+tron:db_size_bytes{type="LEVELDB",db="witness_schedule",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="witness_schedule",level="1",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="nullifier",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="transactionRetStore",level="3",} 4.8234496E8
+tron:db_size_bytes{type="LEVELDB",db="witness",level="1",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="witness",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="DelegatedResourceAccountIndex",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="common",level="1",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="properties",level="2",} 2097152.0
+tron:db_size_bytes{type="LEVELDB",db="witness",level="2",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="common",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="market_account",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="asset-issue-v2",level="0",} 0.0
+tron:db_size_bytes{type="LEVELDB",db="asset-issue-v2",level="1",} 0.0
+# HELP tron:http_service_latency_seconds Http Service latency.
+# TYPE tron:http_service_latency_seconds histogram
+# HELP tron:manager_queue_size tron  manager.queue.size .
+# TYPE tron:manager_queue_size gauge
+tron:manager_queue_size{type="popped",} 0.0
+tron:manager_queue_size{type="pending",} 0.0
+# HELP tron:internal_service_fail_total internal Service fail.
+# TYPE tron:internal_service_fail_total counter
+# HELP tron:guava_cache_hit_rate Hit rate of a guava cache.
+# TYPE tron:guava_cache_hit_rate gauge
+tron:guava_cache_hit_rate{type="code",} 1.0
+tron:guava_cache_hit_rate{type="contract",} 1.0
+tron:guava_cache_hit_rate{type="witness_schedule",} 0.9999923859993757
+tron:guava_cache_hit_rate{type="abi",} 1.0
+tron:guava_cache_hit_rate{type="recent-block",} 0.9872611464968153
+tron:guava_cache_hit_rate{type="DelegatedResourceAccountIndex",} 1.0
+tron:guava_cache_hit_rate{type="asset-issue-v2",} 1.0
+tron:guava_cache_hit_rate{type="DelegatedResource",} 1.0
+tron:guava_cache_hit_rate{type="witness",} 0.9974564899561394
+tron:guava_cache_hit_rate{type="storage-row",} 1.0
+tron:guava_cache_hit_rate{type="votes",} 0.36670878079595703
+tron:guava_cache_hit_rate{type="delegation",} 1.0
+tron:guava_cache_hit_rate{type="properties",} 0.9998399258678908
+tron:guava_cache_hit_rate{type="account",} 0.8056277744675225
+# HELP tron:guava_cache_request Request of a guava cache.
+# TYPE tron:guava_cache_request gauge
+tron:guava_cache_request{type="code",} 0.0
+tron:guava_cache_request{type="contract",} 0.0
+tron:guava_cache_request{type="witness_schedule",} 131337.0
+tron:guava_cache_request{type="abi",} 0.0
+tron:guava_cache_request{type="recent-block",} 157.0
+tron:guava_cache_request{type="DelegatedResourceAccountIndex",} 0.0
+tron:guava_cache_request{type="asset-issue-v2",} 0.0
+tron:guava_cache_request{type="DelegatedResource",} 0.0
+tron:guava_cache_request{type="witness",} 249655.0
+tron:guava_cache_request{type="storage-row",} 0.0
+tron:guava_cache_request{type="votes",} 3166.0
+tron:guava_cache_request{type="delegation",} 0.0
+tron:guava_cache_request{type="properties",} 1124479.0
+tron:guava_cache_request{type="account",} 521947.0
+# HELP tron:guava_cache_eviction_count Eviction count of a guava cache.
+# TYPE tron:guava_cache_eviction_count gauge
+tron:guava_cache_eviction_count{type="code",} 0.0
+tron:guava_cache_eviction_count{type="contract",} 0.0
+tron:guava_cache_eviction_count{type="witness_schedule",} 0.0
+tron:guava_cache_eviction_count{type="abi",} 0.0
+tron:guava_cache_eviction_count{type="recent-block",} 26227.0
+tron:guava_cache_eviction_count{type="DelegatedResourceAccountIndex",} 0.0
+tron:guava_cache_eviction_count{type="asset-issue-v2",} 2.0
+tron:guava_cache_eviction_count{type="DelegatedResource",} 0.0
+tron:guava_cache_eviction_count{type="witness",} 800.0
+tron:guava_cache_eviction_count{type="storage-row",} 0.0
+tron:guava_cache_eviction_count{type="votes",} 3853.0
+tron:guava_cache_eviction_count{type="delegation",} 0.0
+tron:guava_cache_eviction_count{type="properties",} 45.0
+tron:guava_cache_eviction_count{type="account",} 96132.0
+# HELP tron:txs_total tron  txs  info .
+# TYPE tron:txs_total counter
+# HELP tron:db_sst_level tron  db  files .
+# TYPE tron:db_sst_level gauge
+tron:db_sst_level{type="LEVELDB",db="trans",level="3",} 267.0
+tron:db_sst_level{type="LEVELDB",db="trans",level="1",} 5.0
+tron:db_sst_level{type="LEVELDB",db="accountid-index",level="0",} 1.0
+tron:db_sst_level{type="LEVELDB",db="trans",level="2",} 61.0
+tron:db_sst_level{type="LEVELDB",db="trans",level="0",} 4.0
+tron:db_sst_level{type="LEVELDB",db="block-index",level="2",} 19.0
+tron:db_sst_level{type="LEVELDB",db="block-index",level="1",} 5.0
+tron:db_sst_level{type="LEVELDB",db="balance-trace",level="0",} 1.0
+tron:db_sst_level{type="LEVELDB",db="market_pair_price_to_order",level="0",} 0.0
+tron:db_sst_level{type="LEVELDB",db="asset-issue",level="0",} 2.0
+tron:db_sst_level{type="LEVELDB",db="abi",level="0",} 0.0
+tron:db_sst_level{type="LEVELDB",db="transactionHistoryStore",level="0",} 0.0
+tron:db_sst_level{type="LEVELDB",db="asset-issue",level="1",} 1.0
+tron:db_sst_level{type="LEVELDB",db="IncrementalMerkleTree",level="0",} 1.0
+tron:db_sst_level{type="LEVELDB",db="tmp",level="2",} 1.0
+tron:db_sst_level{type="LEVELDB",db="account-index",level="0",} 3.0
+tron:db_sst_level{type="LEVELDB",db="tmp",level="0",} 1.0
+tron:db_sst_level{type="LEVELDB",db="market_order",level="0",} 0.0
+tron:db_sst_level{type="LEVELDB",db="code",level="0",} 0.0
+tron:db_sst_level{type="LEVELDB",db="block-index",level="0",} 1.0
+tron:db_sst_level{type="LEVELDB",db="accountTrie",level="0",} 0.0
+tron:db_sst_level{type="LEVELDB",db="contract-state",level="0",} 0.0
+tron:db_sst_level{type="LEVELDB",db="account-trace",level="0",} 1.0
+tron:db_sst_level{type="LEVELDB",db="recent-block",level="0",} 1.0
+tron:db_sst_level{type="LEVELDB",db="recent-block",level="1",} 1.0
+tron:db_sst_level{type="LEVELDB",db="IncrementalMerkleTree",level="2",} 1.0
+tron:db_sst_level{type="LEVELDB",db="IncrementalMerkleTree",level="1",} 1.0
+tron:db_sst_level{type="LEVELDB",db="block",level="4",} 108.0
+tron:db_sst_level{type="LEVELDB",db="market_pair_to_price",level="0",} 0.0
+tron:db_sst_level{type="LEVELDB",db="section-bloom",level="0",} 0.0
+tron:db_sst_level{type="LEVELDB",db="exchange-v2",level="0",} 0.0
+tron:db_sst_level{type="LEVELDB",db="tree-block-index",level="2",} 8.0
+tron:db_sst_level{type="LEVELDB",db="contract",level="0",} 0.0
+tron:db_sst_level{type="LEVELDB",db="block",level="0",} 2.0
+tron:db_sst_level{type="LEVELDB",db="block",level="1",} 5.0
+tron:db_sst_level{type="LEVELDB",db="storage-row",level="0",} 0.0
+tron:db_sst_level{type="LEVELDB",db="block",level="2",} 28.0
+tron:db_sst_level{type="LEVELDB",db="block",level="3",} 103.0
+tron:db_sst_level{type="LEVELDB",db="exchange",level="0",} 0.0
+tron:db_sst_level{type="LEVELDB",db="properties",level="1",} 1.0
+tron:db_sst_level{type="LEVELDB",db="DelegatedResource",level="0",} 0.0
+tron:db_sst_level{type="LEVELDB",db="tree-block-index",level="0",} 1.0
+tron:db_sst_level{type="LEVELDB",db="properties",level="0",} 4.0
+tron:db_sst_level{type="LEVELDB",db="tree-block-index",level="1",} 6.0
+tron:db_sst_level{type="LEVELDB",db="account-index",level="1",} 1.0
+tron:db_sst_level{type="LEVELDB",db="votes",level="1",} 1.0
+tron:db_sst_level{type="LEVELDB",db="recent-transaction",level="2",} 21.0
+tron:db_sst_level{type="LEVELDB",db="recent-transaction",level="1",} 5.0
+tron:db_sst_level{type="LEVELDB",db="votes",level="0",} 1.0
+tron:db_sst_level{type="LEVELDB",db="proposal",level="0",} 0.0
+tron:db_sst_level{type="LEVELDB",db="recent-transaction",level="0",} 1.0
+tron:db_sst_level{type="LEVELDB",db="delegation",level="0",} 0.0
+tron:db_sst_level{type="LEVELDB",db="account",level="0",} 1.0
+tron:db_sst_level{type="LEVELDB",db="transactionRetStore",level="0",} 1.0
+tron:db_sst_level{type="LEVELDB",db="account",level="2",} 31.0
+tron:db_sst_level{type="LEVELDB",db="transactionRetStore",level="2",} 25.0
+tron:db_sst_level{type="LEVELDB",db="transactionRetStore",level="1",} 5.0
+tron:db_sst_level{type="LEVELDB",db="witness_schedule",level="0",} 2.0
+tron:db_sst_level{type="LEVELDB",db="witness_schedule",level="1",} 1.0
+tron:db_sst_level{type="LEVELDB",db="nullifier",level="0",} 0.0
+tron:db_sst_level{type="LEVELDB",db="transactionRetStore",level="3",} 45.0
+tron:db_sst_level{type="LEVELDB",db="witness",level="1",} 1.0
+tron:db_sst_level{type="LEVELDB",db="witness",level="0",} 1.0
+tron:db_sst_level{type="LEVELDB",db="DelegatedResourceAccountIndex",level="0",} 0.0
+tron:db_sst_level{type="LEVELDB",db="common",level="1",} 1.0
+tron:db_sst_level{type="LEVELDB",db="properties",level="2",} 1.0
+tron:db_sst_level{type="LEVELDB",db="witness",level="2",} 1.0
+tron:db_sst_level{type="LEVELDB",db="common",level="0",} 2.0
+tron:db_sst_level{type="LEVELDB",db="market_account",level="0",} 0.0
+tron:db_sst_level{type="LEVELDB",db="asset-issue-v2",level="0",} 2.0
+tron:db_sst_level{type="LEVELDB",db="asset-issue-v2",level="1",} 1.0
+# HELP tron:lock_acquire_latency_seconds lock acquire latency.
+# TYPE tron:lock_acquire_latency_seconds histogram
+tron:lock_acquire_latency_seconds_bucket{type="block",le="0.005",} 26344.0
+tron:lock_acquire_latency_seconds_bucket{type="block",le="0.01",} 26344.0
+tron:lock_acquire_latency_seconds_bucket{type="block",le="0.025",} 26345.0
+tron:lock_acquire_latency_seconds_bucket{type="block",le="0.05",} 26345.0
+tron:lock_acquire_latency_seconds_bucket{type="block",le="0.075",} 26345.0
+tron:lock_acquire_latency_seconds_bucket{type="block",le="0.1",} 26345.0
+tron:lock_acquire_latency_seconds_bucket{type="block",le="0.25",} 26345.0
+tron:lock_acquire_latency_seconds_bucket{type="block",le="0.5",} 26345.0
+tron:lock_acquire_latency_seconds_bucket{type="block",le="0.75",} 26345.0
+tron:lock_acquire_latency_seconds_bucket{type="block",le="1.0",} 26345.0
+tron:lock_acquire_latency_seconds_bucket{type="block",le="2.5",} 26345.0
+tron:lock_acquire_latency_seconds_bucket{type="block",le="5.0",} 26345.0
+tron:lock_acquire_latency_seconds_bucket{type="block",le="7.5",} 26345.0
+tron:lock_acquire_latency_seconds_bucket{type="block",le="10.0",} 26345.0
+tron:lock_acquire_latency_seconds_bucket{type="block",le="+Inf",} 26345.0
+tron:lock_acquire_latency_seconds_count{type="block",} 26345.0
+tron:lock_acquire_latency_seconds_sum{type="block",} 2.1164680520000028
+# HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
+# TYPE process_cpu_seconds_total counter
+process_cpu_seconds_total 1067.08
+# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
+# TYPE process_start_time_seconds gauge
+process_start_time_seconds 1.743661611988E9
+# HELP process_open_fds Number of open file descriptors.
+# TYPE process_open_fds gauge
+process_open_fds 523.0
+# HELP process_max_fds Maximum number of open file descriptors.
+# TYPE process_max_fds gauge
+process_max_fds 1048576.0
+# HELP process_virtual_memory_bytes Virtual memory size in bytes.
+# TYPE process_virtual_memory_bytes gauge
+process_virtual_memory_bytes 2.2952333312E10
+# HELP process_resident_memory_bytes Resident memory size in bytes.
+# TYPE process_resident_memory_bytes gauge
+process_resident_memory_bytes 3.028107264E9
+# HELP tron:http_bytes http_bytes traffic.
+# TYPE tron:http_bytes histogram
+# HELP tron:miner_delay_seconds miner delay time, actualTime - planTime.
+# TYPE tron:miner_delay_seconds histogram
+# HELP tron:block_push_latency_seconds push block latency for Manager.
+# TYPE tron:block_push_latency_seconds histogram
+tron:block_push_latency_seconds_bucket{le="0.005",} 0.0
+tron:block_push_latency_seconds_bucket{le="0.01",} 1058.0
+tron:block_push_latency_seconds_bucket{le="0.025",} 14922.0
+tron:block_push_latency_seconds_bucket{le="0.05",} 25347.0
+tron:block_push_latency_seconds_bucket{le="0.075",} 26123.0
+tron:block_push_latency_seconds_bucket{le="0.1",} 26247.0
+tron:block_push_latency_seconds_bucket{le="0.25",} 26333.0
+tron:block_push_latency_seconds_bucket{le="0.5",} 26342.0
+tron:block_push_latency_seconds_bucket{le="0.75",} 26343.0
+tron:block_push_latency_seconds_bucket{le="1.0",} 26344.0
+tron:block_push_latency_seconds_bucket{le="2.5",} 26344.0
+tron:block_push_latency_seconds_bucket{le="5.0",} 26344.0
+tron:block_push_latency_seconds_bucket{le="7.5",} 26344.0
+tron:block_push_latency_seconds_bucket{le="10.0",} 26344.0
+tron:block_push_latency_seconds_bucket{le="+Inf",} 26344.0
+tron:block_push_latency_seconds_count 26344.0
+tron:block_push_latency_seconds_sum 676.6252835079954
+# HELP tron:tcp_bytes tcp_bytes traffic.
+# TYPE tron:tcp_bytes histogram
+tron:tcp_bytes_bucket{type="in",le="0.005",} 413.0
+tron:tcp_bytes_bucket{type="in",le="0.01",} 413.0
+tron:tcp_bytes_bucket{type="in",le="0.025",} 413.0
+tron:tcp_bytes_bucket{type="in",le="0.05",} 413.0
+tron:tcp_bytes_bucket{type="in",le="0.075",} 413.0
+tron:tcp_bytes_bucket{type="in",le="0.1",} 413.0
+tron:tcp_bytes_bucket{type="in",le="0.25",} 413.0
+tron:tcp_bytes_bucket{type="in",le="0.5",} 413.0
+tron:tcp_bytes_bucket{type="in",le="0.75",} 413.0
+tron:tcp_bytes_bucket{type="in",le="1.0",} 413.0
+tron:tcp_bytes_bucket{type="in",le="2.5",} 413.0
+tron:tcp_bytes_bucket{type="in",le="5.0",} 450.0
+tron:tcp_bytes_bucket{type="in",le="7.5",} 450.0
+tron:tcp_bytes_bucket{type="in",le="10.0",} 450.0
+tron:tcp_bytes_bucket{type="in",le="+Inf",} 750.0
+tron:tcp_bytes_count{type="in",} 750.0
+tron:tcp_bytes_sum{type="in",} 4.6970806E7
+tron:tcp_bytes_bucket{type="out",le="0.005",} 412.0
+tron:tcp_bytes_bucket{type="out",le="0.01",} 412.0
+tron:tcp_bytes_bucket{type="out",le="0.025",} 412.0
+tron:tcp_bytes_bucket{type="out",le="0.05",} 412.0
+tron:tcp_bytes_bucket{type="out",le="0.075",} 412.0
+tron:tcp_bytes_bucket{type="out",le="0.1",} 412.0
+tron:tcp_bytes_bucket{type="out",le="0.25",} 412.0
+tron:tcp_bytes_bucket{type="out",le="0.5",} 412.0
+tron:tcp_bytes_bucket{type="out",le="0.75",} 412.0
+tron:tcp_bytes_bucket{type="out",le="1.0",} 412.0
+tron:tcp_bytes_bucket{type="out",le="2.5",} 412.0
+tron:tcp_bytes_bucket{type="out",le="5.0",} 450.0
+tron:tcp_bytes_bucket{type="out",le="7.5",} 450.0
+tron:tcp_bytes_bucket{type="out",le="10.0",} 450.0
+tron:tcp_bytes_bucket{type="out",le="+Inf",} 750.0
+tron:tcp_bytes_count{type="out",} 750.0
+tron:tcp_bytes_sum{type="out",} 937769.0
+# HELP tron:block_fetch_latency_seconds fetch block latency.
+# TYPE tron:block_fetch_latency_seconds histogram
+tron:block_fetch_latency_seconds_bucket{le="0.005",} 0.0
+tron:block_fetch_latency_seconds_bucket{le="0.01",} 0.0
+tron:block_fetch_latency_seconds_bucket{le="0.025",} 0.0
+tron:block_fetch_latency_seconds_bucket{le="0.05",} 0.0
+tron:block_fetch_latency_seconds_bucket{le="0.075",} 0.0
+tron:block_fetch_latency_seconds_bucket{le="0.1",} 0.0
+tron:block_fetch_latency_seconds_bucket{le="0.25",} 0.0
+tron:block_fetch_latency_seconds_bucket{le="0.5",} 0.0
+tron:block_fetch_latency_seconds_bucket{le="0.75",} 0.0
+tron:block_fetch_latency_seconds_bucket{le="1.0",} 0.0
+tron:block_fetch_latency_seconds_bucket{le="2.5",} 0.0
+tron:block_fetch_latency_seconds_bucket{le="5.0",} 0.0
+tron:block_fetch_latency_seconds_bucket{le="7.5",} 0.0
+tron:block_fetch_latency_seconds_bucket{le="10.0",} 0.0
+tron:block_fetch_latency_seconds_bucket{le="+Inf",} 0.0
+tron:block_fetch_latency_seconds_count 0.0
+tron:block_fetch_latency_seconds_sum 0.0
+# HELP tron:header_height header  height .
+# TYPE tron:header_height gauge
+tron:header_height 2730821.0
+# HELP tron:tx_cache tron tx cache info.
+# TYPE tron:tx_cache gauge
+tron:tx_cache{type="fpp",} 2.5332886826699763E-14
+tron:tx_cache{type="count",} 182764.0
+# HELP tron:jsonrpc_service_latency_seconds JsonRpc Service latency.
+# TYPE tron:jsonrpc_service_latency_seconds histogram
+# HELP tron:internal_service_latency_seconds Internal Service latency.
+# TYPE tron:internal_service_latency_seconds histogram
+# HELP tron:message_process_latency_seconds process message latency.
+# TYPE tron:message_process_latency_seconds histogram
+tron:message_process_latency_seconds_bucket{type="P2P_HELLO",le="0.005",} 0.0
+tron:message_process_latency_seconds_bucket{type="P2P_HELLO",le="0.01",} 0.0
+tron:message_process_latency_seconds_bucket{type="P2P_HELLO",le="0.025",} 0.0
+tron:message_process_latency_seconds_bucket{type="P2P_HELLO",le="0.05",} 0.0
+tron:message_process_latency_seconds_bucket{type="P2P_HELLO",le="0.075",} 1.0
+tron:message_process_latency_seconds_bucket{type="P2P_HELLO",le="0.1",} 1.0
+tron:message_process_latency_seconds_bucket{type="P2P_HELLO",le="0.25",} 1.0
+tron:message_process_latency_seconds_bucket{type="P2P_HELLO",le="0.5",} 1.0
+tron:message_process_latency_seconds_bucket{type="P2P_HELLO",le="0.75",} 1.0
+tron:message_process_latency_seconds_bucket{type="P2P_HELLO",le="1.0",} 1.0
+tron:message_process_latency_seconds_bucket{type="P2P_HELLO",le="2.5",} 1.0
+tron:message_process_latency_seconds_bucket{type="P2P_HELLO",le="5.0",} 1.0
+tron:message_process_latency_seconds_bucket{type="P2P_HELLO",le="7.5",} 1.0
+tron:message_process_latency_seconds_bucket{type="P2P_HELLO",le="10.0",} 1.0
+tron:message_process_latency_seconds_bucket{type="P2P_HELLO",le="+Inf",} 1.0
+tron:message_process_latency_seconds_count{type="P2P_HELLO",} 1.0
+tron:message_process_latency_seconds_sum{type="P2P_HELLO",} 0.063
+tron:message_process_latency_seconds_bucket{type="BLOCK",le="0.005",} 0.0
+tron:message_process_latency_seconds_bucket{type="BLOCK",le="0.01",} 0.0
+tron:message_process_latency_seconds_bucket{type="BLOCK",le="0.025",} 0.0
+tron:message_process_latency_seconds_bucket{type="BLOCK",le="0.05",} 0.0
+tron:message_process_latency_seconds_bucket{type="BLOCK",le="0.075",} 8.0
+tron:message_process_latency_seconds_bucket{type="BLOCK",le="0.1",} 9.0
+tron:message_process_latency_seconds_bucket{type="BLOCK",le="0.25",} 11.0
+tron:message_process_latency_seconds_bucket{type="BLOCK",le="0.5",} 11.0
+tron:message_process_latency_seconds_bucket{type="BLOCK",le="0.75",} 11.0
+tron:message_process_latency_seconds_bucket{type="BLOCK",le="1.0",} 11.0
+tron:message_process_latency_seconds_bucket{type="BLOCK",le="2.5",} 11.0
+tron:message_process_latency_seconds_bucket{type="BLOCK",le="5.0",} 11.0
+tron:message_process_latency_seconds_bucket{type="BLOCK",le="7.5",} 11.0
+tron:message_process_latency_seconds_bucket{type="BLOCK",le="10.0",} 11.0
+tron:message_process_latency_seconds_bucket{type="BLOCK",le="+Inf",} 11.0
+tron:message_process_latency_seconds_count{type="BLOCK",} 11.0
+tron:message_process_latency_seconds_sum{type="BLOCK",} 0.9630000000000001
+tron:message_process_latency_seconds_bucket{type="BLOCK_CHAIN_INVENTORY",le="0.005",} 0.0
+tron:message_process_latency_seconds_bucket{type="BLOCK_CHAIN_INVENTORY",le="0.01",} 0.0
+tron:message_process_latency_seconds_bucket{type="BLOCK_CHAIN_INVENTORY",le="0.025",} 0.0
+tron:message_process_latency_seconds_bucket{type="BLOCK_CHAIN_INVENTORY",le="0.05",} 0.0
+tron:message_process_latency_seconds_bucket{type="BLOCK_CHAIN_INVENTORY",le="0.075",} 6.0
+tron:message_process_latency_seconds_bucket{type="BLOCK_CHAIN_INVENTORY",le="0.1",} 6.0
+tron:message_process_latency_seconds_bucket{type="BLOCK_CHAIN_INVENTORY",le="0.25",} 8.0
+tron:message_process_latency_seconds_bucket{type="BLOCK_CHAIN_INVENTORY",le="0.5",} 8.0
+tron:message_process_latency_seconds_bucket{type="BLOCK_CHAIN_INVENTORY",le="0.75",} 8.0
+tron:message_process_latency_seconds_bucket{type="BLOCK_CHAIN_INVENTORY",le="1.0",} 8.0
+tron:message_process_latency_seconds_bucket{type="BLOCK_CHAIN_INVENTORY",le="2.5",} 8.0
+tron:message_process_latency_seconds_bucket{type="BLOCK_CHAIN_INVENTORY",le="5.0",} 8.0
+tron:message_process_latency_seconds_bucket{type="BLOCK_CHAIN_INVENTORY",le="7.5",} 8.0
+tron:message_process_latency_seconds_bucket{type="BLOCK_CHAIN_INVENTORY",le="10.0",} 8.0
+tron:message_process_latency_seconds_bucket{type="BLOCK_CHAIN_INVENTORY",le="+Inf",} 8.0
+tron:message_process_latency_seconds_count{type="BLOCK_CHAIN_INVENTORY",} 8.0
+tron:message_process_latency_seconds_sum{type="BLOCK_CHAIN_INVENTORY",} 0.615
+# HELP jvm_classes_currently_loaded The number of classes that are currently loaded in the JVM
+# TYPE jvm_classes_currently_loaded gauge
+jvm_classes_currently_loaded 10107.0
+# HELP jvm_classes_loaded_total The total number of classes that have been loaded since the JVM has started execution
+# TYPE jvm_classes_loaded_total counter
+jvm_classes_loaded_total 10162.0
+# HELP jvm_classes_unloaded_total The total number of classes that have been unloaded since the JVM has started execution
+# TYPE jvm_classes_unloaded_total counter
+jvm_classes_unloaded_total 55.0
+# HELP tron:miner_latency_seconds miner latency.
+# TYPE tron:miner_latency_seconds histogram
+# HELP tron:process_transaction_latency_seconds process transaction latency.
+# TYPE tron:process_transaction_latency_seconds histogram
+tron:process_transaction_latency_seconds_bucket{type="block",contract="FreezeBalanceContract",le="0.005",} 1304.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="FreezeBalanceContract",le="0.01",} 1307.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="FreezeBalanceContract",le="0.025",} 1310.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="FreezeBalanceContract",le="0.05",} 1310.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="FreezeBalanceContract",le="0.075",} 1310.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="FreezeBalanceContract",le="0.1",} 1310.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="FreezeBalanceContract",le="0.25",} 1310.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="FreezeBalanceContract",le="0.5",} 1310.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="FreezeBalanceContract",le="0.75",} 1310.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="FreezeBalanceContract",le="1.0",} 1310.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="FreezeBalanceContract",le="2.5",} 1310.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="FreezeBalanceContract",le="5.0",} 1310.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="FreezeBalanceContract",le="7.5",} 1310.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="FreezeBalanceContract",le="10.0",} 1310.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="FreezeBalanceContract",le="+Inf",} 1310.0
+tron:process_transaction_latency_seconds_count{type="block",contract="FreezeBalanceContract",} 1310.0
+tron:process_transaction_latency_seconds_sum{type="block",contract="FreezeBalanceContract",} 0.5550374220000004
+tron:process_transaction_latency_seconds_bucket{type="block",contract="VoteWitnessContract",le="0.005",} 3863.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="VoteWitnessContract",le="0.01",} 3874.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="VoteWitnessContract",le="0.025",} 3876.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="VoteWitnessContract",le="0.05",} 3876.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="VoteWitnessContract",le="0.075",} 3876.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="VoteWitnessContract",le="0.1",} 3876.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="VoteWitnessContract",le="0.25",} 3876.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="VoteWitnessContract",le="0.5",} 3876.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="VoteWitnessContract",le="0.75",} 3876.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="VoteWitnessContract",le="1.0",} 3876.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="VoteWitnessContract",le="2.5",} 3876.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="VoteWitnessContract",le="5.0",} 3876.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="VoteWitnessContract",le="7.5",} 3876.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="VoteWitnessContract",le="10.0",} 3876.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="VoteWitnessContract",le="+Inf",} 3876.0
+tron:process_transaction_latency_seconds_count{type="block",contract="VoteWitnessContract",} 3876.0
+tron:process_transaction_latency_seconds_sum{type="block",contract="VoteWitnessContract",} 1.9527991700000031
+tron:process_transaction_latency_seconds_bucket{type="block",contract="ParticipateAssetIssueContract",le="0.005",} 363.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="ParticipateAssetIssueContract",le="0.01",} 364.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="ParticipateAssetIssueContract",le="0.025",} 364.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="ParticipateAssetIssueContract",le="0.05",} 364.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="ParticipateAssetIssueContract",le="0.075",} 364.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="ParticipateAssetIssueContract",le="0.1",} 364.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="ParticipateAssetIssueContract",le="0.25",} 364.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="ParticipateAssetIssueContract",le="0.5",} 364.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="ParticipateAssetIssueContract",le="0.75",} 364.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="ParticipateAssetIssueContract",le="1.0",} 364.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="ParticipateAssetIssueContract",le="2.5",} 364.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="ParticipateAssetIssueContract",le="5.0",} 364.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="ParticipateAssetIssueContract",le="7.5",} 364.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="ParticipateAssetIssueContract",le="10.0",} 364.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="ParticipateAssetIssueContract",le="+Inf",} 364.0
+tron:process_transaction_latency_seconds_count{type="block",contract="ParticipateAssetIssueContract",} 364.0
+tron:process_transaction_latency_seconds_sum{type="block",contract="ParticipateAssetIssueContract",} 0.23757749700000014
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferAssetContract",le="0.005",} 122376.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferAssetContract",le="0.01",} 122485.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferAssetContract",le="0.025",} 122533.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferAssetContract",le="0.05",} 122543.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferAssetContract",le="0.075",} 122543.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferAssetContract",le="0.1",} 122543.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferAssetContract",le="0.25",} 122546.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferAssetContract",le="0.5",} 122546.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferAssetContract",le="0.75",} 122546.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferAssetContract",le="1.0",} 122546.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferAssetContract",le="2.5",} 122546.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferAssetContract",le="5.0",} 122546.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferAssetContract",le="7.5",} 122546.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferAssetContract",le="10.0",} 122546.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferAssetContract",le="+Inf",} 122546.0
+tron:process_transaction_latency_seconds_count{type="block",contract="TransferAssetContract",} 122546.0
+tron:process_transaction_latency_seconds_sum{type="block",contract="TransferAssetContract",} 63.97937376000053
+tron:process_transaction_latency_seconds_bucket{type="block",contract="UnfreezeBalanceContract",le="0.005",} 350.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="UnfreezeBalanceContract",le="0.01",} 350.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="UnfreezeBalanceContract",le="0.025",} 352.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="UnfreezeBalanceContract",le="0.05",} 352.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="UnfreezeBalanceContract",le="0.075",} 352.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="UnfreezeBalanceContract",le="0.1",} 352.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="UnfreezeBalanceContract",le="0.25",} 352.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="UnfreezeBalanceContract",le="0.5",} 352.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="UnfreezeBalanceContract",le="0.75",} 352.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="UnfreezeBalanceContract",le="1.0",} 352.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="UnfreezeBalanceContract",le="2.5",} 352.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="UnfreezeBalanceContract",le="5.0",} 352.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="UnfreezeBalanceContract",le="7.5",} 352.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="UnfreezeBalanceContract",le="10.0",} 352.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="UnfreezeBalanceContract",le="+Inf",} 352.0
+tron:process_transaction_latency_seconds_count{type="block",contract="UnfreezeBalanceContract",} 352.0
+tron:process_transaction_latency_seconds_sum{type="block",contract="UnfreezeBalanceContract",} 0.29153417199999976
+tron:process_transaction_latency_seconds_bucket{type="block",contract="WithdrawBalanceContract",le="0.005",} 29.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="WithdrawBalanceContract",le="0.01",} 29.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="WithdrawBalanceContract",le="0.025",} 30.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="WithdrawBalanceContract",le="0.05",} 30.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="WithdrawBalanceContract",le="0.075",} 30.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="WithdrawBalanceContract",le="0.1",} 30.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="WithdrawBalanceContract",le="0.25",} 30.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="WithdrawBalanceContract",le="0.5",} 30.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="WithdrawBalanceContract",le="0.75",} 30.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="WithdrawBalanceContract",le="1.0",} 30.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="WithdrawBalanceContract",le="2.5",} 30.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="WithdrawBalanceContract",le="5.0",} 30.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="WithdrawBalanceContract",le="7.5",} 30.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="WithdrawBalanceContract",le="10.0",} 30.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="WithdrawBalanceContract",le="+Inf",} 30.0
+tron:process_transaction_latency_seconds_count{type="block",contract="WithdrawBalanceContract",} 30.0
+tron:process_transaction_latency_seconds_sum{type="block",contract="WithdrawBalanceContract",} 0.039917877
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AssetIssueContract",le="0.005",} 6.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AssetIssueContract",le="0.01",} 7.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AssetIssueContract",le="0.025",} 7.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AssetIssueContract",le="0.05",} 7.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AssetIssueContract",le="0.075",} 7.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AssetIssueContract",le="0.1",} 7.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AssetIssueContract",le="0.25",} 7.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AssetIssueContract",le="0.5",} 7.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AssetIssueContract",le="0.75",} 7.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AssetIssueContract",le="1.0",} 7.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AssetIssueContract",le="2.5",} 7.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AssetIssueContract",le="5.0",} 7.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AssetIssueContract",le="7.5",} 7.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AssetIssueContract",le="10.0",} 7.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AssetIssueContract",le="+Inf",} 7.0
+tron:process_transaction_latency_seconds_count{type="block",contract="AssetIssueContract",} 7.0
+tron:process_transaction_latency_seconds_sum{type="block",contract="AssetIssueContract",} 0.023314166999999997
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferContract",le="0.005",} 54272.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferContract",le="0.01",} 54321.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferContract",le="0.025",} 54339.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferContract",le="0.05",} 54341.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferContract",le="0.075",} 54342.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferContract",le="0.1",} 54342.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferContract",le="0.25",} 54343.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferContract",le="0.5",} 54343.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferContract",le="0.75",} 54343.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferContract",le="1.0",} 54343.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferContract",le="2.5",} 54343.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferContract",le="5.0",} 54343.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferContract",le="7.5",} 54343.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferContract",le="10.0",} 54343.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="TransferContract",le="+Inf",} 54343.0
+tron:process_transaction_latency_seconds_count{type="block",contract="TransferContract",} 54343.0
+tron:process_transaction_latency_seconds_sum{type="block",contract="TransferContract",} 18.665094280000016
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AccountUpdateContract",le="0.005",} 42.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AccountUpdateContract",le="0.01",} 42.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AccountUpdateContract",le="0.025",} 42.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AccountUpdateContract",le="0.05",} 42.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AccountUpdateContract",le="0.075",} 42.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AccountUpdateContract",le="0.1",} 42.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AccountUpdateContract",le="0.25",} 42.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AccountUpdateContract",le="0.5",} 42.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AccountUpdateContract",le="0.75",} 42.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AccountUpdateContract",le="1.0",} 42.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AccountUpdateContract",le="2.5",} 42.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AccountUpdateContract",le="5.0",} 42.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AccountUpdateContract",le="7.5",} 42.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AccountUpdateContract",le="10.0",} 42.0
+tron:process_transaction_latency_seconds_bucket{type="block",contract="AccountUpdateContract",le="+Inf",} 42.0
+tron:process_transaction_latency_seconds_count{type="block",contract="AccountUpdateContract",} 42.0
+tron:process_transaction_latency_seconds_sum{type="block",contract="AccountUpdateContract",} 0.022557210999999997
+# HELP tron:udp_bytes udp_bytes traffic.
+# TYPE tron:udp_bytes histogram
+tron:udp_bytes_bucket{type="in",le="0.005",} 445.0
+tron:udp_bytes_bucket{type="in",le="0.01",} 445.0
+tron:udp_bytes_bucket{type="in",le="0.025",} 445.0
+tron:udp_bytes_bucket{type="in",le="0.05",} 445.0
+tron:udp_bytes_bucket{type="in",le="0.075",} 445.0
+tron:udp_bytes_bucket{type="in",le="0.1",} 445.0
+tron:udp_bytes_bucket{type="in",le="0.25",} 445.0
+tron:udp_bytes_bucket{type="in",le="0.5",} 445.0
+tron:udp_bytes_bucket{type="in",le="0.75",} 445.0
+tron:udp_bytes_bucket{type="in",le="1.0",} 445.0
+tron:udp_bytes_bucket{type="in",le="2.5",} 445.0
+tron:udp_bytes_bucket{type="in",le="5.0",} 445.0
+tron:udp_bytes_bucket{type="in",le="7.5",} 445.0
+tron:udp_bytes_bucket{type="in",le="10.0",} 445.0
+tron:udp_bytes_bucket{type="in",le="+Inf",} 750.0
+tron:udp_bytes_count{type="in",} 750.0
+tron:udp_bytes_sum{type="in",} 2238449.0
+tron:udp_bytes_bucket{type="out",le="0.005",} 359.0
+tron:udp_bytes_bucket{type="out",le="0.01",} 359.0
+tron:udp_bytes_bucket{type="out",le="0.025",} 359.0
+tron:udp_bytes_bucket{type="out",le="0.05",} 359.0
+tron:udp_bytes_bucket{type="out",le="0.075",} 359.0
+tron:udp_bytes_bucket{type="out",le="0.1",} 359.0
+tron:udp_bytes_bucket{type="out",le="0.25",} 359.0
+tron:udp_bytes_bucket{type="out",le="0.5",} 359.0
+tron:udp_bytes_bucket{type="out",le="0.75",} 359.0
+tron:udp_bytes_bucket{type="out",le="1.0",} 359.0
+tron:udp_bytes_bucket{type="out",le="2.5",} 359.0
+tron:udp_bytes_bucket{type="out",le="5.0",} 359.0
+tron:udp_bytes_bucket{type="out",le="7.5",} 359.0
+tron:udp_bytes_bucket{type="out",le="10.0",} 359.0
+tron:udp_bytes_bucket{type="out",le="+Inf",} 750.0
+tron:udp_bytes_count{type="out",} 750.0
+tron:udp_bytes_sum{type="out",} 1543162.0
+# HELP tron:block_process_latency_seconds process block latency for TronNetDelegate.
+# TYPE tron:block_process_latency_seconds histogram
+tron:block_process_latency_seconds_bucket{sync="true",le="0.005",} 0.0
+tron:block_process_latency_seconds_bucket{sync="true",le="0.01",} 1010.0
+tron:block_process_latency_seconds_bucket{sync="true",le="0.025",} 14859.0
+tron:block_process_latency_seconds_bucket{sync="true",le="0.05",} 25327.0
+tron:block_process_latency_seconds_bucket{sync="true",le="0.075",} 26121.0
+tron:block_process_latency_seconds_bucket{sync="true",le="0.1",} 26246.0
+tron:block_process_latency_seconds_bucket{sync="true",le="0.25",} 26333.0
+tron:block_process_latency_seconds_bucket{sync="true",le="0.5",} 26342.0
+tron:block_process_latency_seconds_bucket{sync="true",le="0.75",} 26343.0
+tron:block_process_latency_seconds_bucket{sync="true",le="1.0",} 26344.0
+tron:block_process_latency_seconds_bucket{sync="true",le="2.5",} 26344.0
+tron:block_process_latency_seconds_bucket{sync="true",le="5.0",} 26344.0
+tron:block_process_latency_seconds_bucket{sync="true",le="7.5",} 26344.0
+tron:block_process_latency_seconds_bucket{sync="true",le="10.0",} 26344.0
+tron:block_process_latency_seconds_bucket{sync="true",le="+Inf",} 26344.0
+tron:block_process_latency_seconds_count{sync="true",} 26344.0
+tron:block_process_latency_seconds_sum{sync="true",} 679.500129660002
+# HELP jvm_memory_objects_pending_finalization The number of objects waiting in the finalizer queue.
+# TYPE jvm_memory_objects_pending_finalization gauge
+jvm_memory_objects_pending_finalization 0.0
+# HELP jvm_memory_bytes_used Used bytes of a given JVM memory area.
+# TYPE jvm_memory_bytes_used gauge
+jvm_memory_bytes_used{area="heap",} 6.51532536E8
+jvm_memory_bytes_used{area="nonheap",} 1.10953928E8
+# HELP jvm_memory_bytes_committed Committed (bytes) of a given JVM memory area.
+# TYPE jvm_memory_bytes_committed gauge
+jvm_memory_bytes_committed{area="heap",} 1.336860672E9
+jvm_memory_bytes_committed{area="nonheap",} 1.14536448E8
+# HELP jvm_memory_bytes_max Max (bytes) of a given JVM memory area.
+# TYPE jvm_memory_bytes_max gauge
+jvm_memory_bytes_max{area="heap",} 1.4925037568E10
+jvm_memory_bytes_max{area="nonheap",} -1.0
+# HELP jvm_memory_bytes_init Initial bytes of a given JVM memory area.
+# TYPE jvm_memory_bytes_init gauge
+jvm_memory_bytes_init{area="heap",} 1.08003328E9
+jvm_memory_bytes_init{area="nonheap",} 2555904.0
+# HELP jvm_memory_pool_bytes_used Used bytes of a given JVM memory pool.
+# TYPE jvm_memory_pool_bytes_used gauge
+jvm_memory_pool_bytes_used{pool="Code Cache",} 3.806144E7
+jvm_memory_pool_bytes_used{pool="Metaspace",} 6.5529176E7
+jvm_memory_pool_bytes_used{pool="Compressed Class Space",} 7363312.0
+jvm_memory_pool_bytes_used{pool="Par Eden Space",} 3.98945304E8
+jvm_memory_pool_bytes_used{pool="Par Survivor Space",} 4406120.0
+jvm_memory_pool_bytes_used{pool="CMS Old Gen",} 2.48181112E8
+# HELP jvm_memory_pool_bytes_committed Committed bytes of a given JVM memory pool.
+# TYPE jvm_memory_pool_bytes_committed gauge
+jvm_memory_pool_bytes_committed{pool="Code Cache",} 3.8535168E7
+jvm_memory_pool_bytes_committed{pool="Metaspace",} 6.8096E7
+jvm_memory_pool_bytes_committed{pool="Compressed Class Space",} 7905280.0
+jvm_memory_pool_bytes_committed{pool="Par Eden Space",} 8.59045888E8
+jvm_memory_pool_bytes_committed{pool="Par Survivor Space",} 1.07347968E8
+jvm_memory_pool_bytes_committed{pool="CMS Old Gen",} 3.70466816E8
+# HELP jvm_memory_pool_bytes_max Max bytes of a given JVM memory pool.
+# TYPE jvm_memory_pool_bytes_max gauge
+jvm_memory_pool_bytes_max{pool="Code Cache",} 2.68435456E8
+jvm_memory_pool_bytes_max{pool="Metaspace",} -1.0
+jvm_memory_pool_bytes_max{pool="Compressed Class Space",} 1.073741824E9
+jvm_memory_pool_bytes_max{pool="Par Eden Space",} 8.59045888E8
+jvm_memory_pool_bytes_max{pool="Par Survivor Space",} 1.07347968E8
+jvm_memory_pool_bytes_max{pool="CMS Old Gen",} 1.3958643712E10
+# HELP jvm_memory_pool_bytes_init Initial bytes of a given JVM memory pool.
+# TYPE jvm_memory_pool_bytes_init gauge
+jvm_memory_pool_bytes_init{pool="Code Cache",} 2555904.0
+jvm_memory_pool_bytes_init{pool="Metaspace",} 0.0
+jvm_memory_pool_bytes_init{pool="Compressed Class Space",} 0.0
+jvm_memory_pool_bytes_init{pool="Par Eden Space",} 8.59045888E8
+jvm_memory_pool_bytes_init{pool="Par Survivor Space",} 1.07347968E8
+jvm_memory_pool_bytes_init{pool="CMS Old Gen",} 6291456.0
+# HELP jvm_memory_pool_collection_used_bytes Used bytes after last collection of a given JVM memory pool.
+# TYPE jvm_memory_pool_collection_used_bytes gauge
+jvm_memory_pool_collection_used_bytes{pool="Par Eden Space",} 0.0
+jvm_memory_pool_collection_used_bytes{pool="Par Survivor Space",} 4406120.0
+jvm_memory_pool_collection_used_bytes{pool="CMS Old Gen",} 2.22277856E8
+# HELP jvm_memory_pool_collection_committed_bytes Committed after last collection bytes of a given JVM memory pool.
+# TYPE jvm_memory_pool_collection_committed_bytes gauge
+jvm_memory_pool_collection_committed_bytes{pool="Par Eden Space",} 8.59045888E8
+jvm_memory_pool_collection_committed_bytes{pool="Par Survivor Space",} 1.07347968E8
+jvm_memory_pool_collection_committed_bytes{pool="CMS Old Gen",} 3.50306304E8
+# HELP jvm_memory_pool_collection_max_bytes Max bytes after last collection of a given JVM memory pool.
+# TYPE jvm_memory_pool_collection_max_bytes gauge
+jvm_memory_pool_collection_max_bytes{pool="Par Eden Space",} 8.59045888E8
+jvm_memory_pool_collection_max_bytes{pool="Par Survivor Space",} 1.07347968E8
+jvm_memory_pool_collection_max_bytes{pool="CMS Old Gen",} 1.3958643712E10
+# HELP jvm_memory_pool_collection_init_bytes Initial after last collection bytes of a given JVM memory pool.
+# TYPE jvm_memory_pool_collection_init_bytes gauge
+jvm_memory_pool_collection_init_bytes{pool="Par Eden Space",} 8.59045888E8
+jvm_memory_pool_collection_init_bytes{pool="Par Survivor Space",} 1.07347968E8
+jvm_memory_pool_collection_init_bytes{pool="CMS Old Gen",} 6291456.0
+# HELP jvm_gc_collection_seconds Time spent in a given JVM garbage collector in seconds.
+# TYPE jvm_gc_collection_seconds summary
+jvm_gc_collection_seconds_count{gc="ParNew",} 731.0
+jvm_gc_collection_seconds_sum{gc="ParNew",} 4.836
+jvm_gc_collection_seconds_count{gc="ConcurrentMarkSweep",} 7.0
+jvm_gc_collection_seconds_sum{gc="ConcurrentMarkSweep",} 0.457
+# HELP jvm_memory_pool_allocated_bytes_total Total bytes allocated in a given JVM memory pool. Only updated after GC, not continuously.
+# TYPE jvm_memory_pool_allocated_bytes_total counter
+jvm_memory_pool_allocated_bytes_total{pool="Par Survivor Space",} 6.6385936E8
+jvm_memory_pool_allocated_bytes_total{pool="CMS Old Gen",} 9.5570376E8
+jvm_memory_pool_allocated_bytes_total{pool="Code Cache",} 5.3374016E7
+jvm_memory_pool_allocated_bytes_total{pool="Compressed Class Space",} 8805472.0
+jvm_memory_pool_allocated_bytes_total{pool="Metaspace",} 7.6363328E7
+jvm_memory_pool_allocated_bytes_total{pool="Par Eden Space",} 6.25786068048E11
+# HELP jvm_buffer_pool_used_bytes Used bytes of a given JVM buffer pool.
+# TYPE jvm_buffer_pool_used_bytes gauge
+jvm_buffer_pool_used_bytes{pool="direct",} 49153.0
+jvm_buffer_pool_used_bytes{pool="mapped",} 0.0
+# HELP jvm_buffer_pool_capacity_bytes Bytes capacity of a given JVM buffer pool.
+# TYPE jvm_buffer_pool_capacity_bytes gauge
+jvm_buffer_pool_capacity_bytes{pool="direct",} 49152.0
+jvm_buffer_pool_capacity_bytes{pool="mapped",} 0.0
+# HELP jvm_buffer_pool_used_buffers Used buffers of a given JVM buffer pool.
+# TYPE jvm_buffer_pool_used_buffers gauge
+jvm_buffer_pool_used_buffers{pool="direct",} 7.0
+jvm_buffer_pool_used_buffers{pool="mapped",} 0.0
+# HELP tron:verify_sign_latency_seconds verify sign latency for trx , block.
+# TYPE tron:verify_sign_latency_seconds histogram
+tron:verify_sign_latency_seconds_bucket{type="trx",le="0.005",} 24993.0
+tron:verify_sign_latency_seconds_bucket{type="trx",le="0.01",} 25491.0
+tron:verify_sign_latency_seconds_bucket{type="trx",le="0.025",} 25979.0
+tron:verify_sign_latency_seconds_bucket{type="trx",le="0.05",} 26271.0
+tron:verify_sign_latency_seconds_bucket{type="trx",le="0.075",} 26316.0
+tron:verify_sign_latency_seconds_bucket{type="trx",le="0.1",} 26327.0
+tron:verify_sign_latency_seconds_bucket{type="trx",le="0.25",} 26332.0
+tron:verify_sign_latency_seconds_bucket{type="trx",le="0.5",} 26334.0
+tron:verify_sign_latency_seconds_bucket{type="trx",le="0.75",} 26334.0
+tron:verify_sign_latency_seconds_bucket{type="trx",le="1.0",} 26334.0
+tron:verify_sign_latency_seconds_bucket{type="trx",le="2.5",} 26334.0
+tron:verify_sign_latency_seconds_bucket{type="trx",le="5.0",} 26334.0
+tron:verify_sign_latency_seconds_bucket{type="trx",le="7.5",} 26334.0
+tron:verify_sign_latency_seconds_bucket{type="trx",le="10.0",} 26334.0
+tron:verify_sign_latency_seconds_bucket{type="trx",le="+Inf",} 26334.0
+tron:verify_sign_latency_seconds_count{type="trx",} 26334.0
+tron:verify_sign_latency_seconds_sum{type="trx",} 69.0118416129998
+# HELP tron:miner_total tron  miner info .
+# TYPE tron:miner_total counter
+tron:miner_total{miner="TJ2aDMgeipmoZRuUEru2ri8t7TGkxnm6qY",type="success",} 976.0
+tron:miner_total{miner="TVMP5r12ymtNerq5KB4E8zAgLDmg2FqsEG",type="success",} 976.0
+tron:miner_total{miner="TGj1Ej1qRzL9feLTLhjwgxXF4Ct6GTWg2U",type="success",} 976.0
+tron:miner_total{miner="TPRxUBEakukBMwTScCHgvCPSBYk5UhfboJ",type="success",} 976.0
+tron:miner_total{miner="TTW663tQYJTTCtHh6DWKAfexRhPMf2DxQ1",type="success",} 976.0
+tron:miner_total{miner="TSRmKPv8kvokcHKfLeySQ3gNHyYrAAXrnc",type="success",} 976.0
+tron:miner_total{miner="TFA1qpUkQ1yBDw4pgZKx25wEZAqkjGoZo1",type="success",} 975.0
+tron:miner_total{miner="TYy6xnc35LkyEuU9fJv4x89vkhLZim1yJv",type="success",} 976.0
+tron:miner_total{miner="TNaJADoq1u2atryP1ZzwvmEE4ZBELXfMqw",type="success",} 976.0
+tron:miner_total{miner="TY65QiDt4hLTMpf3WRzcX357BnmdxT2sw9",type="success",} 976.0
+tron:miner_total{miner="TV6qcwSp38uESiDczxxb7zbJX1h2LfDs78",type="success",} 976.0
+tron:miner_total{miner="TBXB5tobBPCFkC8ihFDBWjaiwW2iSpzSfr",type="success",} 976.0
+tron:miner_total{miner="TMEQ4hu7DtLTHPn6qPsYktk1QGdTbAyTEK",type="success",} 976.0
+tron:miner_total{miner="TTuT2AG5q37f74zra7PjAApUmyVaXmFvC4",type="success",} 975.0
+tron:miner_total{miner="TNmas2SUNGJ2R1jq4Sivya5nHDLYN9ggpG",type="success",} 975.0
+tron:miner_total{miner="TSzoLaVCdSNDpNxgChcFt9rSRF5wWAZiR4",type="success",} 976.0
+tron:miner_total{miner="TTMNxTmRpBZnjtUnohX84j25NLkTqDga7j",type="success",} 976.0
+tron:miner_total{miner="TKSXDA8HfE9E1y39RczVQ1ZascUEtaSToF",type="success",} 976.0
+tron:miner_total{miner="TEKUPpjTMKWw9LJZ9YJ4enhCjAmVXSL7M6",type="success",} 975.0
+tron:miner_total{miner="TSNbzxac4WhxN91XvaUfPTKP2jNT18mP6T",type="success",} 976.0
+tron:miner_total{miner="TV9QitxEJ3pdiAUAfJ2QuPxLKp9qTTR3og",type="success",} 975.0
+tron:miner_total{miner="TYVJ8JuQ6ctzCa2u79MFmvvNQ1U2tYQEUM",type="success",} 974.0
+tron:miner_total{miner="TGzz8gjYiYRqpfmDwnLxfgPuLVNmpCswVp",type="success",} 976.0
+tron:miner_total{miner="TTcYhypP8m4phDhN6oRexz2174zAerjEWP",type="success",} 975.0
+tron:miner_total{miner="TVFKwzE8qeETLaZEHMx2tjEsdnujAgAWaA",type="success",} 976.0
+tron:miner_total{miner="TBzwNEE7D3DdTB4wALiSBaMmpSK7jdoxYF",type="success",} 976.0
+tron:miner_total{miner="TDGmmTC7xDgQGwH4FYRGuE7SFH2MePHYeH",type="success",} 976.0
+# HELP system_available_cpus System available cpus
+# TYPE system_available_cpus gauge
+system_available_cpus 8.0
+# HELP process_cpu_load Process cpu load
+# TYPE process_cpu_load gauge
+process_cpu_load 0.15176715176715178
+# HELP system_cpu_load System cpu load
+# TYPE system_cpu_load gauge
+system_cpu_load 0.1600831600831601
+# HELP system_load_average System cpu load average
+# TYPE system_load_average gauge
+system_load_average 2.90869140625
+# HELP system_total_physical_memory_bytes System total physical memory bytes
+# TYPE system_total_physical_memory_bytes gauge
+system_total_physical_memory_bytes 2.0679790592E10
+# HELP system_free_physical_memory_bytes System free physical memory bytes
+# TYPE system_free_physical_memory_bytes gauge
+system_free_physical_memory_bytes 1.3745713152E10
+# HELP system_total_swap_spaces_bytes System free swap spaces bytes
+# TYPE system_total_swap_spaces_bytes gauge
+system_total_swap_spaces_bytes 1.073737728E9
+# HELP system_free_swap_spaces_bytes System free swap spaces
+# TYPE system_free_swap_spaces_bytes gauge
+system_free_swap_spaces_bytes 1.073737728E9
+# HELP tron:ping_pong_latency_seconds node  ping pong  latency.
+# TYPE tron:ping_pong_latency_seconds histogram
+tron:ping_pong_latency_seconds_bucket{le="0.005",} 0.0
+tron:ping_pong_latency_seconds_bucket{le="0.01",} 0.0
+tron:ping_pong_latency_seconds_bucket{le="0.025",} 0.0
+tron:ping_pong_latency_seconds_bucket{le="0.05",} 0.0
+tron:ping_pong_latency_seconds_bucket{le="0.075",} 0.0
+tron:ping_pong_latency_seconds_bucket{le="0.1",} 0.0
+tron:ping_pong_latency_seconds_bucket{le="0.25",} 0.0
+tron:ping_pong_latency_seconds_bucket{le="0.5",} 0.0
+tron:ping_pong_latency_seconds_bucket{le="0.75",} 0.0
+tron:ping_pong_latency_seconds_bucket{le="1.0",} 0.0
+tron:ping_pong_latency_seconds_bucket{le="2.5",} 0.0
+tron:ping_pong_latency_seconds_bucket{le="5.0",} 0.0
+tron:ping_pong_latency_seconds_bucket{le="7.5",} 0.0
+tron:ping_pong_latency_seconds_bucket{le="10.0",} 0.0
+tron:ping_pong_latency_seconds_bucket{le="+Inf",} 0.0
+tron:ping_pong_latency_seconds_count 0.0
+tron:ping_pong_latency_seconds_sum 0.0
+# HELP tron:block_generate_latency_seconds generate block latency.
+# TYPE tron:block_generate_latency_seconds histogram
+# HELP tron:p2p_error_total tron p2p error  info .
+# TYPE tron:p2p_error_total counter
+# HELP jvm_threads_current Current thread count of a JVM
+# TYPE jvm_threads_current gauge
+jvm_threads_current 129.0
+# HELP jvm_threads_daemon Daemon thread count of a JVM
+# TYPE jvm_threads_daemon gauge
+jvm_threads_daemon 8.0
+# HELP jvm_threads_peak Peak thread count of a JVM
+# TYPE jvm_threads_peak gauge
+jvm_threads_peak 129.0
+# HELP jvm_threads_started_total Started thread count of a JVM
+# TYPE jvm_threads_started_total counter
+jvm_threads_started_total 138.0
+# HELP jvm_threads_deadlocked Cycles of JVM-threads that are in deadlock waiting to acquire object monitors or ownable synchronizers
+# TYPE jvm_threads_deadlocked gauge
+jvm_threads_deadlocked 0.0
+# HELP jvm_threads_deadlocked_monitor Cycles of JVM-threads that are in deadlock waiting to acquire object monitors
+# TYPE jvm_threads_deadlocked_monitor gauge
+jvm_threads_deadlocked_monitor 0.0
+# HELP jvm_threads_state Current count of threads by state
+# TYPE jvm_threads_state gauge
+jvm_threads_state{state="WAITING",} 60.0
+jvm_threads_state{state="TIMED_WAITING",} 30.0
+jvm_threads_state{state="TERMINATED",} 0.0
+jvm_threads_state{state="BLOCKED",} 0.0
+jvm_threads_state{state="RUNNABLE",} 39.0
+jvm_threads_state{state="NEW",} 0.0
+# HELP tron:grpc_service_latency_seconds Grpc Service latency.
+# TYPE tron:grpc_service_latency_seconds histogram
+# HELP tron:p2p_disconnect_total tron p2p disconnect .
+# TYPE tron:p2p_disconnect_total counter
+tron:p2p_disconnect_total{type="light_node_sync_fail",} 13.0
+# HELP tron:header_time header time .
+# TYPE tron:header_time gauge
+tron:header_time 1.538116356E12
+# HELP tron:block_receive_delay_seconds receive block delay time, receiveTime - blockTime.
+# TYPE tron:block_receive_delay_seconds histogram
+tron:block_receive_delay_seconds_bucket{le="0.005",} 0.0
+tron:block_receive_delay_seconds_bucket{le="0.01",} 0.0
+tron:block_receive_delay_seconds_bucket{le="0.025",} 0.0
+tron:block_receive_delay_seconds_bucket{le="0.05",} 0.0
+tron:block_receive_delay_seconds_bucket{le="0.075",} 0.0
+tron:block_receive_delay_seconds_bucket{le="0.1",} 0.0
+tron:block_receive_delay_seconds_bucket{le="0.25",} 0.0
+tron:block_receive_delay_seconds_bucket{le="0.5",} 0.0
+tron:block_receive_delay_seconds_bucket{le="0.75",} 0.0
+tron:block_receive_delay_seconds_bucket{le="1.0",} 0.0
+tron:block_receive_delay_seconds_bucket{le="2.5",} 0.0
+tron:block_receive_delay_seconds_bucket{le="5.0",} 0.0
+tron:block_receive_delay_seconds_bucket{le="7.5",} 0.0
+tron:block_receive_delay_seconds_bucket{le="10.0",} 0.0
+tron:block_receive_delay_seconds_bucket{le="+Inf",} 0.0
+tron:block_receive_delay_seconds_count 0.0
+tron:block_receive_delay_seconds_sum 0.0
+# HELP tron:block_fork_total tron  block fork info .
+# TYPE tron:block_fork_total counter
+# HELP tron:peers tron peers.size .
+# TYPE tron:peers gauge
+tron:peers{type="all",} 8.0
+tron:peers{type="valid",} 0.0
+tron:peers{type="active",} 8.0
+tron:peers{type="passive",} 0.0
+# HELP tron:error_info_total tron log statements at error type levels
+# TYPE tron:error_info_total counter
+# HELP jvm_info VM version info
+# TYPE jvm_info gauge
+jvm_info{runtime="Java(TM) SE Runtime Environment",vendor="Oracle Corporation",version="1.8.0_202-b08",} 1.0
+# HELP jvm_memory_pool_allocated_bytes_created Total bytes allocated in a given JVM memory pool. Only updated after GC, not continuously.
+# TYPE jvm_memory_pool_allocated_bytes_created gauge
+jvm_memory_pool_allocated_bytes_created{pool="Par Survivor Space",} 1.743661620726E9
+jvm_memory_pool_allocated_bytes_created{pool="CMS Old Gen",} 1.743661620741E9
+jvm_memory_pool_allocated_bytes_created{pool="Code Cache",} 1.743661620741E9
+jvm_memory_pool_allocated_bytes_created{pool="Compressed Class Space",} 1.743661620741E9
+jvm_memory_pool_allocated_bytes_created{pool="Metaspace",} 1.743661620741E9
+jvm_memory_pool_allocated_bytes_created{pool="Par Eden Space",} 1.743661620741E9
+# HELP tron:block_fetch_latency_seconds_created fetch block latency.
+# TYPE tron:block_fetch_latency_seconds_created gauge
+tron:block_fetch_latency_seconds_created 1.743661630308E9
+# HELP tron:block_process_latency_seconds_created process block latency for TronNetDelegate.
+# TYPE tron:block_process_latency_seconds_created gauge
+tron:block_process_latency_seconds_created{sync="true",} 1.743661640403E9
+# HELP tron:block_push_latency_seconds_created push block latency for Manager.
+# TYPE tron:block_push_latency_seconds_created gauge
+tron:block_push_latency_seconds_created 1.743661630307E9
+# HELP tron:block_receive_delay_seconds_created receive block delay time, receiveTime - blockTime.
+# TYPE tron:block_receive_delay_seconds_created gauge
+tron:block_receive_delay_seconds_created 1.743661630308E9
+# HELP tron:lock_acquire_latency_seconds_created lock acquire latency.
+# TYPE tron:lock_acquire_latency_seconds_created gauge
+tron:lock_acquire_latency_seconds_created{type="block",} 1.7436616404E9
+# HELP tron:message_process_latency_seconds_created process message latency.
+# TYPE tron:message_process_latency_seconds_created gauge
+tron:message_process_latency_seconds_created{type="P2P_HELLO",} 1.743661631031E9
+tron:message_process_latency_seconds_created{type="BLOCK",} 1.743661640624E9
+tron:message_process_latency_seconds_created{type="BLOCK_CHAIN_INVENTORY",} 1.743661651781E9
+# HELP tron:miner_created tron  miner info .
+# TYPE tron:miner_created gauge
+tron:miner_created{miner="TJ2aDMgeipmoZRuUEru2ri8t7TGkxnm6qY",type="success",} 1.74366164237E9
+tron:miner_created{miner="TVMP5r12ymtNerq5KB4E8zAgLDmg2FqsEG",type="success",} 1.743661642153E9
+tron:miner_created{miner="TGj1Ej1qRzL9feLTLhjwgxXF4Ct6GTWg2U",type="success",} 1.743661641967E9
+tron:miner_created{miner="TPRxUBEakukBMwTScCHgvCPSBYk5UhfboJ",type="success",} 1.743661643132E9
+tron:miner_created{miner="TTW663tQYJTTCtHh6DWKAfexRhPMf2DxQ1",type="success",} 1.74366164337E9
+tron:miner_created{miner="TSRmKPv8kvokcHKfLeySQ3gNHyYrAAXrnc",type="success",} 1.743661641035E9
+tron:miner_created{miner="TFA1qpUkQ1yBDw4pgZKx25wEZAqkjGoZo1",type="success",} 1.743661642346E9
+tron:miner_created{miner="TYy6xnc35LkyEuU9fJv4x89vkhLZim1yJv",type="success",} 1.743661641324E9
+tron:miner_created{miner="TNaJADoq1u2atryP1ZzwvmEE4ZBELXfMqw",type="success",} 1.743661643266E9
+tron:miner_created{miner="TY65QiDt4hLTMpf3WRzcX357BnmdxT2sw9",type="success",} 1.74366164239E9
+tron:miner_created{miner="TV6qcwSp38uESiDczxxb7zbJX1h2LfDs78",type="success",} 1.743661641831E9
+tron:miner_created{miner="TBXB5tobBPCFkC8ihFDBWjaiwW2iSpzSfr",type="success",} 1.743661642052E9
+tron:miner_created{miner="TMEQ4hu7DtLTHPn6qPsYktk1QGdTbAyTEK",type="success",} 1.743661642121E9
+tron:miner_created{miner="TTuT2AG5q37f74zra7PjAApUmyVaXmFvC4",type="success",} 1.743661643785E9
+tron:miner_created{miner="TNmas2SUNGJ2R1jq4Sivya5nHDLYN9ggpG",type="success",} 1.743661643431E9
+tron:miner_created{miner="TSzoLaVCdSNDpNxgChcFt9rSRF5wWAZiR4",type="success",} 1.74366164151E9
+tron:miner_created{miner="TTMNxTmRpBZnjtUnohX84j25NLkTqDga7j",type="success",} 1.743661642222E9
+tron:miner_created{miner="TKSXDA8HfE9E1y39RczVQ1ZascUEtaSToF",type="success",} 1.743661642006E9
+tron:miner_created{miner="TEKUPpjTMKWw9LJZ9YJ4enhCjAmVXSL7M6",type="success",} 1.743661642244E9
+tron:miner_created{miner="TSNbzxac4WhxN91XvaUfPTKP2jNT18mP6T",type="success",} 1.743661641658E9
+tron:miner_created{miner="TV9QitxEJ3pdiAUAfJ2QuPxLKp9qTTR3og",type="success",} 1.743661641871E9
+tron:miner_created{miner="TYVJ8JuQ6ctzCa2u79MFmvvNQ1U2tYQEUM",type="success",} 1.74366164354E9
+tron:miner_created{miner="TGzz8gjYiYRqpfmDwnLxfgPuLVNmpCswVp",type="success",} 1.743661641801E9
+tron:miner_created{miner="TTcYhypP8m4phDhN6oRexz2174zAerjEWP",type="success",} 1.743661641932E9
+tron:miner_created{miner="TVFKwzE8qeETLaZEHMx2tjEsdnujAgAWaA",type="success",} 1.743661642427E9
+tron:miner_created{miner="TBzwNEE7D3DdTB4wALiSBaMmpSK7jdoxYF",type="success",} 1.743661642929E9
+tron:miner_created{miner="TDGmmTC7xDgQGwH4FYRGuE7SFH2MePHYeH",type="success",} 1.743661642086E9
+# HELP tron:p2p_disconnect_created tron p2p disconnect .
+# TYPE tron:p2p_disconnect_created gauge
+tron:p2p_disconnect_created{type="light_node_sync_fail",} 1.743661631094E9
+# HELP tron:ping_pong_latency_seconds_created node  ping pong  latency.
+# TYPE tron:ping_pong_latency_seconds_created gauge
+tron:ping_pong_latency_seconds_created 1.743661630306E9
+# HELP tron:process_transaction_latency_seconds_created process transaction latency.
+# TYPE tron:process_transaction_latency_seconds_created gauge
+tron:process_transaction_latency_seconds_created{type="block",contract="FreezeBalanceContract",} 1.74366164172E9
+tron:process_transaction_latency_seconds_created{type="block",contract="VoteWitnessContract",} 1.743661642196E9
+tron:process_transaction_latency_seconds_created{type="block",contract="ParticipateAssetIssueContract",} 1.743661647945E9
+tron:process_transaction_latency_seconds_created{type="block",contract="TransferAssetContract",} 1.743661641487E9
+tron:process_transaction_latency_seconds_created{type="block",contract="UnfreezeBalanceContract",} 1.743661643974E9
+tron:process_transaction_latency_seconds_created{type="block",contract="WithdrawBalanceContract",} 1.743661673293E9
+tron:process_transaction_latency_seconds_created{type="block",contract="AssetIssueContract",} 1.743661662366E9
+tron:process_transaction_latency_seconds_created{type="block",contract="TransferContract",} 1.743661640857E9
+tron:process_transaction_latency_seconds_created{type="block",contract="AccountUpdateContract",} 1.743661653325E9
+# HELP tron:tcp_bytes_created tcp_bytes traffic.
+# TYPE tron:tcp_bytes_created gauge
+tron:tcp_bytes_created{type="in",} 1.743661630308E9
+tron:tcp_bytes_created{type="out",} 1.743661630311E9
+# HELP tron:udp_bytes_created udp_bytes traffic.
+# TYPE tron:udp_bytes_created gauge
+tron:udp_bytes_created{type="in",} 1.743661630312E9
+tron:udp_bytes_created{type="out",} 1.743661630312E9
+# HELP tron:verify_sign_latency_seconds_created verify sign latency for trx , block.
+# TYPE tron:verify_sign_latency_seconds_created gauge
+tron:verify_sign_latency_seconds_created{type="trx",} 1.743661640535E9

@@ -1,0 +1,21 @@
+version: '3.8'
+services: # install the thanos components + grafana
+  thanos-receive:
+    extends:
+      file: thanos-receive.yml
+      service: thanos-receive
+
+  thanos-store:
+    extends:
+      file: thanos-store.yml
+      service: thanos-store
+
+  querier:
+    extends:
+      file: thanos-querier.yml
+      service: thanos-querier
+
+  grafana:
+    extends:
+      file: grafana.yml
+      service: grafana

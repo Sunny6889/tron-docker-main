@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  tron-node:
+    image: tronprotocol/java-tron:latest
+    container_name: tron-node1
+    user: root
+    deploy:
+      resources:
+        limits:
+          memory: 16g
+    ports:
+      - "8090:8090" # for external http API request
+      - "9527:9527" # used for metric API
+      - "18888:18888" # for sync block info between nodes
+      - "18888:18888/udp" # for p2p node discovery
+      - "50051:50051"
+    volumes:
+      - ../../conf:/java-tron/conf # ensure the config path is correct, make sure the config file metric is enabled
+      - ../output-directory:/java-tron/output-directory # mount a local directory to make the block data persistent.
+      - ../logs:/java-tron/logs
+    command: >
+      -jvm "{-Xmx14g -Xmn1g -XX:MaxDirectMemorySize=1G -XX:+UseConcMarkSweepGC -XX:+PrintGC -Xloggc:./logs/gc.log }" -c ./conf/main_net_config.conf
+    environment:
+      - TZ=Asia/Shanghai # The metric and log date will be changed accordingly

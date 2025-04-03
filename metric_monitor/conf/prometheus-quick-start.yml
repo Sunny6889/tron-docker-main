@@ -1,7 +1,8 @@
 global:
-  scrape_interval: 30s
-  scrape_timeout: 10s
-  evaluation_interval: 30s
+  scrape_interval: 6s
+  scrape_timeout: 4s
+  evaluation_interval: 6s
+
 scrape_configs:
   - job_name: java-tron
     honor_timestamps: true
@@ -20,4 +21,4 @@ scrape_configs:
 #          - tron-node2:9527
 #        labels:
 #          group: group-tron
-#          instance: fullnode-01
+#          instance: fullnode-02
