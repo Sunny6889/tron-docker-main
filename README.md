@@ -62,17 +62,48 @@ curl --location --request POST 'http://127.0.0.1:8090/wallet/getnowblock'
 
 Response example:
 {
-    "blockID": "0000000000000a611841e6cd79f99249d7e974e41c0f5b016eb3c64e43fcb01c",
+    "blockID": "00000000002ceed0bf4668aae518d143dfe1b74eea037a1caed98e0d4ea00de4",
     "block_header": {
         "raw_data": {
-            "number": 2657,
-            "txTrieRoot": "0000000000000000000000000000000000000000000000000000000000000000",
-            "witness_address": "411661f25387370c9cd3a9a5d97e60ca90f4844e7e",
-            "parentHash": "0000000000000a6023d563b1a2e1e0eb49cb40226eb553e6dc006e723395d588",
-            "timestamp": 1529899509000
+            "number": 2944720,
+            "txTrieRoot": "d9c4fbe7c210ada548ac54460d717a5fce70d621b1e3da1db425672cbf477ca5",
+            "witness_address": "41f29f57614a6b201729473c837e1d2879e9f90b8e",
+            "parentHash": "00000000002ceecf692df37b4300746b9c68f7bdfad6d15a74859ceaff852f90",
+            "version": 1,
+            "timestamp": 1538758257000
         },
-        "witness_signature": "1710dc914cb846f595455d2b6ace7470b26cb29c8b3b9424156b1bd8c6fc6488337cb12b5a2e72e4e8d70838e927e0fb4f2c787dc6ad2d6eaf28314c2f75b73300"
-    }
+        "witness_signature": "445ad3d0585e24b60a9bceec0d97ac70b1558f42b44d24ef62f400a7c2646a271f01b83de985c5796485f74fd69d7b11c50b9ce44ad193fa35e26b317d3e339401"
+    },
+    "transactions": [
+        {
+            "signature": [
+                "948c3cbe1b48a20661878e591cf4c7fea7d1c63836b1523f5b0b003a290629714bfa4f4e6e6398a8edbca076b9c263c36b226b0f5a046ca3d54098b9e95d1c8e00"
+            ],
+            "txID": "25e0b74bcd0e7b2691945cce61ccafdf0be879c21fc729e6c25646350b611ad6",
+            "raw_data": {
+                "contract": [
+                    {
+                        "parameter": {
+                            "value": {
+                                "amount": 1,
+                                "asset_name": "49504653",
+                                "owner_address": "41d13433f53fdf88820c2e530da7828ce15d6585cb",
+                                "to_address": "414f93486fa5d2685c70a3dd7e0815769a9fd3f02b"
+                            },
+                            "type_url": "type.googleapis.com/protocol.TransferAssetContract"
+                        },
+                        "type": "TransferAssetContract"
+                    }
+                ],
+                "ref_block_bytes": "eece",
+                "ref_block_hash": "36ef820a1c8df903",
+                "expiration": 1538758311000,
+                "timestamp": 1538758251854
+            },
+            "raw_data_hex": "0a02eece220836ef820a1c8df90340d8f891a9e42c5a700802126c0a32747970652e676f6f676c65617069732e636f6d2f70726f746f636f6c2e5472616e736665724173736574436f6e747261637412360a0449504653121541d13433f53fdf88820c2e530da7828ce15d6585cb1a15414f93486fa5d2685c70a3dd7e0815769a9fd3f02b200170ceaa8ea9e42c"
+        },
+        ...
+    ]
 }
 
 ```
