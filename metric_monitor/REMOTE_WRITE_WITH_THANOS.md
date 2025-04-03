@@ -294,12 +294,13 @@ Navigate to the **Connections** menu on the left sidebar and select Prometheus a
 
 <img src="../images/metric_grafana_datasource_query.png" alt="Alt Text" width="680" >
 
-Follow the same instruction as [Import Dashboard](https://github.com/tronprotocol/tron-docker/blob/main/metric_monitor/README.md#import-dashboard) to import the dashboard.
-Then you can play with it with different Thanos Receive/Query, Prometheus configurations.
+Follow the same guidance as [Import Dashboard](https://github.com/tronprotocol/tron-docker/blob/main/metric_monitor/README.md#import-dashboard) to import the dashboard templates.
+With these components in place, you can now customize your monitoring system by adjusting Thanos and Prometheus configurations to meet your specific requirements. The flexibility of this setup allows you to scale horizontally, implement high availability, and fine-tune metrics collection and storage according to your needs.
 
 ### Step 5: Clean up
-To stop and remove services, use the following similar commands:
-``` sh
+To stop and remove the monitoring services, use the following commands based on your deployment:
+
+```sh
 # Stop and remove all services, if you start all on the same host
 docker-compose -f ./docker-compose/docker-compose-all.yml down
 

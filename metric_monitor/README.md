@@ -37,11 +37,14 @@ The Prometheus service will use the configuration file [prometheus-quick-start.y
 ```
 
 You can view the running status of the Prometheus service at `http://localhost:9090/`. Click on "Status" -> "Configuration" to check whether the configuration file used by the container is correct.
-![image](../images/prometheus_configuration.png)
+<img src="../images/prometheus_configuration.png" alt="Alt Text" width="800" >
 
 If you want to monitor more nodes, simply add more targets following the same format. Click on "Status" -> "Targets" to view the status of each monitored java-tron node.
-![image](../images/prometheus_targets.png)
-**Notice**: If you want to check metrics, please use `http://localhost:9527/metrics` on host machine instead of `http://tron-node1:9527/metrics`, as the latter is used for container access inside Docker.
+<img src="../images/prometheus_targets.png" alt="Alt Text" width="800" >
+
+**Important Note**: To view metric values, use `http://localhost:9527/metrics` on your host machine rather than `http://tron-node1:9527/metrics`. The latter URL is only accessible within the Docker container network. The metrics output will appear as shown in the image below.
+
+<img src="../images/metric_value.png" alt="Alt Text" width="560" >
 
 ### Grafana service
 After startup, you can log in to the Grafana web UI through [http://localhost:3000/](http://localhost:3000/). The initial username and password are both `admin`. After logging in, change the password according to the prompts, and then you can enter the main interface.
@@ -49,20 +52,30 @@ After startup, you can log in to the Grafana web UI through [http://localhost:30
 Click the **Connections** on the left side of the main page and select "Data Sources" to configure Grafana data sources.
 Choose Prometheus as datasource.
 Enter the ip and port of the prometheus service in URL with `http://prometheus:9090`.
-![image](../images/grafana_data_source.png)
+
+<img src="../images/grafana_data_source.png" alt="Alt Text" width="860" >
+
 
 #### Import dashboard
-For the convenience of java-tron node deployers, the TRON community provides a comprehensive dashboard configuration file [grafana_dashboard_tron_server.json](grafana_dashboard/grafana_dashboard_tron_server.json).
+To streamline the monitoring setup process, the TRON community has developed pre-configured dashboard templates that you can import directly into Grafana:
+
+- [java-tron-server.json](grafana_dashboard/java-tron-server.json): A comprehensive monitoring dashboard that provides insights into your TRON node's performance, health metrics, and operational status.
+- [java-tron-mechanism.json](grafana_dashboard/java-tron-mechanism.json): Related with SR and consensus related metrics, such as `Miner Success/Miss`.
+- [java-tron-api.json](grafana_dashboard/java-tron-api.json): API Metrics for all API requests send to node.
+- [java-tron-api-statistic.json](grafana_dashboard/java-tron-api-statistic.json): API statistic Metrics for all API requests send to node.
+- [node-exporter-full.json](grafana_dashboard/node-exporter-full.json): System-level metrics for host running node exporter service. When runing in Docker, this displays Docker resource metrics including CPU, memory, disk I/O, and network statistics.
+
 Click the Grafana dashboards icon on the left, then select "New" and "Import", then click "Upload JSON file" to import the downloaded dashboard configuration file. Choose the datasource you just connected.
-![image](../images/grafana_dashboard.png)
+<img src="../images/grafana_dashboard.png" alt="Alt Text" width="860" >
 
-Then you can see the following monitors displaying the running status of the nodes in real time:
-![image](../images/grafana_dashboard_monitoring.png)
+Then you can see the following dashboard displaying the running status of the java-tron FullNode service in real time:
+<img src="../images/grafana_dashboard_monitoring.png" alt="Alt Text"  >
 
-If you need to do a monitor system with a more safe and reliable architecture on production, please refer to the document [Use Prometheus Remote Write with Thanos to Monitor java-tron Node](REMOTE_WRITE_WITH_THANOS.md).
+### Reliable monitor system
+For production environments requiring a more robust and scalable monitoring architecture, we recommend implementing an enterprise-grade solution using Prometheus Remote Write with Thanos. This setup provides enhanced reliability, high availability, and long-term storage capabilities. For detailed implementation instructions, please refer to our comprehensive guide: [Use Prometheus Remote Write with Thanos to Monitor java-tron Node](REMOTE_WRITE_WITH_THANOS.md).
 
 ## All metrics
-As you can see from above Grafana dashboard or http://localhost:9527/metrics, the available metrics are categorized into the following:
+The TRON node metrics can be viewed through the Grafana dashboard or directly at http://localhost:9527/metrics. For reference, you can also check the sample metrics in [fullnode_metrics.txt](fullnode_metrics.txt) from a Mainnet node. These metrics are organized into the following categories:
 
 - Blockchain status
 - Node system status
