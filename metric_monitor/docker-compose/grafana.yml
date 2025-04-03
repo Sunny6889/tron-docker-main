@@ -9,7 +9,7 @@ services:
         limits:
           memory: 1g
     environment:
-      - GF_METRICS_ENABLED=true  # 启用 Grafana 的指标暴露
+      - GF_METRICS_ENABLED=true  # Enable Grafana metrics exposure
     ports:
       - "3000:3000"
     restart: unless-stopped
