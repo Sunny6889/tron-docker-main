@@ -75,7 +75,7 @@ Then you can see the following dashboard displaying the running status of the ja
 For production environments requiring a more robust and scalable monitoring architecture, we recommend implementing an enterprise-grade solution using Prometheus Remote Write with Thanos. This setup provides enhanced reliability, high availability, and long-term storage capabilities. For detailed implementation instructions, please refer to our comprehensive guide: [Use Prometheus Remote Write with Thanos to Monitor java-tron Node](REMOTE_WRITE_WITH_THANOS.md).
 
 ## All metrics
-The TRON node metrics can be viewed through the Grafana dashboard or directly at http://localhost:9527/metrics. For reference, you can also check the sample metrics in [fullnode_metrics.txt](fullnode_metrics.txt) from a Mainnet node. These metrics are organized into the following categories:
+The TRON node metrics can be viewed through the Grafana dashboard or directly at http://localhost:9527/metrics. For reference, you can also check the sample metrics in [fullnode_metrics_sample.txt](fullnode_metrics_sample.txt) from a Mainnet node. These metrics are organized into the following categories:
 
 - Blockchain status
 - Node system status
