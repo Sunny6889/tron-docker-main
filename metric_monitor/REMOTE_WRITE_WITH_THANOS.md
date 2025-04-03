@@ -43,10 +43,13 @@ As shown in the new architecture, the monitoring system consists of the followin
 - **Grafana**: A visualization platform that queries metrics from Thanos Query to create dashboards and alerts
 
 ### Step 1: Set up TRON and Prometheus services
-Run the below command to start java-tron and Prometheus services:
+Run the below command to start a java-tron FullNode, node exporter and Prometheus services:
 ```sh
 docker-compose -f ./docker-compose/docker-compose-target-node.yml up -d
 ```
+
+You can verify the Prometheus service status and monitor targets by accessing `http://[host_IP]:9090/` in your browser. Alternatively, use `docker logs -f prometheus` to view the Prometheus service logs.
+<img src="../images/prometheus_targets2.png" alt="Alt Text" width="680" >
 
 Review the [docker-compose-fullnode.yml](./docker-compose/docker-compose-target-node.yml) file, the command explanation of the java-tron service can be found in [Run Single Node](../single_node/README.md#run-the-container).
 
@@ -107,9 +110,7 @@ remote_write:
 - For `scrape_configs`:
   - The `scrape_interval` defines the frequency at which Prometheus collects metrics. While configured for 1-second intervals to enable real-time monitoring, this setting can be customized according to your specific monitoring needs. Keep in mind that decreasing the interval will increase the service load, as metrics are collected each time the HTTP request triggered.
   - The `targets` field specifies the java-tron services or other monitoring targets via their IP addresses and ports. Prometheus actively scrapes metrics from these defined endpoints.
-  - The `labels` section contains key-value pairs that uniquely identify each target within Prometheus. These labels enable powerful filtering capabilities in Grafana dashboards - for example, you can filter metrics using expressions like `{group="group-tron"}`. Through http://host_IP:9090/, you can check the running status of the Prometheus service and observe targets.
-
-    <img src="../images/prometheus_targets2.png" alt="Alt Text" width="680" >
+  - The `labels` section contains key-value pairs that uniquely identify each target within Prometheus. These labels enable powerful filtering capabilities in Grafana dashboards - for example, you can filter metrics using expressions like `{group="group-tron"}`.
 
 - For `remote_write`:
   - Fill the `url` with the IP address of the Thanos Receive service started in the following step.
@@ -142,6 +143,17 @@ Run the below command to start the Thanos Receive.
 ```sh
 docker-compose -f ./docker-compose/thanos-receive.yml up -d
 ```
+As Promethus has already been configured to send metric metadata to Thanos Receive, check the logs to ensure the Thanos Receive is running properly.
+
+```sh
+docker logs -f thanos-receive-0
+
+...
+ts=2025-04-03T03:13:49.395927626Z caller=intrumentation.go:56 level=info component=receive msg="changing probe status" status=ready
+ts=2025-04-03T03:13:49.395951876Z caller=receive.go:647 level=info component=receive msg="storage started, and server is ready to receive requests"
+...
+```
+
 
 Core configuration for Thanos Receive in [thanos-receive.yml](./docker-compose/thanos-receive.yml):
 ``` yml
@@ -189,11 +201,27 @@ For more flags explanation and default value can be found in the official [Thano
 For systems monitoring multiple services at scale, it's recommended to implement Thanos Receive in cluster mode as shown in the architecture diagram above. This prevents Thanos Receive from becoming a single point of failure or performance bottleneck. Additionally, deploying a load balancer in front of the Thanos Receive cluster provides a unified entry point and enables automatic request distribution across multiple instances. This setup ensures high availability, improved fault tolerance, and better scalability of your monitoring infrastructure. Further information can be found in the official [Thanos Receive](https://thanos.io/tip/components/receive.md/) documentation. It also supports Kubernetes deployment for better scalability management.
 
 ### Step 3: Set up Thanos Store
-Thanos Receive manages recent metrics data according to its configured retention policy, while the Store Gateway component enables access to historical metrics that have been archived in object storage, creating a seamless data access layer across both recent and historical time ranges.
+Thanos Receive manages recent metrics data according to its configured retention policy, while the Store Gateway component enables access to historical metrics that have been archived in object storage, creating a seamless data access layer across both recent and historical time ranges. It keeps a small amount of information about all remote blocks on local disk and keeps it in sync with the bucket. This data is generally safe to delete across restarts at the cost of increased startup times.
 
 Run the below command to start the Thanos Query service:
 ```sh
 docker-compose -f ./docker-compose/thanos-store.yml up -d
+```
+
+Check the logs to ensure the Thanos Receive is running properly by running below command:
+```sh
+docker logs -f thanos-store
+
+// should contains similar information
+...
+ts=2025-04-03T03:49:49.328449876Z caller=store.go:525 level=info msg="starting store node"
+ts=2025-04-03T03:49:49.329349335Z caller=store.go:423 level=info msg="initializing bucket store"
+ts=2025-04-03T03:49:49.32941221Z caller=intrumentation.go:75 level=info msg="changing probe status" status=healthy
+ts=2025-04-03T03:49:49.32945021Z caller=http.go:73 level=info service=http/server component=store msg="listening for requests and metrics" address=0.0.0.0:10911
+ts=2025-04-03T03:49:49.329778668Z caller=tls_config.go:274 level=info service=http/server component=store msg="Listening on" address=[::]:10911
+ts=2025-04-03T03:49:49.32979571Z caller=tls_config.go:277 level=info service=http/server component=store msg="TLS is disabled." http2=false address=[::]:10911
+ts=2025-04-03T03:49:49.38348421Z caller=fetcher.go:529 level=info component=block.BaseFetcher msg="successfully synchronized block metadata" duration=54.095041ms duration_ms=54 cached=16 returned=16 partial=0
+...
 ```
 
 Core configuration in [thanos-store.yml](./docker-compose/thanos-store.yml):
@@ -206,22 +234,35 @@ Core configuration in [thanos-store.yml](./docker-compose/thanos-store.yml):
 ```
 The Store gateway:
 
-1. Connects to our Minio bucket via bucket_storage_bucket.yml
-2. Exposes gRPC endpoint (10912) for Thanos Query to access historical data
-3. Indexes object storage blocks for fast lookups
-With both Receive and Store connected to Query, we get seamless access to:
-
-- Real-time data from Receive
-- Historical data from Store
+- Connects to our Minio bucket via `bucket_storage_bucket.yml`, the same configuration file as Thanos Receive.
+- Exposes gRPC endpoint for Thanos Query to access historical data
+- Indexes object storage blocks for fast lookups
 
 ### Step 4: Set up Thanos Query
-As Grafana cannot directly query Thanos Receive, we need Thanos Query that implements Prometheus’s v1 API to aggregate data from the Receive services. **Querier is fully stateless and horizontally scalable**.
+As Grafana cannot directly query Thanos Receive, we need Thanos Query that implements Prometheus’s v1 API to aggregate data from the Thanos Receive and Store services. **Querier is fully stateless and horizontally scalable**.
 
 Run the below command to start the Thanos Query service:
 ```sh
 docker-compose -f ./docker-compose/thanos-querier.yml up -d
 ```
 
+Verify the Thanos Query service is running correctly by checking its logs. The logs should show successful connections to both the Thanos Receive and Store services.
+```sh
+docker logs -f thanos-querier
+
+// should contains similar information
+...
+ts=2025-04-03T05:37:53.675695715Z caller=query.go:840 level=info msg="starting query node"
+ts=2025-04-03T05:37:53.67593609Z caller=intrumentation.go:75 level=info msg="changing probe status" status=healthy
+ts=2025-04-03T05:37:53.675959798Z caller=http.go:73 level=info service=http/server component=query msg="listening for requests and metrics" address=0.0.0.0:9091
+ts=2025-04-03T05:37:53.676072548Z caller=intrumentation.go:56 level=info msg="changing probe status" status=ready
+ts=2025-04-03T05:37:53.676288048Z caller=tls_config.go:274 level=info service=http/server component=query msg="Listening on" address=[::]:9091
+ts=2025-04-03T05:37:53.676313173Z caller=tls_config.go:277 level=info service=http/server component=query msg="TLS is disabled." http2=false address=[::]:9091
+ts=2025-04-03T05:37:53.676380298Z caller=grpc.go:131 level=info service=gRPC/server component=query msg="listening for serving gRPC" address=0.0.0.0:10901
+ts=2025-04-03T05:37:58.685901342Z caller=endpointset.go:425 level=info component=endpointset msg="adding new receive with [storeEndpoints exemplarsAPI]" address=thanos-receive-0:10907 extLset="{receive_cluster=\"java-tron-mainnet\", receive_replica=\"0\", tenant_id=\"default-tenant\"}"
+ts=2025-04-03T05:37:58.685969217Z caller=endpointset.go:425 level=info component=endpointset msg="adding new store with [storeEndpoints]" address=thanos-store:10912 extLset="{receive_cluster=\"java-tron-mainnet\", receive_replica=\"0\", tenant_id=\"default-tenant\"}"
+...
+```
 Below are the core configurations for the Thanos Query service:
 ``` yaml
   thanos-querier:
@@ -235,13 +276,13 @@ Below are the core configurations for the Thanos Query service:
       - --http-address=0.0.0.0:9091
       - --query.replica-label=receive_replica # Deduplication turned on for metric with the same replica_label
       - --endpoint=thanos-receive-0:10907 # The grpc-address of the Thanos Receive service，if Receive run remotely replace container name "thanos-receive" with the real ip, could add multiple receive services
-      - --store=thanos_store:10907 # for historical data query
+      - --store=thanos-store:10907 # for historical data query
 ```
 It will set up the Thanos Query service
-that listens to port 9091 and queries metrics from the Thanos Receive service from `--store=[Thanos Receive IP]:10907`.
+that listens to port 9091 and queries metrics from the Thanos Receive service from `--endpoint=[Thanos Receive IP]:10907`.
 Make sure the IP address is correct.
 
-You could add multiple Thanos Receive services to the Querier service. It will do duplication based on the `replica-label`. For more complex usage, please refer to the [official Query document](https://thanos.io/tip/components/query.md/).
+You could add multiple Thanos Receive、Store services to the Querier service. It will do duplication based on the `replica-label`. For more complex usage, please refer to the [official Query document](https://thanos.io/tip/components/query.md/).
 
 ### Step 4: Monitor through Grafana
 To start the Grafana service on the host machine, run the following command:
@@ -249,7 +290,7 @@ To start the Grafana service on the host machine, run the following command:
 docker-compose -f ./docker-compose/grafana.yml up -d
 ```
 Then log in to the Grafana web UI through http://localhost:3000/ or your host machine's IP address. The initial username and password are both `admin`.
-Click the **Connections** on the left side of the main page and select Prometheus as datasource. Enter the IP and port of the Query service in URL with `http://[Query service IP]:9091`. If you run on the same host could use `http://thanos-querier:9091` or `http://host.docker.internal:9091` on MacOS.
+Navigate to the **Connections** menu on the left sidebar and select Prometheus as your data source. In the URL field, enter the Thanos Query service address using the format `http://[Query service IP]:9091`. If running services on the same host, you can use either `http://thanos-querier:9091` or `http://host.docker.internal:9091` (for MacOS).
 
 <img src="../images/metric_grafana_datasource_query.png" alt="Alt Text" width="680" >
 
@@ -257,10 +298,16 @@ Follow the same instruction as [Import Dashboard](https://github.com/tronprotoco
 Then you can play with it with different Thanos Receive/Query, Prometheus configurations.
 
 ### Step 5: Clean up
-To stop and remove all or part of the services, you could run the below commands:
-```sh
-docker-compose -f ./docker-compose/docker-compose-all.yml down # Stop and remove all services, if you start all on the same host
-docker-compose -f ./docker-compose/thanos-receive.yml down # Thanos Receive service only
+To stop and remove services, use the following similar commands:
+``` sh
+# Stop and remove all services, if you start all on the same host
+docker-compose -f ./docker-compose/docker-compose-all.yml down
+
+# Thanos Receive service only
+docker-compose -f ./docker-compose/thanos-receive.yml down
+
+# Node exporter service only
+docker-compose -f ./docker-compose/docker-compose-target-node.yml down node-exporter
 ```
 
 ## Troubleshooting

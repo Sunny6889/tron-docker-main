@@ -1,34 +1,39 @@
 version: '3.8'
 services:
-  tron-node1:
+  tron-node:
     extends:
-      file: tron-node.yml
-      service: tron-node1
+      file: tron-fullnode.yml
+      service: tron-node
+
+  node-exporter:
+    extends:
+      file: node-exporter.yml
+      service: node-exporter
 
   prometheus:
     extends:
       file: prometheus.yml
       service: prometheus
 
-  thanos-receive-0:
+  thanos-receive:
     extends:
       file: thanos-receive.yml
-      service: thanos-receive-0
+      service: thanos-receive
 
   minio:
     extends:
       file: minio.yml
       service: minio
 
-  thanos_store:
+  thanos-store:
     extends:
       file: thanos-store.yml
-      service: thanos_store
+      service: thanos-store
 
   querier:
     extends:
-      file: querier.yml
-      service: querier
+      file: thanos-querier.yml
+      service: thanos-querier
 
   grafana:
     extends:

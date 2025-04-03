@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  thanos-receive-0:
+  thanos-receive:
     image: quay.io/thanos/thanos:v0.33.0
     user: root
     container_name: thanos-receive-0

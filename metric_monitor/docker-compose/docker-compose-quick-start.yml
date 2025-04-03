@@ -1,8 +1,8 @@
 version: '3.8'
 services:
-  tron-node1:
+  tron-node:
     extends:
-      file: tron-node.yml
+      file: tron-fullnode.yml
       service: tron-node
 
   prometheus:
