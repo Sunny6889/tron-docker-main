@@ -1,20 +1,10 @@
 version: '3.8'
 services:
-  tron-node1:
-    extends:
-      file: tron-node.yml
-      service: tron-node
-
-  prometheus:
-    extends:
-      file: prometheus.yml
-      service: prometheus
-
   node-exporter:
     image: quay.io/prometheus/node-exporter:latest
     container_name: node-exporter
-    network_mode: host
-    pid: host
+    ports:
+      - "9100:9100"  # For metric collection
     volumes:
       - "./:/host:ro,rslave"
     command:

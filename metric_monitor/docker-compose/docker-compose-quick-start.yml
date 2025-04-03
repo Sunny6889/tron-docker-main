@@ -17,7 +17,7 @@ services:
     volumes:
       - ../conf:/etc/prometheus
     command:
-      - "--config.file=/etc/prometheus/prometheus-monitor-system.yml" # the default path to the configuration file
+      - "--config.file=/etc/prometheus/prometheus-quick-start.yml" # path to the configuration file
 
   grafana:
     extends:

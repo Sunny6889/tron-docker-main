@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  tron-node1:
+    extends:
+      file: tron-fullnode.yml
+      service: tron-node
+
+  node-exporter:
+    extends:
+      file: node-exporter.yml
+      service: node-exporter
+
+  prometheus:
+    extends:
+      file: prometheus.yml
+      service: prometheus

@@ -36,6 +36,7 @@ Before proceeding, ensure you have the following prerequisites:
 As shown in the new architecture, the monitoring system consists of the following key components:
 
 - **TRON FullNode**: A TRON blockchain node with metric collection capabilities enabled
+- **Node Exporter**: A Prometheus exporter that enables comprehensive monitoring of host machine performance and resource consumption. For detailed documentation, see the [Node Exporter](https://github.com/prometheus/node_exporter).
 - **Prometheus**: A monitoring service that collects metrics from the java-tron node and forwards them to Thanos Receive using remote write protocol
 - **Thanos Receive**: A Thanos component that ingests metrics via Prometheus remote write, exposes them via StoreAPI, and persists them to cloud storage
 - **Thanos Query**: A Thanos component implementing Prometheus's v1 API to aggregate and deduplicate metrics from multiple underlying data sources
@@ -44,10 +45,10 @@ As shown in the new architecture, the monitoring system consists of the followin
 ### Step 1: Set up TRON and Prometheus services
 Run the below command to start java-tron and Prometheus services:
 ```sh
-docker-compose -f ./docker-compose/docker-compose-fullnode.yml up -d
+docker-compose -f ./docker-compose/docker-compose-target-node.yml up -d
 ```
 
-Review the [docker-compose-fullnode.yml](./docker-compose/docker-compose-fullnode.yml) file, the command explanation of the java-tron service can be found in [Run Single Node](../single_node/README.md#run-the-container).
+Review the [docker-compose-fullnode.yml](./docker-compose/docker-compose-target-node.yml) file, the command explanation of the java-tron service can be found in [Run Single Node](../single_node/README.md#run-the-container).
 
 Below are the core configurations for the Prometheus service:
 ```yaml
@@ -83,10 +84,16 @@ scrape_configs:
         labels:
           group: group-tron
           instance: fullnode-01
+      - targets:
+          - node-exporter:9100  # Node Exporter
+        labels:
+          group: node-exporter-full
+          instance: tron-docker-dev-01
 
 remote_write:
   - url: http://[THANOS_RECEIVE_IP]:10908/api/v1/receive
     headers: # Add necessary header information for authentication or service group differentiation
+      X-Service-Group: "tron-fullnode-group1"
     metadata_config:
       send: true  # Enable metric metadata transmission
       send_interval: 1s  # How frequently metric metadata is sent to remote Receive.
@@ -98,9 +105,11 @@ remote_write:
     <img src="../images/metric_push_external_label.png" alt="Alt Text" width="680" >
 
 - For `scrape_configs`:
-  - The `scrape_interval` determines how frequently Prometheus collects metrics. Set to 1 second by default for real-time monitoring, though this can be adjusted based on your monitoring requirements. Note that shorter intervals increase the load on both Prometheus and the java-tron service, as metrics are collected via HTTP calls to `service:9527/metrics`.
+  - The `scrape_interval` defines the frequency at which Prometheus collects metrics. While configured for 1-second intervals to enable real-time monitoring, this setting can be customized according to your specific monitoring needs. Keep in mind that decreasing the interval will increase the service load, as metrics are collected each time the HTTP request triggered.
   - The `targets` field specifies the java-tron services or other monitoring targets via their IP addresses and ports. Prometheus actively scrapes metrics from these defined endpoints.
-  - The `labels` section contains key-value pairs that uniquely identify each target within Prometheus. These labels enable powerful filtering capabilities in Grafana dashboards - for example, you can filter metrics using expressions like `{group="group-tron"}`.
+  - The `labels` section contains key-value pairs that uniquely identify each target within Prometheus. These labels enable powerful filtering capabilities in Grafana dashboards - for example, you can filter metrics using expressions like `{group="group-tron"}`. Through http://host_IP:9090/, you can check the running status of the Prometheus service and observe targets.
+
+    <img src="../images/prometheus_targets2.png" alt="Alt Text" width="680" >
 
 - For `remote_write`:
   - Fill the `url` with the IP address of the Thanos Receive service started in the following step.
@@ -108,21 +117,21 @@ remote_write:
 
 ##### 2. Storage configurations
 - The volumes command `../prometheus_data:/prometheus` mounts a local directory used by Prometheus to store metrics data.
-  - Although in this case, we use Prometheus with remote-write, it also stores metrics data locally. Through http://host_IP:9090/, you can check the running status of the Prometheus service and observe targets.
-- The `--storage.tsdb.retention.time=7d` flag specifies the retention period for the metrics data. Prometheus will automatically delete data older than 7 days. For each metric request of a java-tron(v4.7.6+) FullNode connecting Mainnet, it returns ~9KB raw metric data. With the `scrape_interval: 1s`, along with TSDB will do compression, **thus for 7d retention, one java-tron takes about promethus 2GB**.
-- The `--storage.tsdb.max-block-duration=1h` flags specify the maximum block generation duration for the TSDB locally. In this case, it is set to 1 hours. This means that the TSDB will generate a new block no more than 1 hour.
+  - Even when using Prometheus with remote-write, metrics data is still temporarily stored locally.
+- The `--storage.tsdb.retention.time=7d` flag defines how long metrics data is retained. In this case, Prometheus automatically purges data older than 7 days. For a java-tron(v4.7.6+) FullNode, each metric request returns approximately 9KB of raw data. With a `scrape_interval` of 1 second and TSDB compression, **a single java-tron FullNode service requires about 2GB of Prometheus storage with 7 days of retention**.
+- The `--storage.tsdb.max-block-duration=30m` flag defines the maximum duration for generating TSDB blocks locally. With this setting, Prometheus will create new TSDB blocks at intervals no longer than 30 minutes, ensuring regular data persistence and efficient storage management.
 - Other storage flags can be found in the [official documentation](https://prometheus.io/docs/prometheus/latest/storage/#operational-aspects). For a quick start, you could use the default values.
 
 ### Step 2: Set up Thanos Receive
  The [Thanos Receive](https://thanos.io/tip/components/receive.md/#receiver) service implements the Prometheus Remote Write API. It builds on top of the existing Prometheus TSDB and retains its usefulness while extending its functionality with long-term-storage, horizontal scalability, and downsampling. Prometheus instances are configured to continuously write metrics to it. Thanos Receive exposes the StoreAPI so that Thanos Queriers can query received metrics in real-time.
 
 
-First, run the below command to start the [Minio](https://github.com/minio/minio) service for long-term metric storage. Minio is S3 compatible object storage service. Thanos Receive uploads TSDB blocks to an object storage bucket every 2 hours.
+First, deploy [Minio](https://github.com/minio/minio) for long-term metric storage. Minio offers S3-compatible object storage functionality, allowing Thanos Receive to upload TSDB blocks to storage buckets at 2-hour intervals. While this guide uses Minio, you can opt for any storage service from the [Thanos Supported Clients](https://thanos.io/tip/thanos/storage.md/#supported-clients) list. For long-term monitoring, we recommend implementing a retention policy on your storage service to efficiently manage historical metric data. For instance, you might configure an S3 lifecycle policy when using AWS to automatically remove metrics older than one year.
 ```sh
 # Start Minio
 docker-compose -f ./docker-compose/minio.yml up -d
 
- # First set the alias with root credentials
+# First set the MinIO alias with root credentials to enable bucket creation permissions
 docker exec minio mc alias set local http://localhost:9000 minio melovethanos
 
 # Then create the bucket
@@ -161,7 +170,7 @@ Core configuration for Thanos Receive in [thanos-receive.yml](./docker-compose/t
 ##### 1. Storage configuration
 - Local Storage:
   `../receive-data:/receive/data` maps the host directory for metric TSDB storage.
-  - Retention Policy: `--tsdb.retention=30d` auto-purges data older than 30 days. **It takes less than 1GB of Receive disk space per month for one java-tron(v4.7.6) FullNode connecting Mainnet**.
+  - Retention Policy: `--tsdb.retention=30d` auto-purges data older than 30 days. As tested, it takes about **6GB of disk space per month for one java-tron(v4.7.6+) FullNode**.
 
 - External Storage:
   `../conf:/receive` mounts configuration files. The `--objstore.config-file` flag enables long-term storage in MinIO/S3-compatible buckets. In this case, it is [bucket_storage_bucket.yml](conf/bucket_storage_bucket.yml).
@@ -169,7 +178,7 @@ Core configuration for Thanos Receive in [thanos-receive.yml](./docker-compose/t
   - Fallback Behavior: Omitting this flag keeps data local-only.
 
 ##### 2. Network configuration
-- Remote Write `--remote-write.address=0.0.0.0:10908`: Receives Prometheus metrics. Prometheus instances are configured to continuously write metrics to it.
+- Remote Write `--remote-write.address=0.0.0.0:10908`: It allow receive Prometheus metrics from any IP address. Prometheus instances are configured to continuously write metrics to it.
 - Thanos Receive exposes the StoreAPI so that Thanos Query can query received metrics in **real-time**.
   - The `ports` combined with flags `--grpc-address, --http-address` expose the ports for the Thanos Query service.
 - Security Note: `0.0.0.0` means it accepts all incoming connections from any IP address. For production, consider restricting access to specific IP addresses.
@@ -177,14 +186,10 @@ Core configuration for Thanos Receive in [thanos-receive.yml](./docker-compose/t
 For more flags explanation and default value can be found in the official [Thanos Receive Flags](https://thanos.io/tip/components/receive.md/#flags) documentation.
 
 #### Thanos Receive reliable deployment
-For systems monitoring multiple services with increasing scale, there are two approaches to prevent Thanos Receive from becoming a single point of failure or performance bottleneck:
-
-1. Deploy multiple independent Thanos Receive instances, each dedicated to different monitoring targets. The configurations outlined in this document provide clear guidance for setting up this distributed architecture, as shown in the above architecture.
-
-2. Implement Thanos Receive in cluster mode, which provides a unified entry point with automatic scaling capabilities. For detailed instructions on setting up Thanos Receive cluster mode, refer to the [Thanos receive cluster mode](THANOS_CLUSTER.md) guide.
+For systems monitoring multiple services at scale, it's recommended to implement Thanos Receive in cluster mode as shown in the architecture diagram above. This prevents Thanos Receive from becoming a single point of failure or performance bottleneck. Additionally, deploying a load balancer in front of the Thanos Receive cluster provides a unified entry point and enables automatic request distribution across multiple instances. This setup ensures high availability, improved fault tolerance, and better scalability of your monitoring infrastructure. Further information can be found in the official [Thanos Receive](https://thanos.io/tip/components/receive.md/) documentation. It also supports Kubernetes deployment for better scalability management.
 
 ### Step 3: Set up Thanos Store
-While Thanos Receive handles recent data (30 days retention), Store Gateway provides access to older metrics persisted in object storage.
+Thanos Receive manages recent metrics data according to its configured retention policy, while the Store Gateway component enables access to historical metrics that have been archived in object storage, creating a seamless data access layer across both recent and historical time ranges.
 
 Run the below command to start the Thanos Query service:
 ```sh

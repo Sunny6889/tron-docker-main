@@ -13,7 +13,7 @@ services:
       - "--config.file=/etc/prometheus/prometheus-remote-write.yml" # the default path to the configuration file
       - "--storage.tsdb.path=/prometheus" # the path where Prometheus stores its metric database
       - "--storage.tsdb.retention.time=7d" # takes about 2GB of disk space per week
-      - "--storage.tsdb.max-block-duration=1h" #the maximum duration for a block of time series data that can be stored in the time series database (TSDB)
+      - "--storage.tsdb.max-block-duration=30m" #the maximum duration for a block of time series data that can be stored in the time series database (TSDB)
       - "--web.enable-lifecycle" # tell Prometheus to expose the /-/reload HTTP endpoints
       - "--web.enable-admin-api"
     restart: unless-stopped
