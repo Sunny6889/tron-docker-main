@@ -182,7 +182,7 @@ Core configuration for Thanos Receive in [thanos-receive.yml](./docker-compose/t
 ##### 1. Storage configuration
 - Local Storage:
   `../receive-data:/receive/data` maps the host directory for metric TSDB storage.
-  - Retention Policy: `--tsdb.retention=30d` auto-purges data older than 30 days. As tested, it takes about **6GB of disk space per month for one java-tron(v4.7.6+) FullNode**.
+  - Retention Policy: The `--tsdb.retention=30d` flag automatically purges data older than 30 days. Based on testing with a java-tron(v4.7.6+) FullNode using a 1-second metric scrape interval, storage consumption averages approximately **8GB of disk space per month**.
 
 - External Storage:
   `../conf:/receive` mounts configuration files. The `--objstore.config-file` flag enables long-term storage in MinIO/S3-compatible buckets. In this case, it is [bucket_storage_bucket.yml](conf/bucket_storage_bucket.yml).
