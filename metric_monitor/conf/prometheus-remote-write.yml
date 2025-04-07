@@ -39,7 +39,7 @@ remote_write:
       max_shards: 200 # the maximum number of shards, or parallelism, Prometheus will use for each remote-write queue
       min_shards: 1
       max_samples_per_send: 5000
-      batch_send_deadline: 5s
+      batch_send_deadline: 1s
       min_backoff: 200ms
       max_backoff: 5s
     metadata_config:
