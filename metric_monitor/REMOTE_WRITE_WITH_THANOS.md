@@ -45,7 +45,11 @@ As shown in the new architecture, the monitoring system consists of the followin
 ### Step 1: Set up TRON and Prometheus services
 Run the below command to start a java-tron FullNode, node exporter and Prometheus services:
 ```sh
-docker-compose -f ./docker-compose/docker-compose-target-node.yml up -d
+docker-compose -f ./docker-compose/docker-compose-target-node.yml up -d # Start all
+
+docker-compose -f ./docker-compose/docker-compose-target-node.yml up -d tron-node # Start tron-node only
+docker-compose -f ./docker-compose/docker-compose-target-node.yml up -d node-exporter # Start node-exporter only
+docker-compose -f ./docker-compose/docker-compose-target-node.yml up -d prometheus # Start prometheus only
 ```
 
 You can verify the Prometheus service status and monitor targets by accessing `http://[host_IP]:9090/` in your browser. Alternatively, use `docker logs -f prometheus` to view the Prometheus service logs.
