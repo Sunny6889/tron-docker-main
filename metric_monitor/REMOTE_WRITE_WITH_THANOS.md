@@ -45,7 +45,11 @@ As shown in the new architecture, the monitoring system consists of the followin
 ### Step 1: Set up TRON and Prometheus services
 Run the below command to start a java-tron FullNode, node exporter and Prometheus services:
 ```sh
-docker-compose -f ./docker-compose/docker-compose-target-node.yml up -d
+docker-compose -f ./docker-compose/docker-compose-target-node.yml up -d # Start all
+
+docker-compose -f ./docker-compose/docker-compose-target-node.yml up -d tron-node # Start tron-node only
+docker-compose -f ./docker-compose/docker-compose-target-node.yml up -d node-exporter # Start node-exporter only
+docker-compose -f ./docker-compose/docker-compose-target-node.yml up -d prometheus # Start prometheus only
 ```
 
 You can verify the Prometheus service status and monitor targets by accessing `http://[host_IP]:9090/` in your browser. Alternatively, use `docker logs -f prometheus` to view the Prometheus service logs.
@@ -108,7 +112,7 @@ remote_write:
     <img src="../images/metric_push_external_label.png" alt="Alt Text" width="680" >
 
 - For `scrape_configs`:
-  - The `scrape_interval` defines the frequency at which Prometheus collects metrics. While configured for 1-second intervals to enable real-time monitoring, this setting can be customized according to your specific monitoring needs. Keep in mind that decreasing the interval will increase the service load, as metrics are collected each time the HTTP request triggered.
+  - The `scrape_interval` defines the frequency at which Prometheus collects metrics. While configured for 3-second intervals to enable real-time monitoring, this setting can be customized according to your specific monitoring needs. Keep in mind that decreasing the interval will increase the service load, as metrics are collected each time the HTTP request triggered.
   - The `targets` field specifies the java-tron services or other monitoring targets via their IP addresses and ports. Prometheus actively scrapes metrics from these defined endpoints.
   - The `labels` section contains key-value pairs that uniquely identify each target within Prometheus. These labels enable powerful filtering capabilities in Grafana dashboards - for example, you can filter metrics using expressions like `{group="group-tron"}`.
 
@@ -119,7 +123,7 @@ remote_write:
 ##### 2. Storage configurations
 - The volumes command `../prometheus_data:/prometheus` mounts a local directory used by Prometheus to store metrics data.
   - Even when using Prometheus with remote-write, metrics data is still temporarily stored locally.
-- The `--storage.tsdb.retention.time=7d` flag defines how long metrics data is retained. In this case, Prometheus automatically purges data older than 7 days. For a java-tron(v4.7.6+) FullNode, each metric request returns approximately 9KB of raw data. With a `scrape_interval` of 1 second and TSDB compression, **a single java-tron FullNode service requires about 2GB of Prometheus storage with 7 days of retention**.
+- The `--storage.tsdb.retention.time=7d` flag defines how long metrics data is retained. In this case, Prometheus automatically purges data older than 7 days. For a java-tron(v4.7.6+) FullNode, each metric request returns approximately 9KB of raw data. With a `scrape_interval` of 3 second and TSDB compression, **a single java-tron FullNode service requires about 700MB of Prometheus storage with 7 days of retention**.
 - The `--storage.tsdb.max-block-duration=30m` flag defines the maximum duration for generating TSDB blocks locally. With this setting, Prometheus will create new TSDB blocks at intervals no longer than 30 minutes, ensuring regular data persistence and efficient storage management.
 - Other storage flags can be found in the [official documentation](https://prometheus.io/docs/prometheus/latest/storage/#operational-aspects). For a quick start, you could use the default values.
 
@@ -182,7 +186,7 @@ Core configuration for Thanos Receive in [thanos-receive.yml](./docker-compose/t
 ##### 1. Storage configuration
 - Local Storage:
   `../receive-data:/receive/data` maps the host directory for metric TSDB storage.
-  - Retention Policy: The `--tsdb.retention=30d` flag automatically purges data older than 30 days. Based on testing with a java-tron(v4.7.6+) FullNode using a 1-second metric scrape interval, storage consumption averages approximately **8GB of disk space per month**.
+  - Retention Policy: The `--tsdb.retention=30d` flag automatically purges data older than 30 days. Based on testing with a java-tron(v4.7.6+) FullNode using a 3-second metric scrape interval, storage consumption averages approximately **3GB of disk space per month**.
 
 - External Storage:
   `../conf:/receive` mounts configuration files. The `--objstore.config-file` flag enables long-term storage in MinIO/S3-compatible buckets. In this case, it is [bucket_storage_bucket.yml](conf/bucket_storage_bucket.yml).
