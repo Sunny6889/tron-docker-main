@@ -10,6 +10,9 @@ services:
           memory: 1g
     environment:
       - GF_METRICS_ENABLED=true  # Enable Grafana metrics exposure
+    volumes:
+      - ../grafana_data:/var/lib/grafana  # Grafana database and dashboards
+      - ../grafana_config:/etc/grafana    #
     ports:
       - "3000:3000"
     restart: unless-stopped
