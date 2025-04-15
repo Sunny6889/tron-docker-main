@@ -57,7 +57,7 @@ def buildTime() {
 // set the shell command to use according to os
 def shell = org.gradle.internal.os.OperatingSystem.current().isWindows() ? "${projectDir}\\wslsh.bat" : '/bin/bash'
 
-def dockerBuildVersion = project.hasProperty('release.releaseVersion') ? project.getProperty('release.releaseVersion') : "latest"
+def dockerBuildVersion = project.hasProperty('release.releaseVersion') ? project.getProperty('release.releaseVersion') : "${version}"
 def dockerOrgName = project.hasProperty('dockerOrgName') ? project.getProperty("dockerOrgName") : "tronprotocol"
 def dockerArtifactName = project.hasProperty("dockerArtifactName") ? project.getProperty("dockerArtifactName") : "java-tron"
 def dockerImageName = "${dockerOrgName}/${dockerArtifactName}"
@@ -92,6 +92,13 @@ task sourceDocker {
     }
 }
 
+// Takes the version and if it contains SNAPSHOT, alpha, beta or RC in version then return true indicating an interim build
+def isInterimBuild(dockerBuildVersion) {
+    return (dockerBuildVersion ==~ /.*-SNAPSHOT/) || (dockerBuildVersion ==~ /.*-alpha/)
+            || (dockerBuildVersion ==~ /.*-beta/) || (dockerBuildVersion ==~ /.*-RC.*/)
+            || (dockerBuildVersion ==~ /.*develop.*/)
+}
+
 
 task testDocker {
     dependsOn sourceDocker
@@ -114,11 +121,25 @@ task testDocker {
 // Make sure to `docker login` first
 task dockerUpload {
     dependsOn sourceDocker
+    def architecture = System.getenv('architecture')
+    if (architecture == null) {
+        architecture = "amd64" //set default as amd64
+    }
     def image = "${dockerImageName}:${dockerBuildVersion}"
+    def additionalTags = []
+
+    if (project.hasProperty('branch') && project.property('branch') == 'main') {
+        additionalTags.add('develop')
+    }
+
+    if (!isInterimBuild(dockerBuildVersion)) {
+        additionalTags.add(dockerBuildVersion.split(/\./)[0..1].join('.'))
+    }
 
     doLast {
         exec {
-            def cmd = "docker push '${image}'"
+            def archVariantImage = "${image}-${architecture}"
+            def cmd = "docker tag '${image}' '${archVariantImage}' && docker push '${archVariantImage}'"
             println "Executing '${cmd}'"
             executable shell
             args "-c", cmd
