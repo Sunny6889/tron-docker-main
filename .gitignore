@@ -25,6 +25,7 @@ go
 gopath
 go1.*
 *FullNode_output-directory*
+*.pub
 
 /single_node/output-directory/
 /metric_monitor/logs/
