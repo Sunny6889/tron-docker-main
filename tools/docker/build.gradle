@@ -57,25 +57,33 @@ def buildTime() {
 // set the shell command to use according to os
 def shell = org.gradle.internal.os.OperatingSystem.current().isWindows() ? "${projectDir}\\wslsh.bat" : '/bin/bash'
 
-def dockerBuildVersion = project.hasProperty('release.releaseVersion') ? project.getProperty('release.releaseVersion') : "${version}"
+def dockerBuildVersion = project.hasProperty('release.releaseVersion') ? project.getProperty('release.releaseVersion') : "latest"
 def dockerOrgName = project.hasProperty('dockerOrgName') ? project.getProperty("dockerOrgName") : "tronprotocol"
 def dockerArtifactName = project.hasProperty("dockerArtifactName") ? project.getProperty("dockerArtifactName") : "java-tron"
 def dockerImageName = "${dockerOrgName}/${dockerArtifactName}"
+def dockerNetwork = project.hasProperty("network") ? project.getProperty("network") : "mainnet"
 
 task sourceDocker {
     def dockerBuildDir = "${rootDir}/build/docker-tron/"
+    def dockerfileName = "Dockerfile"
+
+    def image = "${dockerImageName}:${dockerBuildVersion}"
+    if (dockerNetwork != "mainnet" && dockerNetwork != "") {
+        dockerfileName = "${dockerfileName}.${dockerNetwork}"
+    }
 
     doLast {
         copy {
-            from file("${rootDir}/../docker/Dockerfile")
+            from file("${rootDir}/../docker/${dockerfileName}")
             into(dockerBuildDir)
         }
+        file("${dockerBuildDir}/${dockerfileName}").renameTo("${dockerBuildDir}/Dockerfile")
+
         copy {
             from file("${rootDir}/../docker/docker-entrypoint.sh")
             into "${dockerBuildDir}"
         }
         exec {
-            def image = "${dockerImageName}:${dockerBuildVersion}"
             def dockerPlatform = ""
             if (project.hasProperty('docker-platform')){
                 dockerPlatform = "--platform ${project.getProperty('docker-platform')}"
@@ -92,17 +100,11 @@ task sourceDocker {
     }
 }
 
-// Takes the version and if it contains SNAPSHOT, alpha, beta or RC in version then return true indicating an interim build
-def isInterimBuild(dockerBuildVersion) {
-    return (dockerBuildVersion ==~ /.*-SNAPSHOT/) || (dockerBuildVersion ==~ /.*-alpha/)
-            || (dockerBuildVersion ==~ /.*-beta/) || (dockerBuildVersion ==~ /.*-RC.*/)
-            || (dockerBuildVersion ==~ /.*develop.*/)
-}
-
 
 task testDocker {
     dependsOn sourceDocker
     def dockerReportsDir = "${rootDir}/../docker/reports/"
+    def image = "${dockerImageName}:${dockerBuildVersion}"
 
     doFirst {
         new File(dockerReportsDir).mkdir()
@@ -110,7 +112,6 @@ task testDocker {
 
     doLast {
         exec {
-            def image = "${dockerImageName}:${dockerBuildVersion}"
             workingDir "${rootDir}/../docker"
             executable shell
             args "-c", "./test.sh ${image}"
@@ -120,26 +121,11 @@ task testDocker {
 
 // Make sure to `docker login` first
 task dockerUpload {
-    dependsOn sourceDocker
-    def architecture = System.getenv('architecture')
-    if (architecture == null) {
-        architecture = "amd64" //set default as amd64
-    }
     def image = "${dockerImageName}:${dockerBuildVersion}"
-    def additionalTags = []
-
-    if (project.hasProperty('branch') && project.property('branch') == 'main') {
-        additionalTags.add('develop')
-    }
-
-    if (!isInterimBuild(dockerBuildVersion)) {
-        additionalTags.add(dockerBuildVersion.split(/\./)[0..1].join('.'))
-    }
 
     doLast {
         exec {
-            def archVariantImage = "${image}-${architecture}"
-            def cmd = "docker tag '${image}' '${archVariantImage}' && docker push '${archVariantImage}'"
+            def cmd = "docker push '${image}'"
             println "Executing '${cmd}'"
             executable shell
             args "-c", cmd

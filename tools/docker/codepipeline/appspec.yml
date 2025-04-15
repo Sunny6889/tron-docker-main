@@ -1,0 +1,19 @@
+version: 0.0
+os: linux
+files:
+  - source: docker-compose.fullnode.main.yml
+    destination: /data/FullNode/tron-docker/
+    overwrite: true
+hooks:
+  BeforeInstall:
+    - location: prepare_environment.sh
+      timeout: 300
+      runas: ubuntu
+  ApplicationStart:
+    - location: start_service.sh
+      timeout: 180
+      runas: ubuntu
+  ValidateService:
+    - location: validate_service.sh
+      timeout: 300
+      runas: ubuntu

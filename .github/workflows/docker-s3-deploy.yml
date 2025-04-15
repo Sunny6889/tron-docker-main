@@ -1,0 +1,53 @@
+name: Deploy new docker fullnode
+
+on:
+  workflow_dispatch:
+    inputs:
+      bucket-name:
+        description: 'S3 bucket name to upload tron-docker.zip'
+        required: true  # Makes the input mandatory
+      aws-region:
+        description: 'AWS region for the S3 bucket (e.g., ap-southeast-1)'
+        required: true  # Makes the input mandatory
+
+jobs:
+  build-and-sign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Zip files from tools/docker/codepipeline into tron-docker.zip (no directory structure)
+        run: |
+          # Ensure the directory exists
+          if [ -d "tools/docker/codepipeline" ]; then
+            cd tools/docker/codepipeline
+            zip -r ../../../tron-docker.zip ./appspec.yml ./validate_service.sh ./start_service.sh ./prepare_environment.sh ./docker-compose.fullnode.main.yml
+          else
+            echo "Error: tools/docker/codepipeline directory not found!"
+            exit 1
+          fi
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Sign tron-docker.zip with GPG
+        run: |
+          gpg --detach-sign --armor tron-docker.zip
+          # This creates tron-docker.zip.asc (ASCII-armored signature)
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ github.event.inputs.aws-region }}  # Use input for region
+
+      - name: Upload tron-docker.zip to S3
+        run: |
+          zip -r publish.zip tron-docker.zip tron-docker.zip.asc
+          aws s3 cp publish.zip s3://${{ github.event.inputs.bucket-name }}/package/publish-latest.zip
+          aws s3 cp publish.zip s3://${{ github.event.inputs.bucket-name }}/package/publish-v0.1.1.zip

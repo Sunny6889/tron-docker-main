@@ -8,17 +8,16 @@ A private chain needs at least one fullnode run by a [Super Representative (SR)]
 
 ### Minimum hardware requirements
 - CPU with 8+ cores
-- 32GB RAM
+- 16GB RAM
 - 100GB free storage space
 
 ### Docker
 
-Please download and install the latest version of Docker from the official Docker website:
-* Docker Installation for [Mac](https://docs.docker.com/docker-for-mac/install/)
-* Docker Installation for [Windows](https://docs.docker.com/docker-for-windows/install/)
-* Docker Installation for [Linux](https://docs.docker.com/desktop/setup/install/linux/)
+For Docker and Docker Compose installation refer [prerequisites](../README.md#prerequisites).
+Then check the Docker resource settings to ensure it has at least 3GB of memory per TRON node.
 
-Then check the Docker resource settings to ensure it has at least 12GB of memory per TRON node.
+**Notice:** The actual memory consumption for a FullNode depends heavily on your configurations and use case. Factors such as block generation frequency, transactions per second (TPS), and external API request QPS can significantly impact memory usage. To help you get started quickly, the memory consumption under the following guidance is within **3GB**. However, for a TRON Mainnet Super Representative (SR) FullNode capable of supporting **2000 TPS**, the memory resource per FullNode container should set above **16GB**.
+
 
 ## Quick-Start using Docker
 Download the folder [private_net](../private_net) from GitHub. Enter the directory and run the docker-composer.
@@ -30,7 +29,7 @@ A TRON private network will be started with one [SR](https://tronprotocol.github
 
 Check the witness logs by running the command below:
 ```
-docker exec -it tron_witness1 tail -f ./logs/tron.log
+docker exec tron-witness1 tail -f ./logs/tron.log
 ```
 Normally, it should show the witness initializing the database and network, then starting to produce blocks every 3 seconds.
 ```
@@ -47,7 +46,7 @@ Peer stats: channels 1, activePeers 1, active 0, passive 1
 
 Check the other fullnode logs by running the command below:
 ```
-docker exec -it tron_node1 tail -f ./logs/tron.log
+docker exec tron-node1 tail -f ./logs/tron.log
 ```
 After initialization, it should show messages about syncing blocks, just following the SR.
 
@@ -55,10 +54,10 @@ After initialization, it should show messages about syncing blocks, just followi
 
 Check the docker-compose.yml, the two container services use the same TRON image with different configurations.
 
-- `ports`: Used in the tron_witness1 service are exposed for API requests to interact with the TRON private network.
+- `ports`: Used in the tron-witness1 service are exposed for API requests to interact with the TRON private network.
 
 - `command`: Used for java-tron image start-up arguments.
-    - `-jvm` is used for Java Virtual Machine parameters, which must be enclosed in double quotes and braces. `"{-Xmx16g -Xms12g}"` sets the maximum heap size to 16GB.
+    - `-jvm` is used for Java Virtual Machine parameters, which must be enclosed in double quotes and braces. `"{-Xmx12g -Xms3g}"` sets the maximum and minimum heap size to 12GB and 3GB.
     - `-c` defines the configuration file to use.
     - `-d` defines the database file to use. By mounting a local data directory, it ensures that the block data is persistent.
     - `-w` means to start as a witness. You need to fill the `localwitness` field with private keys in the configuration file. Refer to [**Run as Witness**](https://tronprotocol.github.io/documentation-en/using_javatron/installing_javatron/#startup-a-fullnode-that-produces-blocks).
@@ -69,7 +68,7 @@ If you want to add more witness or other syncing fullnodes, you need to make bel
 
 **Add more services in docker-compose.yml**
 
-Inside the docker-compose.yml, refer to the commented containers `tron_witness2` and `tron_node2`. Make sure the configuration files are changed accordingly, following the details below.
+Inside the docker-compose.yml, refer to the commented containers `tron-witness2` and `tron-node2`. Make sure the configuration files are changed accordingly, following the details below.
 
 **Common settings**
 
@@ -77,7 +76,7 @@ For all configurations, you need to set `node.p2p.version` to the same value and
 ```
 node {
  p2p {
-    version = 1 # 11111: mainnet; 20180622: nilenet; others for private networks.
+    version = 1 # 11111: Mainnet; 20180622: Nile testnet; others for private networks.
   }
   ...
 }
@@ -93,7 +92,7 @@ node.discovery = {
 Make sure only one SR witness sets `needSyncCheck = false`, while the rest of the witnesses and other fullnodes set it to `true`. This ensures that there is only one source of truth for block data.
 ```
 block = {
-  needSyncCheck = true # only one SR witness set false, the rest all false
+  needSyncCheck = true # only one SR witness set false, the rest all true
   ...
 }
 ```
@@ -144,9 +143,9 @@ Then, in other configuration files, add witness `container_name:port` to connect
 ```
 seed.node = {
   ip.list = [
-    # used for docker deployment, to connect containers in tron_witness defined in docker-compose.yml
-    "tron_witness1:18888",
-    "tron_witness2:18888",
+    # used for docker deployment, to connect containers in tron-witness defined in docker-compose.yml
+    "tron-witness1:18888",
+    "tron-witness2:18888",
     ...
   ]
 }

@@ -5,9 +5,12 @@ If you encounter any problems during the build or testing process, please refer 
 
 ## Prerequisites
 
+- Docker
+- JDK 8 (required by Gradle)
+
 Follow the [getting-started](https://github.com/tronprotocol/tron-docker/blob/main/README.md#getting-started) guide to download Docker and the tron-docker repository. Then, navigate to the gradlew directory.
 ```
-cd /java-tron/tools/gradlew
+cd ./tools/gradlew
 ```
 Container testing uses the [Goss](https://github.com/goss-org/goss/blob/v0.4.9/README.md) tool, a YAML-based testing framework for validating service states. While no additional installation is required, it is beneficial to learn the basic usage of [Goss with container](https://goss.readthedocs.io/en/stable/container_image/) to help you better understand the following testing scripts.
 
@@ -27,17 +30,29 @@ tronprotocol/java-tron   1.0.0      76702facd55e   23 seconds ago   549MB
 
 ### What ./gradlew sourceDocker do?
 
-It will trigger the execution of `task sourceDocker` in [build.gradle](build.gradle). Reviewing the logic, `task sourceDocker` essentially copies the Dockerfile and shell script to a build directory, then runs the docker build. From the logic, you can run `./gradlew sourceDocker` with customised `dockerOrgName`, `dockerArtifactName`, and `release.releaseVersion`.
+It will trigger the execution of `task sourceDocker` in [build.gradle](build.gradle). Reviewing the logic, `task sourceDocker` essentially copies the Dockerfile and shell script to a build directory, then runs the docker build. From the logic, you can run `./gradlew sourceDocker` with customised `dockerOrgName`, `dockerArtifactName`, `release.releaseVersion` and `network`.
 
 For example:
+```sh
+# build java-tron image with customised dockerOrgName, dockerArtifactName and release.releaseVersion
+./gradlew --no-daemon sourceDocker -PdockerOrgName=YourOrgName -PdockerArtifactName=ArtifactName -Prelease.releaseVersion=V1.1.0
+
+# build java-tron docker image for nile testnet with specified org, artifact and version.
+# Using code from https://github.com/tron-nile-testnet/nile-testnet.git
+./gradlew --no-daemon sourceDocker -PdockerOrgName=YourOrgName -PdockerArtifactName=ArtifactName -Prelease.releaseVersion=V1.1.0 -Pnetwork=nile
 ```
-./gradlew --no-daemon sourceDocker -PdockerOrgName=yourOrgName -PdockerArtifactName=test -Prelease.releaseVersion=V1.1.0
-```
+
 ## Test image
 
 Test the java-tron image use the command below.
-```
+``` ssh
 ./gradlew --no-daemon testDocker
+
+# test image with customised dockerOrgName, dockerArtifactName and release.releaseVersion
+./gradlew --no-daemon testDocker -PdockerOrgName=YourOrgName -PdockerArtifactName=ArtifactName -Prelease.releaseVersion=V1.1.0
+
+# test image for nile testnet with specified org, artifact and version.
+./gradlew --no-daemon testDocker -PdockerOrgName=YourOrgName -PdockerArtifactName=ArtifactName -Prelease.releaseVersion=V1.1.0 -Pnetwork=nile
 ```
 This will trigger the execution of `task testDocker` in [build.gradle](build.gradle). According to this logic, it will run the [test.sh](test.sh) script with the parameter of the Docker image name.
 
@@ -106,7 +121,7 @@ INFO: Creating docker container
 WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
 INFO: Copy goss files into container
 INFO: Starting docker container
-INFO: Container ID: e7e419dc
+INFO: Container ID: 080c92c3e40b575999df863d05eb0ef85899477b1188951fd4506697372d70c1
 INFO: Found goss_wait.yaml, waiting for it to pass before running tests
 INFO: Sleeping for 1.0
 INFO: Running Tests
@@ -120,6 +135,7 @@ INFO: Running Tests
 BUILD SUCCESSFUL in 47s
 2 actionable tasks: 2 executed
 ```
+It will automatically remove the test container it starts. If, for any reason, this process is manually killed, you can find the container ID from the log message "Container ID: xxxxxx" and manually remove the test container using `docker rm -f xxxxxx`.
 
 ## Troubleshooting
 

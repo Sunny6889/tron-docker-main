@@ -18,12 +18,8 @@ Recommended:
 
 ### Docker
 
-Please download and install the latest version of Docker from the official Docker website:
-* Docker Installation for [Mac](https://docs.docker.com/docker-for-mac/install/)
-* Docker Installation for [Windows](https://docs.docker.com/docker-for-windows/install/)
-* Docker Installation for [Linux](https://docs.docker.com/desktop/setup/install/linux/)
-
-Then check the Docker resource settings to ensure it has at least 16GB of memory.
+For Docker and Docker Compose installation refer [prerequisites](../README.md#prerequisites).
+Then check the Docker resource settings to ensure it has at least 16GB of memory per FullNode container.
 
 ## Get Docker image
 There are two ways to obtain the TRON image:
@@ -41,69 +37,82 @@ Notice: To ensure your download has not been tampered with, you can use `docker 
 
 ### Build from source code
 
-Building java-tron requires the git package. Clone the repository and switch to the master branch with the following commands:
-```
-git clone https://github.com/tronprotocol/java-tron.git
-cd java-tron
-git checkout -t origin/master
-```
-
-Then use the following command to navigate to the docker directory and start the build:
-```
-cd docker
-docker build -t tronprotocol/java-tron .
-```
-Check the Dockerfile for build details. Essentially, Docker will pull the java-tron repository and build it using JDK 1.8.
+Check [Gradlew Docker](../tools/docker/README.md) for instructions on building a Docker image from source code using Gradle.
 
 ## Run the container
 
 You can run the following command to start java-tron:
 ```
-docker run -it --name tron -d --memory="16g" \
--p 8090:8090 -p 8091:8091 -p 18888:18888 -p 18888:18888/udp -p 50051:50051 \
-tronprotocol/java-tron
+docker-compose -f docker-compose-quick-start.yml up -d
 ```
-The `-p` flag specifies the ports that the container needs to map to the host machine.
-`--memory="16g"` sets the memory limit to 16GB, ensuring that the TRON container gets enough memory.
+Check the file content:
+```
+services:
+  tron-node:
+    container_name: tron-node
+    image: tronprotocol/java-tron:latest  # Add specific tag if needed
+    mem_limit: 16g
+    ports:
+      - "8090:8090"
+      - "8091:8091"
+      - "18888:18888"
+      - "18888:18888/udp"
+      - "50051:50051"
+```
+This docker-compose `ports` specifies the ports that the container needs to map to the host machine.
+`mem_limit: 16g` sets the memory limit to 16GB, ensuring that the TRON container gets enough memory.
 
 By default, it will use the [configuration](https://github.com/tronprotocol/java-tron/blob/develop/framework/src/main/resources/config.conf),
-which sets the fullNode to connect to the mainnet with genesis block settings in `genesis.block`.
+which sets the fullNode to connect to the Mainnet with genesis block settings in `genesis.block`.
 Once the fullnode starts, it will begin to sync blocks with other peers starting from genesis block.
 
-Check the logs using command `docker exec -it tron tail -f ./logs/tron.log`. It will show the fullnode handshaking with peers successfully and then syncing for blocks.
+Check the logs using command `docker exec tron-node tail -f ./logs/tron.log`. It will show the fullnode handshaking with peers successfully and then syncing for blocks.
 For abnormal cases, please check the troubleshooting section below.
 
 ### Run with customized configure
-This image also supports customizing some startup parameters. Here is an example for running a FullNode as a witness with a customized configuration file:
+This image also supports customizing some startup parameters. Here is an example for running a FullNode as a witness with a [customized configuration file](docker-compose-configure-example.yml):
 ```
-docker run -it --name tron -d -p 8090:8090 -p 8091:8091 -p 18888:18888 -p 18888:18888/udp -p 50051:50051 --memory="16g" \
-           -v /host/path/java-tron/conf:/java-tron/conf \
-           -v /host/path/java-tron/datadir:/java-tron/data \
-           tronprotocol/java-tron \
-           -jvm "{-Xmx16g -Xms12g -XX:+UseConcMarkSweepGC}" \
-           -c /java-tron/conf/config-localtest.conf \
-           -d /java-tron/data \
-           -w
+services:
+  tron-node:
+    container_name: tron-node
+    image: tronprotocol/java-tron:latest  # Add specific tag if needed
+    mem_limit: 16g
+    ports:
+      - "8090:8090"
+      - "8091:8091"
+      - "18888:18888"
+      - "18888:18888/udp"
+      - "50051:50051"
+    volumes:
+      - ../conf:/java-tron/conf
+      - ../logs:/java-tron/logs
+      - ../output-directory:/java-tron/output-directory
+    command: >
+      -jvm "{-Xmx14g -Xms12g -XX:+UseConcMarkSweepGC}"
+      -c /java-tron/conf/main_net_config.conf
+      -d /java-tron/output-directory
+      -w
 ```
-The `-v` flag specifies the directory that the container needs to map to the host machine.
-In the example above, the host file `/host/path/java-tron/conf/config-localtest.conf` will be used. For example, you can refer to the java-tron [config-localtest](https://github.com/tronprotocol/java-tron/blob/develop/framework/src/main/resources/config-localtest.conf).
+The `volumes` specifies the directory that the container needs to map to the host machine.
+In the example above, the host file `../conf/main_net_config.conf` will be used. In this case, it should be [main_net_config.conf](../conf/main_net_config.conf).
+Logs generated by docker container will be mapped to your `../logs/mainnet/logs`.
 
-Flags after `tronprotocol/java-tron` are used for java-tron start-up arguments:
-- `-jvm` used for java virtual machine, the parameters must be enclosed in double quotes and braces. `"{-Xmx16g -Xms12g}"` sets the maximum heap size to 16GB. If you want to set up a long run FullNode, please use the best practice jvm flags with `"{-Xmx16g -Xms12g XX:ReservedCodeCacheSize=256m -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m -XX:MaxDirectMemorySize=1G -XX:+PrintGCDetails -XX:+PrintGCDateStamps  -Xloggc:gc.log -XX:+UseConcMarkSweepGC -XX:NewRatio=2 -XX:+CMSScavengeBeforeRemark -XX:+ParallelRefProcEnabled -XX:+HeapDumpOnOutOfMemoryError -XX:+UseCMSInitiatingOccupancyOnly  -XX:CMSInitiatingOccupancyFraction=70}"`.
+Flags in `command` are used for java-tron start-up arguments:
+- `-jvm` used for java virtual machine, the parameters must be enclosed in double quotes and braces. `"{-Xmx14g -Xms12g}"` sets the maximum and initial heap size to 14GB and 12GB respectively. If you want to set up a long run FullNode, please use the best practice jvm flags with `"{-Xmx14g -Xmn2g XX:ReservedCodeCacheSize=256m -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m -XX:MaxDirectMemorySize=1G -XX:+PrintGCDetails -XX:+PrintGCDateStamps  -Xloggc:gc.log -XX:+UseConcMarkSweepGC -XX:NewRatio=2 -XX:+CMSScavengeBeforeRemark -XX:+ParallelRefProcEnabled -XX:+HeapDumpOnOutOfMemoryError -XX:+UseCMSInitiatingOccupancyOnly  -XX:CMSInitiatingOccupancyFraction=70}"`.
 - `-c` defines the configuration file to use.
-- `-d` defines the database file to use. You can mount a directory for `datadir` with snapshots. Please refer to [**Lite-FullNode**](https://tronprotocol.github.io/documentation-en/using_javatron/backup_restore/#_5). This can save time by syncing from a near-latest block number.
+- `-d` defines the database file to use. You can mount a directory for `datadir` with snapshots. This can save time by syncing from a near-latest block number. Please refer to [**Fullnode and Lite-Fullnode**](https://tronprotocol.github.io/documentation-en/using_javatron/backup_restore/#fullnode-data-snapshot) for Mainnet data. For the Nile testnet, you can download the snapshot [here](https://database.nileex.io/).
 - `-w` means to start as a witness. You need to fill the `localwitness` field with private keys in configure file. Refer to the [**Run as Witness**](https://tronprotocol.github.io/documentation-en/using_javatron/installing_javatron/#startup-a-fullnode-that-produces-blocks). If you want to use keystore + password method, make sure the keystore is inside the mounted directory and remove `-d` to interact with console for password input.
 
-Inside the `config-localtest.conf` file `node.p2p.version` is used to set the P2P network id. Only nodes with the same network id can shake hands successfully.
-- TRON mainnet: node.p2p.version=11111
+Inside the `main_net_config.conf` file `node.p2p.version` is used to set the P2P network id. Only nodes with the same network id can shake hands successfully.
+- TRON Mainnet: node.p2p.version=11111
 - Nile testnet: node.p2p.version = 201910292
 - Private network：set to other values
 
-Please note that if you want to switch to a different network, such as Mainnet or Nile, make sure you change the following:
+Please note that if you want to switch to a different network, such as the Nile testnet or private network, make sure you change the following:
 
 - **Configuration File**:
   - For Mainnet, use [main_net_config.conf](https://github.com/tronprotocol/tron-docker/blob/main/conf/main_net_config.conf).
-  - For NileNet, use the configuration file available on this [page](https://nileex.io/join/getJoinPage) or [nile_net_config.conf](https://github.com/tronprotocol/tron-docker/blob/main/conf/nile_net_config.conf).
+  - For Nile Testnet, use the configuration file available on this [page](https://nileex.io/join/getJoinPage) or [nile_net_config.conf](https://github.com/tronprotocol/tron-docker/blob/main/conf/nile_net_config.conf).
 
   The main differences between these two files are:
   - `genesis.block`: Used for initial account asset and witness setup.
@@ -117,7 +126,7 @@ Please note that if you want to switch to a different network, such as Mainnet o
 ### Close Docker application
 java-tron supports application shutdown with `kill -15`, which sends a `SIGTERM` signal to the application, allowing it to gracefully shut down. java-tron is also compatible with force shutdown using `kill -9`, which sends a `SIGKILL` signal.
 
-Thus, you can use the command `docker stop <container_id>` or `docker kill <container_id>` to close the java-tron container.
+Thus, you can use the command `docker-compose stop/down` or `docker-compose kill` to stop or close all the services.
 
 ## Interact with FullNode
 After the fullnode runs successfully, you can interact with it using the HTTP API or wallet-cli. For more details, please refer to [guidance](https://tronprotocol.github.io/documentation-en/getting_started/getting_started_with_javatron/#interacting-with-java-tron-nodes-using-curl).
@@ -127,30 +136,61 @@ For example, a request to get block info with a specific number:
 curl --location 'localhost:8090/wallet/getblock' \
 --header 'Content-Type: application/json' \
 --data '{
-    "id_or_num": "100",
+    "id_or_num": "2936021",
     "detail": true
 }'
 ```
 Response:
 ```
 {
-    "blockID": "00000000000000644df09e6883a3a7900814f8d78cf47b255b7ed284527a773d",
+    "blockID": "00000000002cccd50141f9067dffe98acf8f042b0e97e92a32da469ea12b6217",
     "block_header": {
         "raw_data": {
-            "number": 100,
-            "txTrieRoot": "0000000000000000000000000000000000000000000000000000000000000000",
-            "witness_address": "414b4778beebb48abe0bc1df42e92e0fe64d0c8685",
-            "parentHash": "0000000000000063ed8544c4c17fc053dfc729e610673c783bcdc3cf0781b07f",
-            "timestamp": 1529891811000
+            "number": 2936021,
+            "txTrieRoot": "f7019193ae9ee239bd0b60cf46cc6800a33f15e136906f5503107f27f2d56c3a",
+            "witness_address": "41243accc5241d97ce79272b06952ee88a34d8e1f9",
+            "parentHash": "00000000002cccd4d614847f112128e84750d0b6326c10396c51322dadc02ef4",
+            "version": 3,
+            "timestamp": 1538732154000
         },
-        "witness_signature": "277d4440e2feb552b6d2d557ba407f68310887020fcc7ef6e2733286a0d13c703ebf2306293bda9d2ddac09835be67583c736a65494115825b6f4ab6a15f1e0f01"
-    }
+        "witness_signature": "3ff90d8825b3a2524154a71c9144f95534229ad3e3333d33e3d1c30bdd16c6827f23da82b4b1c353253a993688189368b98de79184d036768387d3f94fe226bf00"
+    },
+    "transactions": [
+        {
+            "signature": [
+                "e856b3671be380b94d01986ade3f7103211e4b00a96280c1c892cc847796e8493e4fc2f54e5cf5d1c6c1c741620fbf1b7678c64f1ccf89296c5538fdb4a6803700"
+            ],
+            "txID": "c97ebda79cb2265963cf5a30949d290edb151492dc60a8a9cd244d2948a92222",
+            "raw_data": {
+                "contract": [
+                    {
+                        "parameter": {
+                            "value": {
+                                "amount": 2066756,
+                                "owner_address": "41ef404c62c8760cd385036f741a71ee7553daddd0",
+                                "to_address": "419474534de777d724355c5d051084fc10b8c79f70"
+                            },
+                            "type_url": "type.googleapis.com/protocol.TransferContract"
+                        },
+                        "type": "TransferContract"
+                    }
+                ],
+                "ref_block_bytes": "ccd3",
+                "ref_block_hash": "57c2c6c50a313845",
+                "expiration": 1538732208000,
+                "timestamp": 1538732149804
+            },
+            "raw_data_hex": "0a02ccd3220857c2c6c50a3138454080dfd89ce42c5a67080112630a2d747970652e676f6f676c65617069732e636f6d2f70726f746f636f6c2e5472616e73666572436f6e747261637412320a1541ef404c62c8760cd385036f741a71ee7553daddd01215419474534de777d724355c5d051084fc10b8c79f7018c4927e70ac98d59ce42c"
+        },
+        ...
+    ]
 }
 ```
 **Notice**: Before the local full node has synced with the latest block transactions, requests for account state or transaction information may be outdated or empty.
 
 ## Troubleshot
-After starting the Docker container, use `docker exec -it tron tail -f ./logs/tron.log` to check if the full node is functioning as expected and to identify any errors when interacting with the full node.
+After starting the Docker container, use `docker exec tron-node tail -f ./logs/tron.log` to check if the full node is functioning as expected and to identify any errors when interacting with the full node.
+If you go through the **Run with Customized Configuration** section, you can also directly open and check the locally mapped `tron.log` file.
 
 If the following error cases do not cover your issue, please refer to [Issue Work Flow](https://tronprotocol.github.io/documentation-en/developers/issue-workflow/#issue-work-flow), then raise issue in [Github](https://github.com/tronprotocol/tron-docker/issues).
 
@@ -160,6 +200,15 @@ If the following error cases do not cover your issue, please refer to [Issue Wor
 If the logs show `Peer stats: all 0, active 0, passive 0`, it means tron node cannot use **P2P Node Discovering Protocol** to find neighbors.
 This protocol operates over UDP through port 18888. Therefore, the most likely cause of this issue is a network problem.
 Try debugging with the following steps:
-- Use the command `docker ps` to check if the ports mapping includes `-p 18888:18888`.
+- Use the command `docker ps` to check if the port mapping includes `-p 18888:18888`.
 - Verify your local network settings to ensure that port 18888 is not blocked.
-- Open the Docker application, navigate to Settings -> Resources -> Network, and check the option 'Use kernel networking for UDP'. Then restart Docker and your container.
+- If you are using a cloud server, check the security group settings to ensure that port 18888 is open.
+- If you are using macOS, open the Docker application, navigate to Settings \-> Resources \-> Network, and check the option \`Use kernel networking for UDP\`. Then restart Docker and your container.
+- If you are using Linux, you may need to enable IP forwarding:
+  - Add \`net.ipv4.ip_forward=1\` to file \`/etc/sysctl.conf\`
+  - Then restarted the network service and validated the setting:
+  ```
+  [root@demo]# systemctl restart network
+  [root@demo]# sysctl net.ipv4.ip_forward
+  net. ipv4. ip_forward = 1 // expected output
+  ```
