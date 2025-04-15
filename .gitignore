@@ -13,4 +13,3 @@ libs/
 metric_monitor/datadir
 private_net/datadir
 tron-docker.iml
-bin/

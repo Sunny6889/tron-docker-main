@@ -3,22 +3,15 @@
 tron-docker is an open-source project designed to facilitate the usage of the TRON network. We understand that there is much left to be desired, and if you see any room for improvement, please let us know. Thank you. All contributed code will be covered by the [LGPLv3 license](https://github.com/tronprotocol/tron-docker/blob/main/LICENSE) of this project.
 
 Here are some guidelines to get started quickly and easily:
-- [Contributing](#contributing)
-  - [Before contribution](#before-contribution)
-    - [Ask a question](#ask-a-question)
-    - [Reporting an issue](#reporting-an-issue)
-    - [Request a feature](#request-a-feature)
-  - [Contribute to tron-docker](#contribute-to-tron-docker)
-    - [Key branches](#key-branches)
-    - [Submitting code steps](#submitting-code-steps)
-      - [Fork then make changes](#fork-then-make-changes)
-      - [Linting](#linting)
-      - [Push code](#push-code)
-    - [Commit messages](#commit-messages)
-    - [Branch naming conventions](#branch-naming-conventions)
-    - [Pull request best practise](#pull-request-best-practise)
-    - [Special situations and how to deal with them](#special-situations-and-how-to-deal-with-them)
-  - [Conduct](#conduct)
+- [Before contribution](#Before-contribution)
+- [Contribute to tron-docker](#Contribute-to-tron-docker)
+    - [Key Branches](#Key-Branches)
+    - [Submitting Code Steps](#Submitting-Code-Steps)
+    - [Commit Messages](#Commit-Messages)
+    - [Branch Naming Conventions](#Branch-Naming-Conventions)
+    - [Pull Request Best Practise](#Pull-request-best-practise)
+    - [Special Situations And How To Deal With Them](#Special-Situations-And-How-To-Deal-With-Them)
+- [Conduct](#Conduct)
 
 ## Before contribution
 
@@ -101,7 +94,7 @@ Commit the new branch to your personal remote repository.
 
 #### Linting
 
-  tron-docker CI uses [pre-commit](https://pre-commit.com/) to lint all code within the repo. Add it to your local following the [installation](https://pre-commit.com/#installation). And ensure ShellCheck is also installed, refer to [installation](https://github.com/koalaman/shellcheck?tab=readme-ov-file#installing). Check [.pre-commit-config.yaml](.pre-commit-config-fix.yaml) for existing validators.
+  tron-docker CI uses [pre-commit](https://pre-commit.com/) to lint all code within the repo. Add it to your local following the [installation](https://pre-commit.com/#installation). Check [.pre-commit-config.yaml](.pre-commit-config-fix.yaml) for existing validators.
 
 #### Push code
 

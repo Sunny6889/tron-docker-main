@@ -7,7 +7,7 @@ If you encounter any problems during the build or testing process, please refer 
 
 Follow the [getting-started](https://github.com/tronprotocol/tron-docker/blob/main/README.md#getting-started) guide to download Docker and the tron-docker repository. Then, navigate to the gradlew directory.
 ```
-cd ./tools/gradlew
+cd /java-tron/tools/gradlew
 ```
 Container testing uses the [Goss](https://github.com/goss-org/goss/blob/v0.4.9/README.md) tool, a YAML-based testing framework for validating service states. While no additional installation is required, it is beneficial to learn the basic usage of [Goss with container](https://goss.readthedocs.io/en/stable/container_image/) to help you better understand the following testing scripts.
 
