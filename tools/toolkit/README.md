@@ -13,7 +13,7 @@ cd tron-docker/tools/gradlew
 # build the toolkit
 ./gradlew :toolkit:build
 # execute the command
-java -jar ../dbfork/build/libs/Toolkit.jar db -h
+java -jar ../toolkit/build/libs/Toolkit.jar db -h
 ```
 The most commonly used db commands are:
 - `help`: Displays help information about the specified command
