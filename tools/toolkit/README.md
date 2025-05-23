@@ -13,7 +13,7 @@ cd tron-docker/tools/gradlew
 # build the toolkit
 ./gradlew :toolkit:build
 # execute the command
-java -jar ../dbfork/build/libs/Toolkit.jar db -h
+java -jar ../toolkit/build/libs/Toolkit.jar db -h
 ```
 The most commonly used db commands are:
 - `help`: Displays help information about the specified command
@@ -183,7 +183,7 @@ output-directory
 - `-r, --retain-witnesses`: retain the previous witnesses and active witnesses.
 - `-h, --help`: provide the help info
 
-Please refer [DbFork](DbFork.md) guidance for more details.
+Please refer [DBFork](DBFork.md) guidance for more details.
 
 ## DB Query
 The [ListWitnesses](https://developers.tron.network/reference/listwitnesses) and [getReward](https://developers.tron.network/reference/wallet-getreward)
