@@ -140,7 +140,7 @@ For the `trc20Contracts`, we can configure the following properties:
   you may need to change the `balancesSlotPosition` value. For more details about the variable slot position
   in the contract, please refer [layout_in_storage](https://docs.soliditylang.org/en/latest/internals/layout_in_storage.html).
 
-Set `latestBlockHeaderTimestamp` as current millisecond time. It is used before new block processed, setting to current timestamp simpliy reduces debug log output and speeds up the first new product production. This setting does not affect the block production logic.
+Set `latestBlockHeaderTimestamp` as current millisecond time. It is used before new block processed, setting to current timestamp simpliy reduces debug log output and speeds up the first new block production. This setting does not affect the block production logic.
 
 Set `maintenanceTimeInterval` and `nextMaintenanceTime` optionally to facilitate testing.
 
