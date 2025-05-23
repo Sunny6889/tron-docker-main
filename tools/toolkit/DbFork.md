@@ -55,7 +55,7 @@ Run the DBFork tool in the Toolkit to modify the related data. First, check [Bui
 - `-h | --help`
 - `-r | --retain-witnesses`: retain the previous witnesses and active witnesses. Default: false
 
-The example of [fork.conf](../../conf/fork.conf) can be:
+The example of [fork.conf](./src/main/resources/fork.conf) can be:
 
 ```conf
 witnesses = [
@@ -167,7 +167,7 @@ localwitness = [
 ]
 ```
 
-If another node wants to join the shadow fork network, it needs to execute the above steps, or it copies the state data from the first shadow fork node directly. They need to configure the same `node.p2p.version` and add the `seed.node` in the config, then they can sync and produce blocks to form a local testnet.
+If another node wants to join the shadow fork network, it needs to execute the above steps, or it copies the database from the first shadow fork node directly. They need to configure the same `node.p2p.version` and add the `seed.node` in the config, then they can sync and produce blocks to form a local testnet.
 
 For instructions on starting a private chain, please refer to [Setup Private Chain](../../private_net/README.md). Note that you must use the same `genesis.block` configuration as the forked database data to ensure compatibility. If the configurations do not match, the node may fail to start or encounter consensus issues.
 
