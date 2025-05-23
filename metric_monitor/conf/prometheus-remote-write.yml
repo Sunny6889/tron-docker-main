@@ -24,7 +24,7 @@ scrape_configs:
           - node-exporter:9100
         labels:
           group: node-exporter-full
-          instance: tron-docker-dev-01
+          instance: fullnode-01
 
 # The remote_write configuration tells Prometheus to continuously write metrics to the Thanos Receive service.
 # Refer https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write
