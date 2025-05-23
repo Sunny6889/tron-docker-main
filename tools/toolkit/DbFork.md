@@ -48,14 +48,14 @@ java -jar Toolkit.jar db copy output-directory output-directory-bak
 ```
 
 ### Run the DBFork tool
-Run the DBFork tool in the Toolkit to modify the related data. The available parameters are:
+Run the DBFork tool in the Toolkit to modify the related data. Check [Build The Toolkit](README.md#build-the-toolkit) to generate `Toolkit.jar`. The available parameters are:
 - `-c | --config=<config>`: config the new witnesses, balances, etc for shadow
   fork. Default: fork.conf
 - `-d | --database-directory=<database>`: java-tron database directory path. Default: output-directory
 - `-h | --help`
 - `-r | --retain-witnesses`: retain the previous witnesses and active witnesses. Default: false
 
-The example of `fork.conf` can be:
+The example of [fork.conf](../../conf/fork.conf) can be:
 
 ```conf
 witnesses = [
