@@ -48,14 +48,14 @@ java -jar Toolkit.jar db copy output-directory output-directory-bak
 ```
 
 ### Run the DBFork tool
-Run the DBFork tool in the Toolkit to modify the related data. The available parameters are:
+Run the DBFork tool in the Toolkit to modify the related data. First, check [Build The Toolkit](README.md#build-the-toolkit) to generate the `Toolkit.jar` file. After building successfully, you can use the following parameters to run the tool:
 - `-c | --config=<config>`: config the new witnesses, balances, etc for shadow
   fork. Default: fork.conf
 - `-d | --database-directory=<database>`: java-tron database directory path. Default: output-directory
 - `-h | --help`
 - `-r | --retain-witnesses`: retain the previous witnesses and active witnesses. Default: false
 
-The example of `fork.conf` can be:
+The example of [fork.conf](./src/main/resources/fork.conf) can be:
 
 ```conf
 witnesses = [
@@ -126,7 +126,7 @@ For the `accounts`, we can configure the following properties:
 - `trc10Id`: the TRC10 token ID
 - `trc10Balance`: change the balance of `trc10Id`
 
-*Note*: If you need to add new address, you can use the [tronlink](https://www.tronlink.org/) or [wallet-cli](https://github.com/tronprotocol/wallet-cli?tab=readme-ov-file#account-related-commands) to genrate the private key and address.
+  *Note*: If you need to add new address, you can use the [tronlink](https://www.tronlink.org/) or [wallet-cli](https://github.com/tronprotocol/wallet-cli?tab=readme-ov-file#account-related-commands) to genrate the private key and address.
 
 For the `trc20Contracts`, we can configure the following properties:
 - `contractAddress`: set the TRC20 contract address
@@ -134,15 +134,15 @@ For the `trc20Contracts`, we can configure the following properties:
 - `address`: set the account address
 - `balance`: set the TRC20 balance
 
-*Note*: the `balancesSlotPosition` sets slot position for
-`mapping(address account => uint256) private _balances` variable in the TRC20 contract.
-For most standard TRC20 contracts, the `balancesSlotPosition` is 0. For some special cases,
-you may need to change the `balancesSlotPosition` value. For more details about the variable slot position
-in the contract, please refer [layout_in_storage](https://docs.soliditylang.org/en/latest/internals/layout_in_storage.html).
+  *Note*: the `balancesSlotPosition` sets slot position for
+  `mapping(address account => uint256) private _balances` variable in the TRC20 contract.
+  For most standard TRC20 contracts, the `balancesSlotPosition` is 0. For some special cases,
+  you may need to change the `balancesSlotPosition` value. For more details about the variable slot position
+  in the contract, please refer [layout_in_storage](https://docs.soliditylang.org/en/latest/internals/layout_in_storage.html).
 
-set `latestBlockHeaderTimestamp` as current millisecond time to avoid the delay in producing blocks.
+Set `latestBlockHeaderTimestamp` as the current time in milliseconds. This timestamp is used before processing new blocks - setting it to the current time reduces debug log output and accelerates the production of the first new block. This setting does not impact the underlying block production logic.
 
-set `maintenanceTimeInterval` and `nextMaintenanceTime` optionally to facilitate testing.
+Set `maintenanceTimeInterval` and `nextMaintenanceTime` optionally to facilitate testing.
 
 Execute the fork command:
 ```shell script
@@ -167,7 +167,9 @@ localwitness = [
 ]
 ```
 
-If another node wants to join the shadow fork network, it needs to execute the above steps, or it copies the state data from the first shadow fork node directly. They need to configure the same `node.p2p.version` and add the `seed.node` in the config, then they can sync and produce blocks to form a local testnet.
+If another node wants to join the shadow fork network, it needs to execute the above steps, or it copies the database from the first shadow fork node directly. They need to configure the same `node.p2p.version` and add the `seed.node` in the config, then they can sync and produce blocks to form a local testnet.
+
+For instructions on starting a private chain, please refer to [Setup Private Chain](../../private_net/README.md). Note that you must use the same `genesis.block` configuration as the forked database data to ensure compatibility. If the configurations do not match, the node may fail to start or encounter consensus issues.
 
 At last, developers can connect and interact with the node by [wallet-cli](https://tronprotocol.github.io/documentation-en/clients/wallet-cli/),
 [TronBox](https://developers.tron.network/reference/what-is-tronbox), [Tron-IDE](https://developers.tron.network/docs/tron-ide) or other tools, and execute the shadow fork testing.
