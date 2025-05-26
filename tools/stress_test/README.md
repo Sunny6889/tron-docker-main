@@ -121,7 +121,7 @@ broadcastTx = {
 
 - `saveTxId`: configure whether to save the transaction id of the broadcast transactions.
 
-*Note*: we can use the [dbfork](../toolkit/DbFork.md) tool to get enough `TRX/TRC10/TRC20` balances of address corresponding
+*Note*: we can use the [DBFork](../toolkit/DBFork.md) tool to get enough `TRX/TRC10/TRC20` balances of address corresponding
   to the `privateKey` for the stress test.
 
 Then we can execute the following `generate` subcommand:

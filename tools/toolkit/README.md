@@ -183,7 +183,7 @@ output-directory
 - `-r, --retain-witnesses`: retain the previous witnesses and active witnesses.
 - `-h, --help`: provide the help info
 
-Please refer [DbFork](DbFork.md) guidance for more details.
+Please refer [DBFork](DBFork.md) guidance for more details.
 
 ## DB Query
 The [ListWitnesses](https://developers.tron.network/reference/listwitnesses) and [getReward](https://developers.tron.network/reference/wallet-getreward)
