@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  alloy:
+    image: grafana/alloy:latest
+    container_name: grafana-alloy
+    volumes:
+      - '/:/host:ro,rslave'
+      - ../conf/:/etc/alloy/
+      - ../alloy-data:/var/lib/alloy # Mount a directory for Alloy's data (WAL, etc.)
+      - ../../logs/mainnet/:/var/log/tron # Mount a directory for Alloy's loki (WAL, etc.)
+    command:
+      - "run"
+      - "/etc/alloy/prometheus-loki.alloy"
+      - "--server.http.listen-addr=localhost:12345"
+      - "--storage.path=/var/lib/alloy/data"
+    network_mode: host # Allows Alloy to scrape targets on the host's network (like 127.0.0.1)
