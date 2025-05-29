@@ -1,0 +1,10 @@
+version: '3'
+services:
+  loki:
+    image: grafana/loki:3.5.0
+    container_name: grafana-loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - ../conf/loki-config.yml:/etc/loki/local-config.yml
+    command: -config.file=/etc/loki/local-config.yml

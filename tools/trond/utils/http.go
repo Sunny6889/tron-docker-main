@@ -445,8 +445,18 @@ func ExtractTgzWithStatus(tgzFile, destDir string) error {
 			return fmt.Errorf("error reading tar: %v", err)
 		}
 
+		// Sanitize and validate the archive entry path
+		sanitizedName := filepath.Clean(header.Name)
+		if filepath.IsAbs(sanitizedName) || strings.HasPrefix(sanitizedName, ".."+string(os.PathSeparator)) || strings.Contains(sanitizedName, ".."+string(os.PathSeparator)) {
+			return fmt.Errorf("invalid file path in archive: %s", header.Name)
+		}
+
 		// Target file path
-		target := filepath.Join(destDir, header.Name)
+		target := filepath.Join(destDir, sanitizedName)
+		// Ensure the target path is still within the destination directory
+		if !strings.HasPrefix(target, filepath.Clean(destDir)+string(os.PathSeparator)) {
+			return fmt.Errorf("attempted directory traversal: %s", header.Name)
+		}
 
 		switch header.Typeflag {
 		case tar.TypeDir:
@@ -491,13 +501,35 @@ func ExtractTgzWithStatus(tgzFile, destDir string) error {
 			// Increment the file count
 			totalFilesExtracted++
 		case tar.TypeSymlink:
+			// Resolve the symlink target
+			resolvedLinkname, err := filepath.EvalSymlinks(filepath.Join(filepath.Dir(target), header.Linkname))
+			if err != nil {
+				return fmt.Errorf("failed to resolve symlink target: %v", err)
+			}
+			// Sanitize symlink target to prevent directory traversal
+			if !strings.HasPrefix(filepath.Clean(resolvedLinkname), filepath.Clean(destDir)+string(os.PathSeparator)) {
+				return fmt.Errorf("invalid symlink target in archive: %s -> %s", header.Name, header.Linkname)
+			}
+
 			// Create symlink
-			if err := os.Symlink(header.Linkname, target); err != nil {
+			if err := os.Symlink(resolvedLinkname, target); err != nil {
 				return fmt.Errorf("failed to create symlink: %v", err)
 			}
 		case tar.TypeLink:
 			// Create hard link
 			linkTarget := filepath.Join(destDir, header.Linkname)
+			// Sanitize the link target to prevent directory traversal
+			// Resolve the hard link target
+			resolvedLinkTarget, err := filepath.EvalSymlinks(linkTarget)
+			if err != nil {
+				return fmt.Errorf("failed to resolve hard link target: %v", err)
+			}
+
+			// Ensure the resolved hard link target stays within the destination directory
+			if !strings.HasPrefix(filepath.Clean(resolvedLinkTarget), filepath.Clean(destDir)+string(os.PathSeparator)) {
+				return fmt.Errorf("attempted directory traversal in hard link: %s -> %s", header.Name, header.Linkname)
+			}
+
 			if err := os.Link(linkTarget, target); err != nil {
 				return fmt.Errorf("failed to create hard link: %v", err)
 			}

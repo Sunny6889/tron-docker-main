@@ -48,13 +48,19 @@ check_docker_running() {
         elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
             echo "Starting Docker daemon..."
             sudo systemctl start docker
-            sleep 5
-            sudo usermod -aG docker "$USER"
+            sleep 10
+            # Only add non-root users to the docker group
+            if [ "$EUID" -ne 0 ]; then
+                sudo usermod -aG docker "$USER"
+                echo "Added current user to the docker group."
+                echo "You may need to log out and back in for this to take effect, or try 'newgrp docker' to reload your group membership."
+                echo "Skipping Docker network configuration check, as you are not root"
+                exit 0
+            fi
             if ! sudo docker info &> /dev/null; then
                 echo "Failed to start Docker daemon"
                 exit 1
             fi
-            echo "Logout and log back in for the docker group change to take effect"
         fi
     fi
     echo "Docker daemon is running"
