@@ -453,10 +453,6 @@ func ExtractTgzWithStatus(tgzFile, destDir string) error {
 
 		// Target file path
 		target := filepath.Join(destDir, sanitizedName)
-		// Ensure the target path is still within the destination directory
-		if !strings.HasPrefix(target, filepath.Clean(destDir)+string(os.PathSeparator)) {
-			return fmt.Errorf("attempted directory traversal: %s", header.Name)
-		}
 
 		switch header.Typeflag {
 		case tar.TypeDir:
