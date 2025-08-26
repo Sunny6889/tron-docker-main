@@ -127,6 +127,18 @@ remote_write:
 - The `--storage.tsdb.max-block-duration=30m` flag defines the maximum duration for generating TSDB blocks locally. With this setting, Prometheus will create new TSDB blocks at intervals no longer than 30 minutes, ensuring regular data persistence and efficient storage management.
 - Other storage flags can be found in the [official documentation](https://prometheus.io/docs/prometheus/latest/storage/#operational-aspects). For a quick start, you could use the default values.
 
+#### Alternative way to set up Prometheus and Node Exporter
+Grafana Alloy can be used to set up Prometheus and Node Exporter.
+##### Alloy configuration file
+Please refer to the [prometheus-loki.alloy](./conf/prometheus-loki.alloy) for the Alloy configuration file. You need to replace some items' value to match your environment, such as `prometheus.scrape.targets`, `discovery.relabel` 
+Note: If you don't need the loki feature, you can remove the last two configuration parts that start with loki.
+
+##### Start Alloy
+Use the `.docker-compose/docker-compose-alloy.yml` and the following command to start Alloy.
+```sh
+docker-compose -f ./docker-compose/docker-compose-alloy.yml up -d
+```
+
 ### Step 2: Set up Thanos Receive
  The [Thanos Receive](https://thanos.io/tip/components/receive.md/#receiver) service implements the Prometheus Remote Write API. It builds on top of the existing Prometheus TSDB and retains its usefulness while extending its functionality with long-term-storage, horizontal scalability, and downsampling. Prometheus instances are configured to continuously write metrics to it. Thanos Receive exposes the StoreAPI so that Thanos Queriers can query received metrics in real-time.
 
