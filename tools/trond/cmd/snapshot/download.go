@@ -3,10 +3,11 @@ package snapshot
 import (
 	"errors"
 	"fmt"
-	"github.com/tronprotocol/tron-docker/config"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/tronprotocol/tron-docker/config"
 
 	"github.com/MakeNowJust/heredoc/v2"
 	"github.com/spf13/cobra"
@@ -120,12 +121,12 @@ func download(domain string, backup string, nType string) {
 
 	if folderYes, _ := utils.PathExists(networkDst); !folderYes {
 		fmt.Println("Creating directory:", networkDst)
-		if err := utils.CreateDir(networkDst, true); err != nil {
+		if err = utils.CreateDir(networkDst, true); err != nil {
 			fmt.Println(" - Error creating directory:", err)
 			return
 		}
 	} else if databaseYes, _ := utils.PathExists(databaseDst); databaseYes {
-		fmt.Println(fmt.Sprintf("Notice: there already exist database data %s, please delete it if you want to download again.", databaseDst))
+		fmt.Printf("Notice: there already exist database data %s, please delete it if you want to download again.\n", databaseDst)
 		return
 	}
 
@@ -135,7 +136,7 @@ func download(domain string, backup string, nType string) {
 		return
 	}
 
-	if err := utils.ExtractTgzWithStatus(downloadSnapshot, "./"); err != nil {
+	if err = utils.ExtractTgzWithStatus(downloadSnapshot, "./"); err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
@@ -143,7 +144,7 @@ func download(domain string, backup string, nType string) {
 	/* At least according to the domain, move extracted database to the correct subtype directory.
 	The database will be used by `./trond node run-single`, check that part for details
 	*/
-	fmt.Println(fmt.Sprintf("Finally move the database to the corresponding network folder %s", databaseDst))
+	fmt.Printf("Finally move the database to the corresponding network folder %s\n", databaseDst)
 	srcDatabase := "./output-directory/database"
 
 	// Check whether dst directory already exist, if yes, return warning let user decide whether to continue downloading.

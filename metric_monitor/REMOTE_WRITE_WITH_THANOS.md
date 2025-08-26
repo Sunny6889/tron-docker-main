@@ -128,7 +128,7 @@ remote_write:
 - Other storage flags can be found in the [official documentation](https://prometheus.io/docs/prometheus/latest/storage/#operational-aspects). For a quick start, you could use the default values.
 
 #### Alternative way to set up Prometheus and Node Exporter
-Grafana Alloy can be used to set up Prometheus and Node Exporter.
+Grafana Alloy provides a unified solution that consolidates the functionalities of Prometheus and Node Exporter into a single service. As an all-in-one monitoring agent, it not only handles metrics collection and exportation but also includes built-in log aggregation capabilities, eliminating the need for separate monitoring components.
 ##### Alloy configuration file
 Please refer to the [prometheus-loki.alloy](./conf/prometheus-loki.alloy) for the Alloy configuration file. You will need to update certain values to match your environment, such as `prometheus.scrape.targets`, `discovery.relabel`.
 
