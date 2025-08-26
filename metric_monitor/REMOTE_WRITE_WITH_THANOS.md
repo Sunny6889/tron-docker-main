@@ -130,8 +130,8 @@ remote_write:
 #### Alternative way to set up Prometheus and Node Exporter
 Grafana Alloy can be used to set up Prometheus and Node Exporter.
 ##### Alloy configuration file
-Please refer to the [prometheus-loki.alloy](./conf/prometheus-loki.alloy) for the Alloy configuration file. You need to replace some items' value to match your environment, such as `prometheus.scrape.targets`, `discovery.relabel` 
-Note: If you don't need the loki feature, you can remove the last two configuration parts that start with loki.
+Please refer to the [prometheus-loki.alloy](./conf/prometheus-loki.alloy) for the Alloy configuration file. You will need to update certain values to match your environment, such as `prometheus.scrape.targets`, `discovery.relabel`  
+Note: If you don’t require the Loki feature, you can remove the last two configuration sections that begin with loki.
 
 ##### Start Alloy
 Use the `.docker-compose/docker-compose-alloy.yml` and the following command to start Alloy.
