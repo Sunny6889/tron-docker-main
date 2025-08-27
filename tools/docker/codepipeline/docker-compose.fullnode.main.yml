@@ -1,20 +1,23 @@
 services:
   tron-node-mainnet:
     container_name: tron-node
-    image: tronprotocol/java-tron:GreatVoyage-v4.7.7  # Add specific tag if needed
-    mem_limit: 32g
+    image: tronprotocol/java-tron:GreatVoyage-v4.8.0  # Add specific tag if needed
+    mem_limit: 34g
+    environment:
+      - TZ=Asia/Shanghai # The metric and log date will be changed accordingly
     ports:
       - "8090:8090"
       - "8091:8091"
       - "18888:18888"
       - "18888:18888/udp"
       - "50051:50051"
+      - "9527:9527"
     volumes:
       - ../conf:/java-tron/conf
       - ./logs/mainnet:/java-tron/logs
       - ../output-directory:/java-tron/output-directory
     command:
       - -jvm
-      - "{-Xmx30g -Xms28g -XX:+UseConcMarkSweepGC}"  # Using environment variable for JVM arguments
+      - "{-Xmx30g -Xms24g -XX:MaxDirectMemorySize=1G -XX:+UseConcMarkSweepGC -XX:+PrintGC -Xloggc:./logs/gc.log }"  # Using environment variable for JVM arguments
       - -c
       - /java-tron/conf/main_net_config.conf

@@ -18,7 +18,7 @@ docker-compose -f ./docker-compose/docker-compose-quick-start.yml up -d
 ```
 It will start a TRON FullNode that connects to the Mainnet, along with Prometheus and Grafana services. Note that in [main_net_config.conf](../conf/main_net_config.conf), it contains the configuration below to enable metrics.
 ```
-metrics{
+node.metrics{
   prometheus{
     enable=true
     port="9527"

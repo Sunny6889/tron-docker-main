@@ -102,7 +102,6 @@ task sourceDocker {
 
 
 task testDocker {
-    dependsOn sourceDocker
     def dockerReportsDir = "${rootDir}/../docker/reports/"
     def image = "${dockerImageName}:${dockerBuildVersion}"
 

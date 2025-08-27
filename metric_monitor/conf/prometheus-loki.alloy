@@ -1,0 +1,93 @@
+logging {
+        level  = "info"
+        format = "logfmt"
+}
+
+// for java-tron node's metrics
+prometheus.scrape "java_tron" {
+        targets = array.concat(
+                [{
+                        __address__ = "127.0.0.1:9527",
+                        group       = "java-tron",
+                        instance    = "tron-docker-test-01",
+                }],
+        )
+        forward_to      = [prometheus.remote_write.default.receiver]
+        job_name        = "java-tron"
+        scrape_interval = "3s"
+        scrape_timeout  = "3s"
+}
+
+// Add Unix exporter configuration
+prometheus.exporter.unix "local" {
+        rootfs_path = "/host"
+}
+// Add relabel configuration for the Unix exporter
+discovery.relabel "relabel_unix" {
+        targets = prometheus.exporter.unix.local.targets
+        rule {
+                action = "replace"
+                target_label = "instance"
+                replacement = env("HOSTNAME") // e.g., "my-server-01"
+        }
+        rule {
+                action = "replace"
+                target_label = "group"
+                replacement = "node-exporter-full" // Custom group name
+        }
+        rule {
+                action = "replace"
+                target_label = "job"
+                replacement = "java-tron"
+        }
+}
+// Add scrape configuration for the Unix exporter
+prometheus.scrape "unix_metrics" {
+        targets         = discovery.relabel.relabel_unix.output
+        forward_to      = [prometheus.remote_write.default.receiver]
+        job_name        = "node-exporter"
+        scrape_interval = "3s"
+        scrape_timeout  = "3s"
+}
+
+prometheus.remote_write "default" {
+        external_labels = {
+                monitor = "java-tron-node-remote-write",
+        }
+
+        endpoint {
+                url            = "http://xxxx/api/v1/receive"
+                remote_timeout = "10s"
+                headers        = {
+                        "X-Auth-Token"    = "token",
+                        "X-Service-Group" = "fullnode",
+                }
+
+                queue_config {
+                        capacity             = 55000
+                        max_shards           = 200
+                        max_samples_per_send = 15000
+                        batch_send_deadline  = "6s"
+                        min_backoff          = "200ms"
+                }
+
+                metadata_config {
+                        send_interval        = "6s"
+                        max_samples_per_send = 15000
+                }
+        }
+}
+
+// loki remote write
+loki.source.file "tronlogs" {
+  targets    = [
+    {__path__ = "/var/log/tron/tron.log", "instance" = env("HOSTNAME")},
+  ]
+  forward_to = [loki.write.local.receiver]
+}
+
+loki.write "local" {
+  endpoint {
+    url = "http://xxxx/loki/api/v1/push"
+  }
+}
