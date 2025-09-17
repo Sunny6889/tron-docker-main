@@ -91,7 +91,7 @@ public class ReplayTxGenerator {
 
     BlockListExtention blockList = null;
     Optional<List<BlockExtention>> result;
-    int step = 50;
+    int step = 25;
     long stepEndNumber;
 
     for (long i = startNum; i < endNum; i = i + step) {
