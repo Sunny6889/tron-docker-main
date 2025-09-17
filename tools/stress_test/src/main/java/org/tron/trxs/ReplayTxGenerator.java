@@ -55,11 +55,20 @@ public class ReplayTxGenerator {
     this.endNum = TxConfig.getInstance().getRelayEndNumber();
     this.apiWrapper = new ApiWrapper(TxConfig.getInstance().getRelayUrl(),
         TxConfig.getInstance().getRelayUrl(),
-        TxConfig.getInstance().getPrivateKey());
+        TxConfig.getInstance().getPrivateKey(),"8df8346b-45be-4ccb-9b51-4d1e66d66aeb");
   }
 
   public ReplayTxGenerator() {
     this("relay-tx.csv");
+  }
+
+  // 特殊标记，用于标识区块结束
+  private static final Transaction BLOCK_END_MARKER;
+
+  static {
+    // 创建一个特殊的交易作为区块结束标记
+    Transaction.Builder builder = Transaction.newBuilder();
+    BLOCK_END_MARKER = builder.build();
   }
 
   private void consumerGenerateTransaction() throws IOException {
@@ -91,28 +100,38 @@ public class ReplayTxGenerator {
 
     BlockListExtention blockList = null;
     Optional<List<BlockExtention>> result;
-    int step = 50;
+    int step = 25;
     long stepEndNumber;
 
     for (long i = startNum; i < endNum; i = i + step) {
       stepEndNumber = (i + step) > endNum ? endNum : i + step;
+
       try {
+        Thread.sleep(100);
         blockList = apiWrapper.getBlockByLimitNext(i, stepEndNumber);
       } catch (IllegalException e) {
         logger.error("failed to get the blocks.");
+        e.printStackTrace();
+        System.exit(1);
+      } catch (InterruptedException e) {
+        logger.error("failed to sleep.");
         e.printStackTrace();
         System.exit(1);
       }
       result = Optional.ofNullable(blockList.getBlockList());
       if (result.isPresent()) {
         List<BlockExtention> blockExtentionList = result.get();
-        if (blockExtentionList.size()> 0) {
+        if (blockExtentionList.size() > 0) {
           for (BlockExtention block : blockList.getBlockList()) {
             if (block.getTransactionsCount() > 0) {
-              transactionsOfReplay
-                  .addAll(block.getTransactionsList().stream().map(
-                      TransactionExtention::getTransaction).collect(
-                      Collectors.toList()));
+              List<Transaction> txs = block.getTransactionsList().stream()
+                  .map(TransactionExtention::getTransaction)
+                  .collect(Collectors.toList());
+              transactionsOfReplay.addAll(txs);
+              // 添加区块结束标记
+              transactionsOfReplay.add(BLOCK_END_MARKER);
+              logger.info("Added block end marker for block number ={}",
+                  block.getBlockHeader().getRawData().getNumber());
             }
           }
         }
