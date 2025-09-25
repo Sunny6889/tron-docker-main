@@ -69,7 +69,7 @@ prometheus.remote_write "default" {
                         max_samples_per_send = 1000     // Maximum samples per send
                         batch_send_deadline  = "3s"     // Maximum delay before sending a batch
                         min_backoff          = "1000ms" // Minimum retry interval
-                        max_backoff          = "6s"     // Maximum retry interval, samples will be dropped if exceeded
+                        max_backoff          = "3s"     // Maximum retry interval, samples will be dropped if exceeded
                 }
 
                 metadata_config {
