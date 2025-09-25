@@ -34,14 +34,14 @@ remote_write:
       X-Service-Group: "tron-fullnode-group1"
     remote_timeout: 15s
     queue_config:
-      capacity: 50000
-      max_shards: 200 # the maximum number of shards, or parallelism, Prometheus will use for each remote-write queue
+      capacity: 3000
+      max_shards: 10 # the maximum number of shards, or parallelism, Prometheus will use for each remote-write queue
       min_shards: 1
-      max_samples_per_send: 10000
-      batch_send_deadline: 3s
-      min_backoff: 200ms
-      max_backoff: 5s
+      max_samples_per_send: 1000
+      batch_send_deadline: 6s
+      min_backoff: 1000ms
+      max_backoff: 6s
     metadata_config:
       send: true
-      send_interval: 3s # How frequently metric metadata is sent to remote storage.
-      max_samples_per_send: 50000
+      send_interval: 120s # How frequently metric metadata is sent to remote storage.
+      max_samples_per_send: 1000
